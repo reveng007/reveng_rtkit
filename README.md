@@ -32,3 +32,38 @@
 | rootkit.c | protect_rootkit() | protect_rootkit() | This is very simple function which just makes impossible to unload the rootkit by "rmmod rootkit" command even if it is visible. However it is still possible to unload by "rmmod -f rootkit" if kernel was compiled with support for forced unloading modules. &nbsp; link: [sysprog21.github.io](https://sysprog21.github.io/lkmpg/#building-modules-for-a-precompiled-kernel) | _ | ./client_usermode | 
 | rootkit.c | remove_rootkit() | remove_rootkit() | Making rootkit removable from kernel using rmmod | _ | ./client_usermode |
 | hook_syscall_helper.h | kill and getdents64 syscall | rootkit_init() and rootkit_exit(void) | Process/Implant Hiding | _ | cmd prompt: kill -31 \<pid> |
+| hook_syscall_helper.h | kill and getdents64 syscall | rootkit_init() and rootkit_exit(void) | getting rootshell | _ | cmd prompt: kill -64 \<any pid> |
+
+### NOTE:
+> **Function tidy() and sys_module_hide_rootkit() is not used in code. They were commented out. The reason behind that will be discussed in details in my blog post.**
+
+### How to use it:
+1. Clone the repo
+```
+$ git clone https://github.com/reveng007/reveng_rtkit.git
+```
+2. Enter the directory
+```
+$ cd reveng_rtkit/
+```
+3. Now, we have 2 directories: kernel_src and user_src.
+- user_src:
+Contains `usermode client code` to interact with our rootkit module (once it it loaded into the kernel) via the character device driver file.
+- kernel_src:
+Contains `kernelmode rootkit: reveng_rtkit` which will be responsible for the whole mayhem :wink:.
+
+```
+$ cd kernel_src/
+$ make
+$ sudo insmod reveng_rtkit.ko
+```
+4. To interract with it. Open another terminal
+```
+$ cd reveng_rtkit/user_src/
+```
+5. compile and run the code
+```
+$ gcc client_usermode.c -o client_usermode
+$ sudo ./client_usermode
+```
+#### NOTE: Be sure to run the code with root priv., because we are interracting with device driver, which is a part of the Linux kernel.
