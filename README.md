@@ -67,3 +67,5 @@ $ gcc client_usermode.c -o client_usermode
 $ sudo ./client_usermode
 ```
 #### NOTE: Be sure to run the code with root priv., because we are interracting with device driver, which is a part of the Linux kernel.
+
+![client_mode](https://user-images.githubusercontent.com/61424547/155657382-f7604f49-6f42-4927-ab1d-deef37ff519f.png)
