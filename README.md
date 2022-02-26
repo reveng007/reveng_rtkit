@@ -157,7 +157,7 @@ kill -64 <any pid>	: Command to get rootshell. Applicable in normal shell prompt
 ### Bypassing ***rkhunter*** antirootkit:
 
 Here is the log file, that was generated: [file](https://github.com/reveng007/reveng_rtkit/blob/main/rkhunter.log)
-Two warnings are present:
+- Two warnings are present:
 1. Checking for suspicious (large) shared memory segments: For Notable markdown editor (This is not a threat lol!)
 2. /usr/bin/lwp-request : [stackexchange](https://unix.stackexchange.com/questions/373718/rkhunter-gives-me-a-warning-for-usr-bin-lwp-request-what-should-i-do-debi)
 
