@@ -9,7 +9,7 @@
     <img alt="License" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
 </p>
 
-***`reveng_rtkit`*** is a Linux Kernel mode (aka LKM) based rootkit targeting Linux Kernel: 5.11.0-49-generic as it was only tested on it till now.
+***`reveng_rtkit`*** is a Linux Kernel mode (aka LKM) based rootkit targeting Linux Kernel: 5.11.0-49-generic as it was only tested on it till now. This project is heavily inspired by [Heroin](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#A-b) by  Runar Jensen (didn't get any of his social media handle ;( ) and [Diamorphine](https://github.com/m0nad/Diamorphine/) by [@m0nadlabs](https://twitter.com/m0nadlabs) open source LKM rootkit projects.
 ### <ins>Rootkit features</ins>:
 | Sl. no. | Name | Features |
 | ------- | ------- | -------- | 
@@ -31,8 +31,8 @@
 | rootkit.c | tidy() | tidy() | In this function we do some clean up. If we don't do this, there will be some errors during unloading the rootkit using `rmmod`. | _ | _ | _
 | rootkit.c | protect_rootkit() | protect_rootkit() | This is very simple function which just makes impossible to unload the rootkit by "rmmod rootkit" command even if it is visible. However it is still possible to unload by "rmmod -f rootkit" if kernel was compiled with support for forced unloading modules. &nbsp; link: [sysprog21.github.io](https://sysprog21.github.io/lkmpg/#building-modules-for-a-precompiled-kernel) | _ | ./client_usermode | 
 | rootkit.c | remove_rootkit() | remove_rootkit() | Making rootkit removable from kernel using rmmod | _ | ./client_usermode |
-| hook_syscall_helper.h | kill and getdents64 syscall | rootkit_init() and rootkit_exit(void) | Process/Implant Hiding | _ | cmd prompt: kill -31 \<pid> |
-| hook_syscall_helper.h | kill and getdents64 syscall | rootkit_init() and rootkit_exit(void) | getting rootshell | _ | cmd prompt: kill -64 \<any pid> |
+| hook_syscall_helper.h | hacked_kill() | rootkit_init() and rootkit_exit(void) | Process/Implant Hiding | _ | cmd prompt: kill -31 \<pid> |
+| hook_syscall_helper.h | hacked_kill() | rootkit_init() and rootkit_exit(void) | getting rootshell | _ | cmd prompt: kill -64 \<any pid> |
 
 ### NOTE:
 > **Function tidy() and sys_module_hide_rootkit() is not used in code. They were commented out. The reason behind that will be discussed in details in my blog post.**
@@ -70,14 +70,36 @@ $ sudo ./client_usermode
 ```
 #### NOTE: Be sure to run the code with root priv., because we are interracting with device driver, which is a part of the Linux kernel.
 
-![client_mode](https://user-images.githubusercontent.com/61424547/155657382-f7604f49-6f42-4927-ab1d-deef37ff519f.png)
+![client_mode](https://user-images.githubusercontent.com/61424547/155754834-13bf9ee5-0bdd-4d30-af88-71a26a92dee8.png)
 
 6. Another method to interract with it is via kill syscall interception:
-To hide process/implant:
+- To hide process/implant:
 ```
 $ kill -31 <pid>
 ```
-To get root shell:
+![Screenshot from 2022-02-25 20-40-46](https://user-images.githubusercontent.com/61424547/155739121-b609d517-0b4f-4afc-a2db-b4ce7f331b17.png)
+
+- To get root shell:
 ```
 $ kill -64 <any pid>
 ```
+![Screenshot from 2022-02-25 20-45-45](https://user-images.githubusercontent.com/61424547/155755082-d6ced40f-e0b0-47a3-8029-4f26b322df29.png)
+
+#### NOTE:
+ This rootkit is capable of providing rootshell to only bash and sh shell, not others. Although, it is possible for other shells as well but with some tricks. We can use system() C function alike function in Linux Kernel programming, so that we 1st trigger a bash/sh shell then offer rootshell to the attacker. I  have'nt got that type of kernel function till now, but as soon as I get it, I will add it up. If anybody viewing this know about this, or interested to contribute, are most welcome to make a pull request.
+
+### Bypassing ***rkhunter*** antirootkit:
+
+Here is the log file, that was generated: (file)[]
+
+### To-Do list :man_mechanic::
+- Adding system() C function alike function in Linux Kernel programming, in order to open a new bash/sh prompt.
+- Adding Linux Kernel Sockets.
+- Surviving system reboot.
+- Bypassing `chkrootkit antirootkit`.
+
+    - Getting detected by `chkrootkit antirootkit` till now, under `chkproc section`.
+&nbsp;
+&nbsp;
+![Screenshot from 2022-02-26 09-33-19](https://user-images.githubusercontent.com/61424547/155828253-812b8d7a-7326-4b57-9956-1fcaa92ec319.png)
+
