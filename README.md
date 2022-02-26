@@ -161,6 +161,8 @@ Here is the log file, that was generated: [file](https://github.com/reveng007/re
 1. Checking for suspicious (large) shared memory segments: For Notable markdown editor (This is not a threat lol!)
 2. /usr/bin/lwp-request : [stackexchange](https://unix.stackexchange.com/questions/373718/rkhunter-gives-me-a-warning-for-usr-bin-lwp-request-what-should-i-do-debi)
 
+So, these are not threats! cool!
+
 ### To-Do list :man_mechanic::
 - Adding system() C function alike function in Linux Kernel programming, in order to open a new bash/sh prompt.
 - Adding Linux Kernel Sockets.
