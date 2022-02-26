@@ -33,6 +33,7 @@
 | hide_show_helper.h | proc_lsmod_hide_rootkit() | hide_rootkit() | Hides rootkit from _"/proc/modules"_ file, _"/proc/kallsyms"_ file and "lsmod" command. | No effectivity | ./client_usermode | 
 | hide_show_helper.h | sys_module_hide_rootkit() | hide_rootkit() | Hides rootkit from  "/sys/module/<THIS_MODULE>/" directory. | No effectivity | ./client_usermode | 
 | hide_show_helper.h | proc_lsmod_show_rootkit() | show_rootkit() | Reveals our rootkit in _"/proc/modules"_ file, _"/proc/kallsyms"_ file and "lsmod" command. | Will work effectively | ./client_usermode | 
+| hide_show_helper.h | sys_module_show_rootkit() | show_rootkit() | Reveals our rootkit in "/sys/module/<THIS_MODULE>/" directory. | _ | ./client_usermode |
 | rootkit.c | tidy() | tidy() | In this function we do some clean up. If we don't do this, there will be some errors during unloading the rootkit using `rmmod`. | _ | _ | _
 | rootkit.c | protect_rootkit() | protect_rootkit() | This is very simple function which just makes impossible to unload the rootkit by "rmmod rootkit" command even if it is visible. However it is still possible to unload by "rmmod -f rootkit" if kernel was compiled with support for forced unloading modules. &nbsp; link: [sysprog21.github.io](https://sysprog21.github.io/lkmpg/#building-modules-for-a-precompiled-kernel) | _ | ./client_usermode | 
 | rootkit.c | remove_rootkit() | remove_rootkit() | Making rootkit removable from kernel using rmmod | _ | ./client_usermode |
@@ -40,7 +41,7 @@
 | hook_syscall_helper.h | hacked_kill() | rootkit_init() and rootkit_exit(void) | getting rootshell | _ | cmd prompt: kill -64 \<any pid> |
 
 ### NOTE:
-> **Function tidy() and sys_module_hide_rootkit() is not used in code. They were commented out. The reason behind that will be discussed in details in my blog post.**
+> **Function tidy(), sys_module_hide_rootkit() and sys_module_show_rootkit() are not used in code. They were commented out. The reason behind that will be discussed in details in my blog post.**
 
 ### How to use it:
 1. Clone the repo
