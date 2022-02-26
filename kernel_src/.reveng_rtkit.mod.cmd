@@ -1,1 +1,0 @@
-cmd_/home/reveng007/Desktop/kernel_rootkit/Book/LKM2.6/xcellerator/1.linkedlist/github/kernel_src/reveng_rtkit.mod := { echo  /home/reveng007/Desktop/kernel_rootkit/Book/LKM2.6/xcellerator/1.linkedlist/github/kernel_src/reveng_rtkit.o;  echo; } > /home/reveng007/Desktop/kernel_rootkit/Book/LKM2.6/xcellerator/1.linkedlist/github/kernel_src/reveng_rtkit.mod
