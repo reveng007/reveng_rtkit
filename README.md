@@ -194,6 +194,7 @@ So, these are not threats! cool!
 8. Get Rootshell: https://xcellerator.github.io/posts/linux_rootkits_03/
 9. https://sysprog21.github.io/lkmpg/
 10. https://ish-ar.io/kprobes-in-a-nutshell/
+11. file:///home/reveng007/Downloads/UNIX_and_Linux_based_Rootkits_Techniques_and_Count.pdf
 
 ### Author: @reveng007 (Soumyanil Biswas)
 ---
