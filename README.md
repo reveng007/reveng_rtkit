@@ -13,7 +13,7 @@
 
 ### reveng_rtkit mechanism:
 
-
+![](https://github.com/reveng007/reveng_rtkit/blob/main/reveng_rtkit_mechanism.jpeg?raw=true)
 
 ### <ins>Rootkit features</ins>:
 | Sl. no. | Name | Features |
@@ -184,10 +184,11 @@ So, these are not threats! cool!
 Resources:
 1. Rootkit features: https://github.com/R3x/linux-rootkits
 2. Simple LKM rootkit: https://theswissbay.ch/pdf/Whitepaper/Writing%20a%20simple%20rootkit%20for%20Linux%20-%20Ormi.pdf
-3. https://infosecwriteups.com/linux-kernel-module-rootkit-syscall-table-hijacking-8f1bc0bd099c
-4. LKM HACKING: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html
-5. Hide Files: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.2.1.
-6. Hide Processes: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.
-7. Get Rootshell: https://xcellerator.github.io/posts/linux_rootkits_03/
+3. IOCTL: https://github.com/Embetronicx/Tutorials/tree/master/Linux/Device_Driver/IOCTL
+4. https://infosecwriteups.com/linux-kernel-module-rootkit-syscall-table-hijacking-8f1bc0bd099c
+5. LKM HACKING: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html
+6. Hide Files: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.2.1.
+7. Hide Processes: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.
+8. Get Rootshell: https://xcellerator.github.io/posts/linux_rootkits_03/
 
 
