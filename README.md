@@ -174,7 +174,7 @@ So, these are not threats! cool!
 - Adding Linux Kernel Sockets.
 - Surviving system reboot.
 - Bypassing `chkrootkit antirootkit`.
-    - Getting detected by `chkrootkit antirootkit` till now, under `chkproc section`.
+    - Getting detected by `chkrootkit antirootkit` till now, under `chkproc section`: [chkproc.c](https://github.com/Magentron/chkrootkit/blob/master/chkproc.c)
 &nbsp;
 &nbsp;
 ![Screenshot from 2022-02-26 09-33-19](https://user-images.githubusercontent.com/61424547/155828253-812b8d7a-7326-4b57-9956-1fcaa92ec319.png)
