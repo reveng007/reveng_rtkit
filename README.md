@@ -172,3 +172,13 @@ Here is the log file, that was generated: [file](https://github.com/reveng007/re
 &nbsp;
 ![Screenshot from 2022-02-26 09-33-19](https://user-images.githubusercontent.com/61424547/155828253-812b8d7a-7326-4b57-9956-1fcaa92ec319.png)
 
+Resources:
+1. Rootkit features: https://github.com/R3x/linux-rootkits
+2. Simple LKM rootkit: https://theswissbay.ch/pdf/Whitepaper/Writing%20a%20simple%20rootkit%20for%20Linux%20-%20Ormi.pdf
+3. https://infosecwriteups.com/linux-kernel-module-rootkit-syscall-table-hijacking-8f1bc0bd099c
+4. LKM HACKING: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html
+5. Hide Files: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.2.1.
+6. Hide Processes: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.
+7. Get Rootshell: https://xcellerator.github.io/posts/linux_rootkits_03/
+
+
