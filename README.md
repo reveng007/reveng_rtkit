@@ -172,6 +172,8 @@ Here is the log file, that was generated: [file](https://github.com/reveng007/re
 &nbsp;
 ![Screenshot from 2022-02-26 09-33-19](https://user-images.githubusercontent.com/61424547/155828253-812b8d7a-7326-4b57-9956-1fcaa92ec319.png)
 
+### Detailed Blog article on `reveng_rtkit` LKM rootkit, is coming soon, where I will be explaining how I created this LKM rootkit step by step.
+
 Resources:
 1. Rootkit features: https://github.com/R3x/linux-rootkits
 2. Simple LKM rootkit: https://theswissbay.ch/pdf/Whitepaper/Writing%20a%20simple%20rootkit%20for%20Linux%20-%20Ormi.pdf
