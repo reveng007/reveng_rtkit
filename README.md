@@ -9,8 +9,6 @@
     <img alt="License" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
 </p>
 
-### [Disclaimer]: Use this code for Educational/ Testing purpose only. Use it on those machines, on which you have legal permissions to perform testing. If somebody is found to use it for illegal jobs, author of the repo will not be responsible for that.
-
 ***`reveng_rtkit`*** is a Linux Kernel mode (aka LKM) based rootkit targeting Linux Kernel: 5.11.0-49-generic as it was only tested on it till now. This project is heavily inspired by [Heroin](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#A-b) by  Runar Jensen (didn't get any of his social media handle ;( ) and [Diamorphine](https://github.com/m0nad/Diamorphine/) by [@m0nadlabs](https://twitter.com/m0nadlabs) open source LKM rootkit projects. Especially, the `Syscall interception mechanism section` was totally taken from [Diamorphine](https://github.com/m0nad/Diamorphine/) by [@m0nadlabs](https://twitter.com/m0nadlabs) repo.
 
 ### reveng_rtkit mechanism:
@@ -183,7 +181,9 @@ So, these are not threats! cool!
 
 ### Detailed Blog article on `reveng_rtkit` LKM rootkit, is coming soon, where I will be explaining how I created this LKM rootkit step by step.
 
-Resources:
+#### [Disclaimer]: Use this code for Educational/ Testing purpose only. Use it on those machines, on which you have legal permissions to perform testing. If somebody is found to use it for illegal jobs, author of the repo will not be held responsible for that.
+
+### Resources:
 1. Rootkit features: https://github.com/R3x/linux-rootkits
 2. Simple LKM rootkit: https://theswissbay.ch/pdf/Whitepaper/Writing%20a%20simple%20rootkit%20for%20Linux%20-%20Ormi.pdf
 3. IOCTL: https://github.com/Embetronicx/Tutorials/tree/master/Linux/Device_Driver/IOCTL
