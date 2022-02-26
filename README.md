@@ -184,17 +184,18 @@ So, these are not threats! cool!
 #### [Disclaimer]: Use this code for Educational/ Testing purpose only. Use it on those machines, on which you have legal permissions to perform testing. If somebody is found to use it for illegal jobs, author of the repo will not be held responsible for that.
 
 ### Resources:
-1. Rootkit features: https://github.com/R3x/linux-rootkits
-2. Simple LKM rootkit: https://theswissbay.ch/pdf/Whitepaper/Writing%20a%20simple%20rootkit%20for%20Linux%20-%20Ormi.pdf
-3. IOCTL: https://github.com/Embetronicx/Tutorials/tree/master/Linux/Device_Driver/IOCTL
-4. https://infosecwriteups.com/linux-kernel-module-rootkit-syscall-table-hijacking-8f1bc0bd099c
-5. LKM HACKING: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html
-6. Hide Files: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.2.1.
-7. Hide Processes: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.
-8. Get Rootshell: https://xcellerator.github.io/posts/linux_rootkits_03/
-9. https://sysprog21.github.io/lkmpg/
-10. https://ish-ar.io/kprobes-in-a-nutshell/
-11. file:///home/reveng007/Downloads/UNIX_and_Linux_based_Rootkits_Techniques_and_Count.pdf
+1. https://github.com/pentesteracademy/linux-rootkits-red-blue-teams
+2. Rootkit features: https://github.com/R3x/linux-rootkits
+3. Simple LKM rootkit: https://theswissbay.ch/pdf/Whitepaper/Writing%20a%20simple%20rootkit%20for%20Linux%20-%20Ormi.pdf
+4. IOCTL: https://github.com/Embetronicx/Tutorials/tree/master/Linux/Device_Driver/IOCTL
+5. https://infosecwriteups.com/linux-kernel-module-rootkit-syscall-table-hijacking-8f1bc0bd099c
+6. LKM HACKING: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html
+7. Hide Files: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.2.1.
+8. Hide Processes: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.
+9. Get Rootshell: https://xcellerator.github.io/posts/linux_rootkits_03/
+10. https://sysprog21.github.io/lkmpg/
+11. https://ish-ar.io/kprobes-in-a-nutshell/
+12. file:///home/reveng007/Downloads/UNIX_and_Linux_based_Rootkits_Techniques_and_Count.pdf
 
 ### Author: @reveng007 (Soumyanil Biswas)
 ---
