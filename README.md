@@ -90,6 +90,9 @@ $ kill -64 <any pid>
 ```
 ![Screenshot from 2022-02-25 20-45-45](https://user-images.githubusercontent.com/61424547/155755082-d6ced40f-e0b0-47a3-8029-4f26b322df29.png)
 
+#### NOTE:
+>  This rootkit is capable of providing rootshell to only bash and sh shell, not others. Although, it is possible for other shells as well but with some tricks. We can use system() C function alike function in Linux Kernel programming, so that we 1st trigger a bash/sh shell then offer rootshell to the attacker. I  have'nt got that type of kernel function till now, but as soon as I get it, I will add it up. If anybody viewing this know about this, or interested to contribute, are most welcome to make a pull request.
+
 - To remove this rootkit module: 1stly make module visible via `show` command using client_usermode file as reveng_rtkit while loading hides itself from being revealed (also change to `remove` mode, if you have made rootkit module to `protect` mode).
 ```
 reveng007@ubuntoo ~/D/k/B/L/x/1/g/kernel_src> sudo ../user_src/client_usermode
@@ -156,9 +159,6 @@ kill -64 <any pid>	: Command to get rootshell. Applicable in normal shell prompt
 
 [+] Device file closed
 ```
-#### NOTE:
->  This rootkit is capable of providing rootshell to only bash and sh shell, not others. Although, it is possible for other shells as well but with some tricks. We can use system() C function alike function in Linux Kernel programming, so that we 1st trigger a bash/sh shell then offer rootshell to the attacker. I  have'nt got that type of kernel function till now, but as soon as I get it, I will add it up. If anybody viewing this know about this, or interested to contribute, are most welcome to make a pull request.
-
 ### Bypassing ***rkhunter*** antirootkit:
 
 Here is the log file, that was generated: [file](https://github.com/reveng007/reveng_rtkit/blob/main/rkhunter.log)
@@ -173,7 +173,6 @@ So, these are not threats! cool!
 - Adding Linux Kernel Sockets.
 - Surviving system reboot.
 - Bypassing `chkrootkit antirootkit`.
-
     - Getting detected by `chkrootkit antirootkit` till now, under `chkproc section`.
 &nbsp;
 &nbsp;
@@ -190,5 +189,6 @@ Resources:
 6. Hide Files: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.2.1.
 7. Hide Processes: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.
 8. Get Rootshell: https://xcellerator.github.io/posts/linux_rootkits_03/
-
+9. https://sysprog21.github.io/lkmpg/
+10. https://ish-ar.io/kprobes-in-a-nutshell/
 
