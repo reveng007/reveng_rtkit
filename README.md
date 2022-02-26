@@ -152,7 +152,7 @@ kill -64 <any pid>	: Command to get rootshell. Applicable in normal shell prompt
 [+] Device file closed
 ```
 #### NOTE:
- This rootkit is capable of providing rootshell to only bash and sh shell, not others. Although, it is possible for other shells as well but with some tricks. We can use system() C function alike function in Linux Kernel programming, so that we 1st trigger a bash/sh shell then offer rootshell to the attacker. I  have'nt got that type of kernel function till now, but as soon as I get it, I will add it up. If anybody viewing this know about this, or interested to contribute, are most welcome to make a pull request.
+>  This rootkit is capable of providing rootshell to only bash and sh shell, not others. Although, it is possible for other shells as well but with some tricks. We can use system() C function alike function in Linux Kernel programming, so that we 1st trigger a bash/sh shell then offer rootshell to the attacker. I  have'nt got that type of kernel function till now, but as soon as I get it, I will add it up. If anybody viewing this know about this, or interested to contribute, are most welcome to make a pull request.
 
 ### Bypassing ***rkhunter*** antirootkit:
 
