@@ -185,7 +185,7 @@ So, these are not threats! cool!
 
 #### Detailed Blog article on ***`reveng_rtkit`*** LKM rootkit, is coming soon, where I will be explaining how I created this LKM rootkit step by step.
 
-### Resources:
+### Resources that helped me:
 1. https://github.com/pentesteracademy/linux-rootkits-red-blue-teams
 2. Rootkit features: https://github.com/R3x/linux-rootkits
 3. Simple LKM rootkit: https://theswissbay.ch/pdf/Whitepaper/Writing%20a%20simple%20rootkit%20for%20Linux%20-%20Ormi.pdf
