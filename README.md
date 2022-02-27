@@ -183,7 +183,7 @@ So, these are not threats! cool!
 &nbsp;
 ![Screenshot from 2022-02-26 09-33-19](https://user-images.githubusercontent.com/61424547/155828253-812b8d7a-7326-4b57-9956-1fcaa92ec319.png)
 
-#### Detailed Blog article on ***`reveng_rtkit`*** LKM rootkit, is coming soon, where I will be explaining how I created this LKM rootkit step by step.
+#### Detailed Blog article on ***reveng_rtkit*** LKM rootkit, is coming soon, where I will be explaining how I created this LKM rootkit step by step.
 
 ### Resources that helped me:
 1. https://github.com/pentesteracademy/linux-rootkits-red-blue-teams
