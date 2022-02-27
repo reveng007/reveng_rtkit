@@ -94,7 +94,7 @@ $ kill -64 <any pid>
 #### NOTE:
 >  This rootkit is capable of providing rootshell to only bash and sh shell, not others. Although, it is possible for other shells as well but with some tricks. We can use system() C function alike function in Linux Kernel programming, so that we 1st trigger a bash/sh shell then offer rootshell to the attacker. I  have'nt got that type of kernel function till now, but as soon as I get it, I will add it up. If anybody viewing this know about this, or interested to contribute, are most welcome to make a pull request.
 
-- To remove this rootkit module: 1stly make module visible via `show` command using client_usermode file as reveng_rtkit while loading hides itself from being revealed (also change to `remove` mode, if you have made rootkit module to `protect` mode).
+- To remove this rootkit module: 1stly make module visible via `show` command using client_usermode file as reveng_rtkit while loading hides itself from being revealed (also change to `remove` mode, if you have made rootkit module to `protect` mode previously).
 ```
 reveng007@ubuntoo ~/D/k/B/L/x/1/g/kernel_src> sudo ../user_src/client_usermode
 [sudo] password for reveng007: 
