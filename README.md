@@ -9,7 +9,7 @@
     <img alt="License" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
 </p>
 
-***`reveng_rtkit`*** is a Linux Kernel mode (aka LKM) based rootkit targeting Linux Kernel: 5.11.0-49-generic as it was only tested on it till now. This project is heavily inspired by [Heroin](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#A-b) by  Runar Jensen (didn't get any of his social media handle ;( ) and [Diamorphine](https://github.com/m0nad/Diamorphine/) by [@m0nadlabs](https://twitter.com/m0nadlabs) open source LKM rootkit projects. Especially, the `Syscall interception mechanism section` was totally taken from [Diamorphine](https://github.com/m0nad/Diamorphine/) by [@m0nadlabs](https://twitter.com/m0nadlabs) repo.
+***`reveng_rtkit`*** is a Linux Loadable Kernel module (aka LKM) based rootkit targeting Linux Kernel: 5.11.0-49-generic as it was only tested on it till now. This project is heavily inspired by [Heroin](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#A-b) by  Runar Jensen (didn't get any of his social media handle ;( ) and [Diamorphine](https://github.com/m0nad/Diamorphine/) by [@m0nadlabs](https://twitter.com/m0nadlabs) open source LKM rootkit projects. Especially, the `Syscall interception mechanism section` was totally taken from [Diamorphine](https://github.com/m0nad/Diamorphine/) by [@m0nadlabs](https://twitter.com/m0nadlabs) repo.
 
 ### reveng_rtkit mechanism:
 
