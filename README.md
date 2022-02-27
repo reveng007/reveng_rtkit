@@ -11,6 +11,8 @@
 
 ***`reveng_rtkit`*** is a Linux Loadable Kernel module (aka LKM) based rootkit targeting Linux Kernel: 5.11.0-49-generic as it was only tested on it till now. This project is heavily inspired by [Heroin](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#A-b) by  Runar Jensen (didn't get any of his social media handle ;( ) and [Diamorphine](https://github.com/m0nad/Diamorphine/) by [@m0nadlabs](https://twitter.com/m0nadlabs) open source LKM rootkit projects. Especially, the `Syscall interception mechanism section` was totally taken from [Diamorphine](https://github.com/m0nad/Diamorphine/) repo by [@m0nadlabs](https://twitter.com/m0nadlabs).
 
+> :no_entry_sign: [Disclaimer]: Use of this project is for **Educational/ Testing purposes only**. Using it on **unauthorised machines** is **strictly forbidden**. If somebody is found to use it for **illegal/ malicious intent**, author of the repo will **not** be held responsible.
+
 ### reveng_rtkit mechanism:
 
 ![](https://github.com/reveng007/reveng_rtkit/blob/main/reveng_rtkit_mechanism.jpeg?raw=true)
@@ -180,8 +182,6 @@ So, these are not threats! cool!
 ![Screenshot from 2022-02-26 09-33-19](https://user-images.githubusercontent.com/61424547/155828253-812b8d7a-7326-4b57-9956-1fcaa92ec319.png)
 
 ### Detailed Blog article on `reveng_rtkit` LKM rootkit, is coming soon, where I will be explaining how I created this LKM rootkit step by step.
-
-#### [Disclaimer]: Use this code for Educational/ Testing purpose only. Use it on those machines, on which you have legal permissions to perform testing. If somebody is found to use it for illegal jobs, author of the repo will not be held responsible for that.
 
 ### Resources:
 1. https://github.com/pentesteracademy/linux-rootkits-red-blue-teams
