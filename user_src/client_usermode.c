@@ -94,11 +94,11 @@ int main()
  
         fd = open("/dev/etx_device", O_RDWR);
         if(fd < 0) {
-                printf("Cannot open device file...\n");
+                printf("Cannot open Character device file...\n");
                 return 0;
         }
  
-	printf("\n[+] Driver file opened\n");
+	printf("\n[+] Character Device file opened\n");
 
 	char str[MAX_LIMIT];
         char str1[MAX_LIMIT];
@@ -112,11 +112,11 @@ int main()
 		puts("[*] Exiting...");
 	}
 
-        printf("[+] Written Value to Device file\n");
+        printf("[+] Written Value to Character Device file\n");
 	//ioctl(fd, WR_VALUE, (int32_t*) &number);
 	ioctl(fd, WR_VALUE, (char*) str);
  
-	printf("[*] Reading Value from Device file: ");
+	printf("[*] Reading Value from Character Device file: ");
 	/*
 	ioctl(fd, RD_VALUE, (int32_t*) &value);
 	printf("Value is %d\n", value);
@@ -125,14 +125,14 @@ int main()
 	ioctl(fd, RD_VALUE, (char*) str1);
         printf("Value is %s\n", str1);
 	*/
-	printf("Value present in Device: ");
+	printf("Value present in Character Device file: ");
 
 	yellow();
 	printf("%s\n", str);
 	reset();
 
 	getchar();
-	printf("[+] Device file closed\n");
+	printf("[+] Character Device file closed\n");
 	close(fd);
 
 }

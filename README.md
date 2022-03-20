@@ -58,7 +58,7 @@ $ cd reveng_rtkit/
 ```
 3. Now, we have 2 directories: kernel_src and user_src.
 - user_src:
-Contains `usermode client code` to interact with our rootkit module (once it it loaded into the kernel) via the character device driver file.
+Contains `usermode client code` to interact with our rootkit module (once it it loaded into the kernel) via the registered Character Device file.
 - kernel_src:
 Contains `kernelmode rootkit: reveng_rtkit` which will be responsible for the whole mayhem :wink:.
 
