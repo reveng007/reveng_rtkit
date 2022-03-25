@@ -20,6 +20,7 @@
 ![](https://github.com/reveng007/reveng_rtkit/blob/main/reveng_rtkit_mechanism.jpeg?raw=true)
 
 ### <ins>Rootkit features</ins>:
+
 | Sl. no. | Name | Features |
 | ------- | ------- | -------- | 
 | 1. | Finding Syscall Table address | By creating custom kallsyms_lookup_name function to get <ins>address</ins> of `sys_call_table` symbol from kernel memory. |
