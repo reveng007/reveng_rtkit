@@ -443,5 +443,5 @@ module_exit(rootkit_exit);
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("reveng007");
 MODULE_DESCRIPTION("Modifying Stage of reveng_rtkit");
-MODULE_VERSION("0.01");
+MODULE_VERSION("1.0");
 
