@@ -68,7 +68,7 @@ $ cd kernel_src/
 $ make
 $ sudo insmod reveng_rtkit.ko
 ```
-![kernel_rootkit](https://user-images.githubusercontent.com/61424547/155671527-7bfb2487-e380-4812-b342-b0cb5c59cb11.png)
+![kernel_rootkit](https://user-images.githubusercontent.com/61424547/161190087-eace0284-50ae-48e7-b9a9-d3dbf255837b.png)
 
 4. To interract with the kernel rootkit. Open another terminal
 ```
