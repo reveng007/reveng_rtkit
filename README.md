@@ -195,13 +195,15 @@ So, these are not threats! cool!
 4. IOCTL: https://github.com/Embetronicx/Tutorials/tree/master/Linux/Device_Driver/IOCTL
 5. https://infosecwriteups.com/linux-kernel-module-rootkit-syscall-table-hijacking-8f1bc0bd099c
 6. LKM HACKING: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html
-7. Hide Files: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.2.1.
-8. Hide Processes: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.
-9. Get Rootshell: https://xcellerator.github.io/posts/linux_rootkits_03/
-10. https://sysprog21.github.io/lkmpg/
-11. https://ish-ar.io/kprobes-in-a-nutshell/
-12. Editing cr0 register: https://hadfiabdelmoumene.medium.com/change-value-of-wp-bit-in-cr0-when-cr0-is-panned-45a12c7e8411
-13. https://www.researchgate.net/publication/240376985_UNIX_and_Linux_based_Rootkits_Techniques_and_Countermeasures
+7. Hide Files and Processes:
+   https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.2.1.
+   https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.
+   https://jm33.me/linux-rootkit-for-fun-and-profit-0x02-lkm-hide-filesprocs.html
+8. Get Rootshell: https://xcellerator.github.io/posts/linux_rootkits_03/
+9. https://sysprog21.github.io/lkmpg/
+10. https://ish-ar.io/kprobes-in-a-nutshell/
+11. Editing cr0 register: https://hadfiabdelmoumene.medium.com/change-value-of-wp-bit-in-cr0-when-cr0-is-panned-45a12c7e8411
+12. https://www.researchgate.net/publication/240376985_UNIX_and_Linux_based_Rootkits_Techniques_and_Countermeasures
 
 ### Author: @reveng007 (Soumyanil Biswas)
 ---

