@@ -175,6 +175,7 @@ Here is the log file, that was generated: [file](https://github.com/reveng007/re
 So, these are not threats! cool!
 
 ### To-Do list :man_mechanic::
+- Hiding process files completely. Our hidden process file can be accessed to open/read. If someone does, `ls <filename>`, they can easily open them.
 - Adding system() C function alike function in Linux Kernel programming, in order to open a new bash/sh prompt.
 - Adding Linux Kernel Sockets.
 - Surviving system reboot.
@@ -191,19 +192,20 @@ So, these are not threats! cool!
 ### Resources that helped me:
 1. https://github.com/pentesteracademy/linux-rootkits-red-blue-teams
 2. Rootkit features: https://github.com/R3x/linux-rootkits
-3. Simple LKM rootkit: https://theswissbay.ch/pdf/Whitepaper/Writing%20a%20simple%20rootkit%20for%20Linux%20-%20Ormi.pdf
-4. IOCTL: https://github.com/Embetronicx/Tutorials/tree/master/Linux/Device_Driver/IOCTL
-5. https://infosecwriteups.com/linux-kernel-module-rootkit-syscall-table-hijacking-8f1bc0bd099c
-6. LKM HACKING: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html
-7. Hide Files and Processes:
+3. Excellent resource for grabbing lkm rootkit concepts: https://jm33.me/tag/lkm.html
+4. Simple LKM rootkit: https://theswissbay.ch/pdf/Whitepaper/Writing%20a%20simple%20rootkit%20for%20Linux%20-%20Ormi.pdf
+5. IOCTL: https://github.com/Embetronicx/Tutorials/tree/master/Linux/Device_Driver/IOCTL
+6. https://infosecwriteups.com/linux-kernel-module-rootkit-syscall-table-hijacking-8f1bc0bd099c
+7. LKM HACKING: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html
+8. Hide Files and Processes:
    https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.2.1.
    https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.
    https://jm33.me/linux-rootkit-for-fun-and-profit-0x02-lkm-hide-filesprocs.html
-8. Get Rootshell: https://xcellerator.github.io/posts/linux_rootkits_03/
-9. https://sysprog21.github.io/lkmpg/
-10. https://ish-ar.io/kprobes-in-a-nutshell/
-11. Editing cr0 register: https://hadfiabdelmoumene.medium.com/change-value-of-wp-bit-in-cr0-when-cr0-is-panned-45a12c7e8411
-12. https://www.researchgate.net/publication/240376985_UNIX_and_Linux_based_Rootkits_Techniques_and_Countermeasures
+9. Get Rootshell: https://xcellerator.github.io/posts/linux_rootkits_03/
+10. https://sysprog21.github.io/lkmpg/
+11. https://ish-ar.io/kprobes-in-a-nutshell/
+12. Editing cr0 register: https://hadfiabdelmoumene.medium.com/change-value-of-wp-bit-in-cr0-when-cr0-is-panned-45a12c7e8411
+13. https://www.researchgate.net/publication/240376985_UNIX_and_Linux_based_Rootkits_Techniques_and_Countermeasures
 
 ### Author: @reveng007 (Soumyanil Biswas)
 ---
