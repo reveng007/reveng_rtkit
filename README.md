@@ -181,6 +181,7 @@ So, these are not threats! cool!
 - Hiding process files completely. Our hidden process file can be accessed to open/read. If someone does, `ls <filename>`, they can easily open them.
 - Adding system() C function alike function in Linux Kernel programming, in order to open a new bash/sh prompt.
 - Adding Linux Kernel Sockets.
+- Unable to hide rootkit LKM from _"/sys/module/"_ directory: [issue #6](https://---link---).
 - Surviving system reboot.
 - Bypassing `chkrootkit antirootkit`.
     - Getting detected by `chkrootkit antirootkit` till now, under `chkproc section`: [chkproc.c](https://github.com/Magentron/chkrootkit/blob/master/chkproc.c)
@@ -205,10 +206,11 @@ So, these are not threats! cool!
    https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.
    https://jm33.me/linux-rootkit-for-fun-and-profit-0x02-lkm-hide-filesprocs.html
 9. Get Rootshell: https://xcellerator.github.io/posts/linux_rootkits_03/
-10. https://sysprog21.github.io/lkmpg/
-11. https://ish-ar.io/kprobes-in-a-nutshell/
-12. Editing cr0 register: https://hadfiabdelmoumene.medium.com/change-value-of-wp-bit-in-cr0-when-cr0-is-panned-45a12c7e8411
-13. https://www.researchgate.net/publication/240376985_UNIX_and_Linux_based_Rootkits_Techniques_and_Countermeasures
+10. kobject: https://www.win.tue.nl/~aeb/linux/lk/lk-13.html
+11. https://sysprog21.github.io/lkmpg/
+12. https://ish-ar.io/kprobes-in-a-nutshell/
+13. Editing cr0 register: https://hadfiabdelmoumene.medium.com/change-value-of-wp-bit-in-cr0-when-cr0-is-panned-45a12c7e8411
+14. https://www.researchgate.net/publication/240376985_UNIX_and_Linux_based_Rootkits_Techniques_and_Countermeasures
 
 ### Author: @reveng007 (Soumyanil Biswas)
 ---
