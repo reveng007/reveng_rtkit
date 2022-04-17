@@ -845,8 +845,8 @@ Yeah!!! both will basically do the same thing, one is via `bash script` and othe
 
 &nbsp;
 Now, we can export both `kallsyms_lookup_name` as well as `sys_call_table`! :wink:. 
-
-      #### Step2: <ins>Disabling the WP(write protection) flag in the control register</ins>.
+&nbsp;
+#### Step2: <ins>Disabling the WP(write protection) flag in the control register</ins>.
 &nbsp;
       Before modifying the `syscall table`, we first need to disable the WP(write protection) flag in the control register (or cr0 reg) in order to make syscall table editable/writable, from read-only mode.
 &nbsp;
