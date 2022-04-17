@@ -861,7 +861,7 @@ Now, we can export both `kallsyms_lookup_name` as well as `sys_call_table`! :win
 ```c
           cr0 = read_cr0();
 ```
-### NOTE:
+#### NOTE:
 ```
           read_cr0(): Reading the status/state of cr0 register.
           write_cr0(): Writing to the cr0 register.
@@ -869,7 +869,7 @@ Now, we can export both `kallsyms_lookup_name` as well as `sys_call_table`! :win
 &nbsp;
       2. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L310).
       Setting WP flag in cr0 register to `zero`. But how to do it?
-         
+&nbsp;         
          According to [change-value-of-wp-bit-in-cr0](https://hadfiabdelmoumene.medium.com/change-value-of-wp-bit-in-cr0-when-cr0-is-panned-45a12c7e8411):
          As we are already in ring-0 ,i.e. in kernel mode, we already can write directly to cr0 registry and we don’t need to call write_cr0() function.
          We will be using ***this function*** to **write in cr0 register** instead of standard `write_cr0() function`.
