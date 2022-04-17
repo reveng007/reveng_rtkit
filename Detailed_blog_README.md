@@ -304,6 +304,7 @@ image:
 
           &THIS_MODULE->mkobj.kobj
 ```
+&nbsp;
       2. Delete the kobject, which is mapped by our rootkit LKM from "entry" list using `list_del()`. We will be using the same `list_del()` function that we used before to delete our rootkit LKM from _`lsmod`_ command, _`/proc/modules`_ file (procfs) and _`/proc/kallsyms`_ file (procfs), but this time with different <ins>parameter value</ins>. [source: [page-6-last-paragraph](https://theswissbay.ch/pdf/Whitepaper/Writing%20a%20simple%20rootkit%20for%20Linux%20-%20Ormi.pdf)]
 &nbsp;  
           ```c
