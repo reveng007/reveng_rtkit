@@ -861,9 +861,7 @@ Now, we can export both `kallsyms_lookup_name` as well as `sys_call_table`! :win
 ```c
           cr0 = read_cr0();
 ```
-&nbsp;
 ### NOTE:
-&nbsp;
 ```
           read_cr0(): Reading the status/state of cr0 register.
           write_cr0(): Writing to the cr0 register.
