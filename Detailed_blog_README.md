@@ -178,7 +178,7 @@ You can also use linux local source code which comes prepackaged with very linux
 
     I searched "kobject" pattern in _"/lib/modules/5.11.0-49-generic/build/include/linux/module.h"_ path and I got the structure named, "**module_kobject**"
 
-    ```c
+```c
     // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/module.h
     // elixir.bootlin: pattern: kobject
 
@@ -192,7 +192,7 @@ You can also use linux local source code which comes prepackaged with very linux
         struct kobject *holders_dir;
         ...
         };
-    ```
+```
     We can see this very portion of structure named **module** is responsible for _`/* Sysfs stuff. */`_.
     So, we became sure _"module_kobject"_ can be the one.
 
@@ -201,7 +201,7 @@ You can also use linux local source code which comes prepackaged with very linux
     So, thanks to <ins>Kernel Developers!!!</ins>.
 
     Anyways...
-    ```c
+```c
     // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/module.h
     // elixir.bootlin: pattern: module_kobject
 
@@ -212,12 +212,12 @@ You can also use linux local source code which comes prepackaged with very linux
               struct module_param_attrs *mp;
               struct completion *kobj_completion;
     } __randomize_layout;
-    ```
+```
     So now, we can see that _"module_kobject"_ has member named _"struct kobject kobj"_.
     Lets find out **kobject structure**.
 
     It is present in _"/lib/modules/5.11.0-49-generic/build/include/linux/kobject.h"_ path.
-    ```c
+```c
     // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/kobject.h
     // elixir.bootlin: pattern: kobject
     struct kobject {
@@ -225,16 +225,16 @@ You can also use linux local source code which comes prepackaged with very linux
           struct list_head        entry;
           ...
     };
-    ```
+```
     `struct list_head` can be found in header file named ***"list.h"***.
-    ```c
+```c
     // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/list.h
     // elixir.bootlin: pattern: list_head
 
     struct  list_head {
         struct list_head *next, *prev;
     };
-    ```
+```
     Again the same case, just like **procfs** and **lsmod** scenario. We will simply delete the **kobject mapping of our rootkit module** from that structure which is responsible for storing it as a LKM kobject.
 
     In header file named ***"kobject.h"***, structure named, **struct kobject** is present, in which there is a member named, **entry** (struct list_head entry) is defined, which is actually responsible for storing **kobject mapping caused due to our loaded rootkit LKM**.
@@ -244,13 +244,13 @@ You can also use linux local source code which comes prepackaged with very linux
          But what will be our <ins>parameter value</ins>?
 &nbsp;
          We will be deleting our module right? It will be expressed by `THIS_MODULE`. So we will deleting `THIS_MODULE` in such a way that kobject related to it also gets deleted.
-         ```c
+```c
           // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/kobject.h
           // elixir.bootlin: pattern: kobject_del
 
           extern void kobject_del(struct kobject *kobj);
-         ```
-         ```c
+```
+```c
           // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/module.h
           // elixir.bootlin: pattern: module
 
@@ -260,8 +260,8 @@ You can also use linux local source code which comes prepackaged with very linux
                 struct module_kobject mkobj;
                 ...
                 };
-         ```
-         ```c
+```
+```c
           //pwd: /lib/modules/5.11.0-49-generic/build/include/linux/module.h
           // elixir.bootlin: pattern: module_kobject
 
@@ -272,8 +272,8 @@ You can also use linux local source code which comes prepackaged with very linux
   	      struct module_param_attrs *mp;
 	        struct completion *kobj_completion;
           } __randomize_layout;
-          ```
-          ```c
+```
+```c
           // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/kobject.h
           // elixir.bootlin: pattern: kobject
 
@@ -294,12 +294,12 @@ You can also use linux local source code which comes prepackaged with very linux
 	              unsigned int state_remove_uevent_sent:1;
 	              unsigned int uevent_suppress:1;
           };
-          ```
-          ```
+```
+```
           // parameter to be inputed to kobject_del():
 
           &THIS_MODULE->mkobj.kobj
-          ```
+```
       2. Delete the kobject, which is mapped by our rootkit LKM from "entry" list using `list_del()`. We will be using the same `list_del()` function that we used before to delete our rootkit LKM from _`lsmod`_ command, _`/proc/modules`_ file (procfs) and _`/proc/kallsyms`_ file (procfs), but this time with different <ins>parameter value</ins>. [source: [page-6-last-paragraph](https://theswissbay.ch/pdf/Whitepaper/Writing%20a%20simple%20rootkit%20for%20Linux%20-%20Ormi.pdf)]
 &nbsp;  
           ```c
