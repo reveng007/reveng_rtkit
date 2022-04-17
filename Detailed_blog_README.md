@@ -842,6 +842,7 @@ Yeah!!! both will basically do the same thing, one is via `bash script` and othe
         ```
         #### Output:
         ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog12.png?raw=true)
+
 &nbsp;
 Now, we can export both `kallsyms_lookup_name` as well as `sys_call_table`! :wink:. 
 
