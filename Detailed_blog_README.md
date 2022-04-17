@@ -373,7 +373,7 @@ image:
 
     I have told you guys/gals earlier in my [README.md](https://github.com/reveng007/reveng_rtkit#note) file that I haven't used _tidy()_, _sys_module_hide_rootkit()_ and _sys_module_show_rootkit()_. Now, I will be discussing about the reasons behind that decision.
 
-    Under the title, **Part2: Hiding LKM from _lsmod_,  _/proc/modules_ file, _/proc/kallsyms_ file and _/sys/module/[THIS_MODULE]/_ directory**](https://github.com/reveng007/reveng_rtkit/blob/main/Detailed_blog_README.md#part2-hiding-lkm-from-lsmod--procmodules-file-prockallsyms-file-and-sysmodulethis_module-directory) in the last para of Targeting _/sys/module/_ directory, I have told that we can't re-add our rootkit's entry point to the responsible linkedlist once we have removed that particular kernel object of our rootkit LKM. 
+    Under the title, [**Part2: Hiding LKM from _lsmod_,  _/proc/modules_ file, _/proc/kallsyms_ file and _/sys/module/[THIS_MODULE]/_ directory**](https://github.com/reveng007/reveng_rtkit/blob/main/Detailed_blog_README.md#part2-hiding-lkm-from-lsmod--procmodules-file-prockallsyms-file-and-sysmodulethis_module-directory) in the last para of Targeting _/sys/module/_ directory, I have told that we can't re-add our rootkit's entry point to the responsible linkedlist once we have removed that particular kernel object of our rootkit LKM. 
 
     I will only be explaining the core part related to _"/sys/module/"_ here, the `IOCTL portion` is discussed in the later portion of the blog.
 
