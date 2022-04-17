@@ -336,7 +336,7 @@ image:
 	![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog8.png?raw=true)
 
 &nbsp;
-	But there is a problem to use this function. We cannot re-enable our LKM rootkit to `show` mode again, i.e., we can't `rmmod` the rootkit according to our will. The only way left is rebooting the whole machine. link: [reveng_rtkit repo](https://github.com/reveng007/reveng_rtkit/blob/7ae65c6edaeab1b9bea0e8aef29803a6e1f48135/kernel_src/reveng_rtkit.c#L94). I will explain it later in this blog.
+##### But there is a problem to use this function. We cannot re-enable our LKM rootkit to `show` mode again, i.e., we can't `rmmod` the rootkit according to our will. The only way left is rebooting the whole machine. link: [reveng_rtkit repo](https://github.com/reveng007/reveng_rtkit/blob/7ae65c6edaeab1b9bea0e8aef29803a6e1f48135/kernel_src/reveng_rtkit.c#L94). I will explain it later in this blog.
 ----
 #### Part3: Revealing LKM from _lsmod_,  _/proc/modules_ file, _/proc/kallsyms_ file and _/sys/module/[THIS_MODULE]/_ directory according to our will:
 1. Targeting _"lsmod"_, _"/proc/modules"_ file, and _"/proc/kallsyms"_ file
