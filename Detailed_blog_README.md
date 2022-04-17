@@ -63,21 +63,21 @@ There are several methods to see inserted module name in kernel but at first I w
 ```
 $ lsmod
 ```
-![](/home/reveng007/Pictures/Blog2.png?raw=true)
+![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog2.png?raw=true)
 
 Other three methods are:
 
 1. _`/proc/modules`_ file (procfs)
     - It is actually a virtual filesystem resides in RAM which shows all **User** as well as **Kernel mode** running processes to _User mode side users_.
 
-![](/home/reveng007/Pictures/Blog3.png?raw=true)
+![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog3.png?raw=true)
 
 2. _`/proc/kallsyms`_ file (procfs)
     - Extracts and stores all the non-stack/dynamically loaded kernel modules symbols and builds a data blob that can be linked into that kernel for use by debuggers.
     - In other words, it has the whole kernel mapping in one place.
     - This means, this file will also store symbols from our already loaded rootkit LKM.
 
-![](/home/reveng007/Pictures/Blog4.png?raw=true)
+![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog4.png?raw=true)
 
 3. _`/sys/module/[THIS_MODULE]/`_ directory (sysfs)
     - It is also a virtual filesystem resides in RAM.
@@ -85,7 +85,7 @@ Other three methods are:
     - It maps <ins>kernel subsystem</ins>, <ins>device drivers</ins> in their <ins>hierarchical order</ins>.
     - Each entry in `/sys` is represented by **kobject structure**. Each module has its <ins>own kobject</ins>.
 
-![](/home/reveng007/Pictures/Blog5.png?raw=true)
+![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog5.png?raw=true)
 
 So, if we assume our `hello world` LKM as rootkit, we have to hide it from these **four** areas, right?
 Else, if it is visible, it would be easily be seen by Admins., which would make them alert.
@@ -106,7 +106,7 @@ There is no online Linux Kernel function documentation present out there in publ
 
 The way to use elixir.bootlin:
 
-![](/home/reveng007/Pictures/Blog6.png?raw=true)
+![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog6.png?raw=true)
 
 You can also use linux local source code which comes prepackaged with very linux distribution. To access those source code, jump move to `/lib/modules/<kernel version>/build/include/` directory. To search through those would be quite hectic, rather following elixir.bootlin would be my suggesion.
 
@@ -163,7 +163,7 @@ You can also use linux local source code which comes prepackaged with very linux
     &THIS_MODULE->list
     ```
     image:
-    ![](/home/reveng007/Pictures/Blog7.png?raw=true)
+    ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog7.png?raw=true)
 
     > ***Now we can hide our rootkit LKM from **_`lsmod`_ command, _`/proc/modules`_ file (procfs)** and **_`/proc/kallsyms`_ file (procfs) !*****
 
@@ -325,7 +325,7 @@ You can also use linux local source code which comes prepackaged with very linux
 &nbsp;    
           > ***Now we can hide our rootkit LKM from **`/sys/module/`** directory (_LKM logging directory_) !***
 
-          ![](/home/reveng007/Pictures/Blog8.png?raw=true)
+          ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog8.png?raw=true)
 
           But there is a problem to use this function. We cannot re-enable our LKM rootkit to `show` mode again, i.e., we can't `rmmod` the rootkit according to our will. The only way left is rebooting the whole machine. link: [reveng_rtkit repo](https://github.com/reveng007/reveng_rtkit/blob/7ae65c6edaeab1b9bea0e8aef29803a6e1f48135/kernel_src/reveng_rtkit.c#L94). I will explain it later in this blog.
 ----
@@ -371,7 +371,7 @@ You can also use linux local source code which comes prepackaged with very linux
 
     If we don't set some pointers to NULL, we can cause Oops during unloading rootkit. This is because, during unloading a module, Kernel will delete entry in _/sys/module_ directory for that module. As we have already deleted that entry, kernel can't find that specific entry for our LKM module in _/sys/module_ directory to delete it, therefore kernel can't unload our rootkit LKM.
 
-    ![](/home/reveng007/Desktop/Github/Pages/DevFolio/assets/img/reveng_rtkit/unable_to_rmmod.png?raw=true)
+    ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/unable_to_rmmod.png?raw=true)
     In this case, tidy() function is not used. 
 
     It is the tidy() function, that I have used: [Page: 15 theswissbay.pdf](https://theswissbay.ch/pdf/Whitepaper/Writing%20a%20simple%20rootkit%20for%20Linux%20-%20Ormi.pdf)
@@ -379,7 +379,7 @@ You can also use linux local source code which comes prepackaged with very linux
     I have implemented the `tidy()` in the entry function my rtkit.c file (rootkit_init()). Just uncomment `tidy()` from [line:111](https://github.com/reveng007/reveng_rtkit/blob/47dad2e251b80a46999c84507befded6c521933e/kernel_src/reveng_rtkit.c#L111) and [line:294](https://github.com/reveng007/reveng_rtkit/blob/47dad2e251b80a46999c84507befded6c521933e/kernel_src/reveng_rtkit.c#L294).
     Then also, I got the same result. 
 
-    ![](/home/reveng007/Desktop/Github/Pages/DevFolio/assets/img/reveng_rtkit/unable_to_rmmod.png?raw=true)
+    ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/unable_to_rmmod.png?raw=true)
 
     I was searching for other ways, like using any function related to kobject. I found out [kobject_add()](https://kernel.org/doc/html/latest/driver-api/basics.html#c.kobject_add), which I have implemented in [sys_module_show_rootkit()](https://github.com/reveng007/reveng_rtkit/blob/d9a83f3b94b8aa5206ff46b09b356360ba584649/kernel_src/include/hide_show_helper.h#L155). Then also I found no result. 
 
@@ -517,11 +517,11 @@ I tried my level best to demonstrate both the type of working from my rootkit's 
         
         The Console log level can be found by:
 
-        ![](/home/reveng007/Pictures/Blog9.png?raw=true)
+        ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog9.png?raw=true)
 
         OR,
 
-        ![](/home/reveng007/Pictures/Blog10.png?raw=true)
+        ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog10.png?raw=true)
         
         For more information about Linux Log level: [visit-linuxconfig.org](https://linuxconfig.org/introduction-to-the-linux-kernel-log-levels).
         
@@ -665,7 +665,7 @@ We will use, rather misuse systemcall to communicate between usermode and kernel
         ```
         We can see the address of syscall table from `/proc/kallsyms` file as sys_call_table is a dynamically loaded kernel modules symbol (remember this file? ***[link](ADD link to _`/proc/kallsyms`_ file (procfs)) portion***).
 
-        ![](/home/reveng007/Pictures/Blog11.png?raw=true)
+        ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog11.png?raw=true)
 
         Why can we see it now, even before loading our module?
         => Very simple, it is already in use by other kernel modules of linux.
@@ -830,7 +830,7 @@ Yeah!!! both will basically do the same thing, one is via `bash script` and othe
         MODULE_VERSION("1.0");
         ```
         #### Output:
-        ![](/home/reveng007/Pictures/Blog12.png?raw=true)
+        ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog12.png?raw=true)
 &nbsp;
 Now, we can export both `kallsyms_lookup_name` as well as `sys_call_table`! :wink:. 
 
@@ -1275,7 +1275,7 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
               ```
               Now, lets see it in action:
 
-              ![](/home/reveng007/Pictures/Blog13.png?raw=true)
+              ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog13.png?raw=true)
 
               We can see 3 things:
               1. In ***fish shell***, this mechanism of getting root shell is not working, I don't really know why... (<ins>If any viewers seeing this, have any solution to this problem, please don't hesitate to do a PR to my repo but before that please visit, [idea](https://github.com/reveng007/reveng_rtkit#note-1)</ins>).
@@ -1995,7 +1995,7 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
                     }
                    ```
                    Testing the Code:
-                   ![](/home/reveng007/Pictures/Blog14.png?raw=true)
+                   ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog14.png?raw=true)
 
                    Let's see how it performs with ***rkhunter*** antirootkit:
                    
