@@ -111,6 +111,7 @@ The way to use elixir.bootlin:
 You can also use linux local source code which comes prepackaged with very linux distribution. To access those source code, jump move to `/lib/modules/<kernel version>/build/include/` directory. To search through those would be quite hectic, rather following elixir.bootlin would be my suggesion.
 
 1. Targeting _"lsmod"_, _"/proc/modules"_ file, and _"/proc/kallsyms"_ file
+
 &nbsp;
   Function name, where it is implemented in my project: [proc_lsmod_hide_rootkit()](https://github.com/reveng007/reveng_rtkit/blob/7ae65c6edaeab1b9bea0e8aef29803a6e1f48135/kernel_src/include/hide_show_helper.h#L45)
 &nbsp;
@@ -168,6 +169,7 @@ You can also use linux local source code which comes prepackaged with very linux
     > ***Now we can hide our rootkit LKM from **_`lsmod`_ command, _`/proc/modules`_ file (procfs)** and **_`/proc/kallsyms`_ file (procfs) !*****
 
 2. Targeting _/sys/modules_ directory
+
 &nbsp;
     Function name, where it is implemented in my project: [sys_module_hide_rootkit()](https://github.com/reveng007/reveng_rtkit/blob/7ae65c6edaeab1b9bea0e8aef29803a6e1f48135/kernel_src/include/hide_show_helper.h#L85)
 
@@ -331,7 +333,8 @@ You can also use linux local source code which comes prepackaged with very linux
 ----
 #### Part3: Revealing LKM from _lsmod_,  _/proc/modules_ file, _/proc/kallsyms_ file and _/sys/module/[THIS_MODULE]/_ directory according to our will:
 1. Targeting _"lsmod"_, _"/proc/modules"_ file, and _"/proc/kallsyms"_ file
-    
+
+    &nbsp;
     Function name, where it is implemented in my project: [proc_lsmod_show_rootkit()](https://github.com/reveng007/reveng_rtkit/blob/7ae65c6edaeab1b9bea0e8aef29803a6e1f48135/kernel_src/include/hide_show_helper.h#L125)
 
     1. In `proc_lsmod_show_rootkit()`, our rootkit module is just added back to main list of modules, where it was previously.
@@ -359,11 +362,12 @@ You can also use linux local source code which comes prepackaged with very linux
 ----
 2. Targeting _"/sys/module/"_ directory:
 
+    &nbsp;
     Function name, where it is implemented in my project: [sys_module_show_rootkit()](https://github.com/reveng007/reveng_rtkit/blob/7ae65c6edaeab1b9bea0e8aef29803a6e1f48135/kernel_src/include/hide_show_helper.h#L155)
 
     I have told you guys/gals earlier in my [README.md](https://github.com/reveng007/reveng_rtkit#note) file that I haven't used _tidy()_, _sys_module_hide_rootkit()_ and _sys_module_show_rootkit()_. Now, I will be discussing about the reasons behind that decision.
 
-    Under the title, **Part2: Hiding LKM from _lsmod_,  _/proc/modules_ file, _/proc/kallsyms_ file and _/sys/module/[THIS_MODULE]/_ directory** in the last para of [<ins>Targeting _/sys/module_ directory</ins>](https://---link---), I have told that we can't re-add our rootkit's entry point to the responsible linkedlist once we have removed that particular kernel object of our rootkit LKM. 
+    Under the title, **Part2: Hiding LKM from _lsmod_,  _/proc/modules_ file, _/proc/kallsyms_ file and _/sys/module/[THIS_MODULE]/_ directory**](https://github.com/reveng007/reveng_rtkit/blob/main/Detailed_blog_README.md#part2-hiding-lkm-from-lsmod--procmodules-file-prockallsyms-file-and-sysmodulethis_module-directory) in the last para of Targeting _/sys/module/_ directory, I have told that we can't re-add our rootkit's entry point to the responsible linkedlist once we have removed that particular kernel object of our rootkit LKM. 
 
     I will only be explaining the core part related to _"/sys/module/"_ here, the `IOCTL portion` is discussed in the later portion of the blog.
 
@@ -888,6 +892,7 @@ Now, we can export both `kallsyms_lookup_name` as well as `sys_call_table`! :win
 
       I actually intercepted two syscalls:
       1. **kill syscall**: [elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/syscalls.h#L708)
+	  &nbsp;
           Took this from [xcellerator](https://xcellerator.github.io/posts/linux_rootkits_03/). In this blog, _"the ftrace helper method"_ is implemented, instead of that I will be using _"the syscall table hijacking method"_ to perform the same syscall interception. I just want you guys/gals to go through the aforementioned blog once (from [top](https://xcellerator.github.io/posts/linux_rootkits_03/) till [_Hooking Kill_](https://xcellerator.github.io/posts/linux_rootkits_03/#hooking-kill) portion) before going on with this blog. It will help you as I have took most of the `syscall interception` portion from that blog apart from _"the syscall table hijacking method"_.
 
           Now, it's time to perform hooking.
@@ -1283,6 +1288,7 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
               3. In ***sh shell***, it is working as expected too.
 
       2. **getdents64** syscall: [elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/syscalls.h#L487)
+	  &nbsp;
           I actually wanted to hide ongoing processes and I got that idea for hiding processes from [source1: R3x/linux-rootkits](https://github.com/R3x/linux-rootkits#features-descriptions), but I was unable to understand that portion of code which was linked. I then searched through other [resource links](https://github.com/reveng007/reveng_rtkit#resources-that-helped-me) that I had. I found out this: [source2](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.1.). I will be implementing this mechanism via **kill syscall** (or sys_kill) as I did earlier.
           
           But here, we are actually intercepting two syscalls simultaneously,
