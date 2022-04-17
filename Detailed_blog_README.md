@@ -118,7 +118,7 @@ You can also use linux local source code which comes prepackaged with very linux
   In header file named ***"module.h"***, structure named, **struct module** is present, in which there is a member named, **list** (struct list_head list) is defined, which is actually responsible for storing **all list of loaded LKMs**.
   We will be deleting our rootkit module from `list` right? Here, THIS_MODULE is acting as a pointer to a "module structure". Our rootkit module will be represented by THIS_MODULE.
 &nbsp;
-    ```c
+```c
     // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/module.h
     // elixir.bootlin: pattern: module
 
@@ -137,7 +137,7 @@ You can also use linux local source code which comes prepackaged with very linux
     struct list_head {
         struct list_head *next, *prev;
     };
-    ```
+ ```
     We're gonna delete our rootkit LKM using `list_del()`, which is present in the very same header file.
     ```c
     // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/list.h
