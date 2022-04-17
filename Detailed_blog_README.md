@@ -163,10 +163,10 @@ So,
 
     &THIS_MODULE->list
 ```
-    image:
-    ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog7.png?raw=true)
+image:
+![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog7.png?raw=true)
 
-    > ***Now we can hide our rootkit LKM from **_`lsmod`_ command, _`/proc/modules`_ file (procfs)** and **_`/proc/kallsyms`_ file (procfs) !*****
+> ***Now we can hide our rootkit LKM from **_`lsmod`_ command, _`/proc/modules`_ file (procfs)** and **_`/proc/kallsyms`_ file (procfs) !*****
 
 2. Targeting _/sys/modules_ directory
 
