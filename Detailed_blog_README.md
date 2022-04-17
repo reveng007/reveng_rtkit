@@ -845,26 +845,30 @@ Yeah!!! both will basically do the same thing, one is via `bash script` and othe
 
 &nbsp;
 Now, we can export both `kallsyms_lookup_name` as well as `sys_call_table`! :wink:. 
-
+&nbsp;
       #### Step2: <ins>Disabling the WP(write protection) flag in the control register</ins>.
-      
+&nbsp;
       Before modifying the `syscall table`, we first need to disable the WP(write protection) flag in the control register (or cr0 reg) in order to make syscall table editable/writable, from read-only mode.
-
+&nbsp;
       According to [sysprog21.github.io/lkmpg/#system-calls](https://sysprog21.github.io/lkmpg/#system-calls):
       _Control register (or cr0 reg) is a processor register that changes or controls the general behavior of the CPU. For x86 architecture, the cr0 register has various control flags that modify the basic operation of the processor. The WP flag in cr0 stands for write protection. Once the WP flag is set, the processor disallows further write attempts to the read-only sections._
-      
+&nbsp;
       Therefore, we must disable the WP flag before modifying sys_call_table. => ***`WP flag must be set to 0`***.
-
+&nbsp;
       1. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/72a939257c42562222b2b4c0785c46997cb4e1d1/kernel_src/reveng_rtkit.c#L308).
       Reading the status/state of cr0 register.
+&nbsp;
           ```c
           cr0 = read_cr0();
           ```
+&nbsp;
           ### NOTE:
+&nbsp;
           ```
           read_cr0(): Reading the status/state of cr0 register.
           write_cr0(): Writing to the cr0 register.
-          ```
+     	  ```
+&nbsp;
       2. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L310).
       Setting WP flag in cr0 register to `zero`. But how to do it?
          
