@@ -382,6 +382,7 @@ image:
     If we don't set some pointers to NULL, we can cause Oops during unloading rootkit. This is because, during unloading a module, Kernel will delete entry in _/sys/module_ directory for that module. As we have already deleted that entry, kernel can't find that specific entry for our LKM module in _/sys/module_ directory to delete it, therefore kernel can't unload our rootkit LKM.
 
     ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/unable_to_rmmod.png?raw=true)
+
     In this case, tidy() function is not used. 
 
     It is the tidy() function, that I have used: [Page: 15 theswissbay.pdf](https://theswissbay.ch/pdf/Whitepaper/Writing%20a%20simple%20rootkit%20for%20Linux%20-%20Ormi.pdf)
