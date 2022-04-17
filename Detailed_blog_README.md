@@ -138,7 +138,7 @@ You can also use linux local source code which comes prepackaged with very linux
         struct list_head *next, *prev;
     };
 ```
-    We're gonna delete our rootkit LKM using `list_del()`, which is present in the very same header file.
+We're gonna delete our rootkit LKM using `list_del()`, which is present in the very same header file.
 ```c
     // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/list.h
     // elixir.bootlin: pattern: list
@@ -157,7 +157,7 @@ You can also use linux local source code which comes prepackaged with very linux
       entry->prev = LIST_POISON2;
     }
 ```
-    So,
+So,
 ```
     // parameter to be inputed to list_del():
 
