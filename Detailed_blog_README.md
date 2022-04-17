@@ -175,7 +175,7 @@ image:
 &nbsp;
     Then,
     What about _"/sys/module/<THIS_MODULE>/"_ directory ?
-
+&nbsp;
     I searched "kobject" pattern in _"/lib/modules/5.11.0-49-generic/build/include/linux/module.h"_ path and I got the structure named, "**module_kobject**"
 
 ```c
@@ -193,13 +193,14 @@ image:
         ...
         };
 ```
+&nbsp;
     We can see this very portion of structure named **module** is responsible for _`/* Sysfs stuff. */`_.
     So, we became sure _"module_kobject"_ can be the one.
-
+&nbsp;
     I searched again but now with "module_kobject" pattern in the same path, to see where is this structure used. Fortunately, that very part is documented well enough to save me (=n00b) from eyeballing all around the gigantic _"module.h"_ file. Although there is no guarantee that I would have become sure that _"module_kobject"_ gonna be the main point of attraction even after searching through the whole file in absence of documentation.
-
+&nbsp;
     So, thanks to <ins>Kernel Developers!!!</ins>.
-
+&nbsp;
     Anyways...
 ```c
     // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/module.h
@@ -213,9 +214,10 @@ image:
               struct completion *kobj_completion;
     } __randomize_layout;
 ```
+&nbsp;
     So now, we can see that _"module_kobject"_ has member named _"struct kobject kobj"_.
     Lets find out **kobject structure**.
-
+&nbsp;
     It is present in _"/lib/modules/5.11.0-49-generic/build/include/linux/kobject.h"_ path.
 ```c
     // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/kobject.h
@@ -226,6 +228,7 @@ image:
           ...
     };
 ```
+&nbsp;
     `struct list_head` can be found in header file named ***"list.h"***.
 ```c
     // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/list.h
@@ -235,14 +238,15 @@ image:
         struct list_head *next, *prev;
     };
 ```
+&nbsp;
     Again the same case, just like **procfs** and **lsmod** scenario. We will simply delete the **kobject mapping of our rootkit module** from that structure which is responsible for storing it as a LKM kobject.
-
+&nbsp;
     In header file named ***"kobject.h"***, structure named, **struct kobject** is present, in which there is a member named, **entry** (struct list_head entry) is defined, which is actually responsible for storing **kobject mapping caused due to our loaded rootkit LKM**.
-
+&nbsp;
     We're gonna delete 2 things: 
       1. Delete our rootkit LKM from **`/sys/module/`** directory with the help of `kobject_del()`.
          But what will be our <ins>parameter value</ins>?
-&nbsp;
+&nbsp;&nbsp;
          We will be deleting our module right? It will be expressed by `THIS_MODULE`. So we will deleting `THIS_MODULE` in such a way that kobject related to it also gets deleted.
 ```c
           // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/kobject.h
