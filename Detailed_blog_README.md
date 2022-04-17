@@ -49,7 +49,7 @@ We created a LKM which can be run in kernel (we will only use KERN_INFO/pr_info,
 
 Otherwise, you can follow this blog with ease, if your linux kernel version is greater than ***5.7***.
 
-![](/home/reveng007/Pictures/Blog1.png?raw=true)
+![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog1.png?raw=true)
 <p align="center">
     This is actually the "hello world" code offered by pentester academy.
 </p>
