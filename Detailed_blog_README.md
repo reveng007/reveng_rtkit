@@ -8,7 +8,9 @@ I just wanted to share my experience with all of you guys/gals, which I learned 
 
 And yes! ofcourse, I have taken help from other resourses like blog posts, YT videos, websites, githubs, etc.
 
-I am just sharing all those techniques, xps (aquired while doing this project) and resourses, in order to avoid all those overhead pains of finding out those appropriate concepts/ snippets, related to this project, from all over the internet world, making things become easy as well as clear to you. So, lets dive right in.
+I am just sharing all those techniques, xps (aquired while doing this project) and resourses, in order to avoid all those overhead pains of finding out those appropriate concepts/ snippets, related to this project, from all over the internet world, making things become easy as well as clear to you.
+
+This blog will be pretty big, as I have documented all the informations that I have gathered in the three month period of making this project as well as this blog post. So, our journey will be pretty long. Let's buckle up our seat belts! and dive right in the world of LKM :wink:.
 
 > ***NOTE***: If you(viewers) have spotted anything erroneous or something which should be made correct, haven't documented correctly or haven't credited someone's work properly, please don't hesitate to reach out to me via those social media handles listed at the end of this file.
 

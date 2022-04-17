@@ -5,7 +5,9 @@
     <img alt="Tested on" src="https://img.shields.io/badge/Tested%20on-Ubuntu%2021.04%20(Hirsute%20Hippo)%20x86__64%20and%20Kernel%205.11.0--49--generic-yellow" />
 </p>
 <p align="center">
-<!--    <img alt="Category" src="https://img.shields.io/badge/Category-Post%20Exploitation%2F%20Persistence%2F%20Stealth-red" /> -->
+<!--    
+	<img alt="Category" src="https://img.shields.io/badge/Category-Post%20Exploitation%2F%20Persistence%2F%20Stealth-red" /> 
+-->
     <img alt="Category" src="https://img.shields.io/badge/Category-Post%20Exploitation%2F%20Stealth-red" />
     <img alt="License" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
 </p>
