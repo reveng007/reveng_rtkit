@@ -331,6 +331,7 @@ image:
           1st three, (1,2,3) are just the same as previous case. Just adding `entry` in this context.
 &nbsp;    
 > ***Now we can hide our rootkit LKM from **`/sys/module/`** directory (_LKM logging directory_) !***
+
 &nbsp;
 	![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog8.png?raw=true)
 
