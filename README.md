@@ -172,7 +172,7 @@ kill -64 <any pid>	: Command to get rootshell. Applicable in normal shell prompt
 
 Here is the log file, that was generated:
 
-[![asciicast](https://asciinema.org/a/OrYS0EFYh5LvMZ6CMFQtaUioe.svg)](https://asciinema.org/a/OrYS0EFYh5LvMZ6CMFQtaUioe)
+<a href="https://asciinema.org/a/OrYS0EFYh5LvMZ6CMFQtaUioe" target="_blank"><img src="https://asciinema.org/a/OrYS0EFYh5LvMZ6CMFQtaUioe.svg" /></a>
 
 - Two warnings are present:
 1. Checking for suspicious (large) shared memory segments: For Notable markdown editor (This is not a threat lol!)
