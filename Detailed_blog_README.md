@@ -667,9 +667,9 @@ We will use, rather misuse systemcall to communicate between usermode and kernel
 ```
         This is actually the "syscall table" for windows but the concept is same.
 ```
-   We can see the address of syscall table from `/proc/kallsyms` file as sys_call_table is a dynamically loaded kernel modules symbol (remember this file?, if not please revisit: [link](https://github.com/reveng007/reveng_rtkit/blob/main/Detailed_blog_README.md#part1-basics-regrading-lkm-creation) ).
+   We can see the address of syscall table from `/proc/kallsyms` file as sys_call_table is a dynamically loaded kernel modules symbol (remember this file? if not, please revisit: [link](https://github.com/reveng007/reveng_rtkit/blob/main/Detailed_blog_README.md#part1-basics-regrading-lkm-creation) ).
 
-        ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog11.png?raw=true)
+   ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog11.png?raw=true)
 
    Why can we see it now, even before loading our module?/
         => Very simple, it is already in use by other kernel modules of linux.
@@ -687,8 +687,8 @@ We will use, rather misuse systemcall to communicate between usermode and kernel
 
    The trick is basically, we would make our own custom made `kallsyms_lookup_name()` function using ***kprobes***.
 
-   According to this [blog: ish-ar.io/kprobes-in-a-nutshell](https://ish-ar.io/kprobes-in-a-nutshell/)/
-        : **kprobe** can be used to <ins>dynamically break</ins> into _kernel routine_ and collect debugging information, i.e. via **dynamically loaded kernel module symbols**.
+   According to this [blog: ish-ar.io/kprobes-in-a-nutshell](https://ish-ar.io/kprobes-in-a-nutshell/):/
+   : **kprobe** can be used to <ins>dynamically break</ins> into _kernel routine_ and collect debugging information, i.e. via **dynamically loaded kernel module symbols**.
 ```c
         // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/kprobes.h
         // https://elixir.bootlin.com/linux/v5.11/source/include/linux/kprobes.h#L62
