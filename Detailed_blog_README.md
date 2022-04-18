@@ -667,7 +667,7 @@ We will use, rather misuse systemcall to communicate between usermode and kernel
 ```
         This is actually the "syscall table" for windows but the concept is same.
 ```
-   We can see the address of syscall table from `/proc/kallsyms` file as sys_call_table is a dynamically loaded kernel modules symbol (remember this file? ***[link](ADD link to _`/proc/kallsyms`_ file (procfs)) portion***).
+   We can see the address of syscall table from `/proc/kallsyms` file as sys_call_table is a dynamically loaded kernel modules symbol (remember this file?, if not please revisit: [link](https://github.com/reveng007/reveng_rtkit/blob/main/Detailed_blog_README.md#part1-basics-regrading-lkm-creation) ).
 
         ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog11.png?raw=true)
 
