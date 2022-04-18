@@ -657,10 +657,10 @@ We will use, rather misuse systemcall to communicate between usermode and kernel
 
    #### Step1: <ins>Finding the address of the `syscall table`, which is represented by `sys_call_table` symbol</ins>.
 
-   So, what the heck is syscall table?/
+   So, what the heck is syscall table?
         It is actually a table which maps linux syscalls to their corresponding syscall ids which are mapped with their corresponding kernel address.
         
-   It is somewhat like this./
+   It is somewhat like this.
         ![](https://docs.microsoft.com/en-us/security/research/project-freta/media/report-kernel-syscalls.png?raw=true)
     ### NOTE:
 ```
