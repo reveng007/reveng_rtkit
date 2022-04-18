@@ -1423,7 +1423,7 @@ struct task_struct *find_task(pid_t pid)
 ```
    This is basically a for loop macro. I got this expression from  [diamorphine](https://github.com/m0nad/Diamorphine/) project. Then searched it in [bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/sched/signal.h#L601).
                     
-    2. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L118).\
+  2. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L118).\
    We will now make a function to hide those directories responsible for corresponding `pid`. Got this portion from [heroin](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#A-b) and [diamorphine](https://github.com/m0nad/Diamorphine/) project.
 ```c
 /* Here, -"&gt;" : -">" and "&amp;" : "&" */
