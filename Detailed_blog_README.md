@@ -1328,7 +1328,7 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
               statfs
               write
 ```
-     In that sense, if I perform the same thing with `ps`, we should be also getting the same `getdents()` system call.
+   In that sense, if I perform the same thing with `ps`, we should be also getting the same `getdents()` system call.
 ```diff
               $ strace ps 1>/dev/null 2>/tmp/ps.strace; cat /tmp/ps.strace | cut -d'(' -f1 | sort -u
 
