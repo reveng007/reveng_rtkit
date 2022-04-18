@@ -1472,7 +1472,7 @@ static int is_invisible(pid_t pid)
 
    This portion is totally taken from [diamorphine](https://github.com/m0nad/Diamorphine/)
                    
-    1. This is the whole rootkit.c file.
+   1. This is the whole rootkit.c file.
 ```c
                    // Test_rtkit.c
 
