@@ -842,12 +842,12 @@ We will use, rather misuse systemcall to communicate between usermode and kernel
 
    Before modifying the `syscall table`, we first need to disable the WP(write protection) flag in the control register (or cr0 reg) in order to make syscall table editable/writable, from read-only mode.
 
-   According to [sysprog21.github.io/lkmpg/#system-calls](https://sysprog21.github.io/lkmpg/#system-calls):/
+   According to [sysprog21.github.io/lkmpg/#system-calls](https://sysprog21.github.io/lkmpg/#system-calls):\
       _Control register (or cr0 reg) is a processor register that changes or controls the general behavior of the CPU. For x86 architecture, the cr0 register has various control flags that modify the basic operation of the processor. The WP flag in cr0 stands for write protection. Once the WP flag is set, the processor disallows further write attempts to the read-only sections._
 
    Therefore, we must disable the WP flag before modifying sys_call_table. => ***`WP flag must be set to 0`***.
 
-   1. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/72a939257c42562222b2b4c0785c46997cb4e1d1/kernel_src/reveng_rtkit.c#L308).
+   1. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/72a939257c42562222b2b4c0785c46997cb4e1d1/kernel_src/reveng_rtkit.c#L308).\
       Reading the status/state of cr0 register.
 
 ```c
