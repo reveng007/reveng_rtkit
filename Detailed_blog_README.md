@@ -1716,14 +1716,14 @@ enum {
 	offset += dir->d_reclen;
 }
 ```
-	The while loop goes through the _array of dirent_ returned by getdents64 (or, in this context orig_getdents64).\
-	It checks whether.\
-	1. The directory entry within the _array of dirent_ is in `/proc/` directory
-	2. It is invisible
+   The while loop goes through the _array of dirent_ returned by getdents64 (or, in this context orig_getdents64).\
+   It checks whether.\
+   1. The directory entry within the _array of dirent_ is in `/proc/` directory
+   2. It is invisible
 
-	It then performs the changes to the `kdirent` then eventually to `dirent`, so that it can be passed to user space.
+   It then performs the changes to the `kdirent` then eventually to `dirent`, so that it can be passed to user space.
 
-	Whole Code (Test_hook_getdents64.h):
+   Whole Code (Test_hook_getdents64.h):
 ```c
 #include <linux/syscalls.h>     /* Needed to use syscall functions */
 #include <linux/slab.h>         /* kmalloc(), kfree(), kzalloc() */
