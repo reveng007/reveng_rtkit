@@ -1359,11 +1359,11 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
               set_tid_address
               write
 ```
-      So, we have to intercept getdents64 syscall.\
-      Let's visit the [<ins>Linux Syscall Reference</ins>](https://syscalls64.paolostivanin.com/),\
-      Search: `sys_getdents64`.
+   So, we have to intercept getdents64 syscall.\
+   Let's visit the [<ins>Linux Syscall Reference</ins>](https://syscalls64.paolostivanin.com/),\
+   Search: `sys_getdents64`.
 
-      Dependent registers:
+   Dependent registers:
 ```
                 1. rax: contains syscall ids.
                 2. rdi: which contains the file descriptor.
