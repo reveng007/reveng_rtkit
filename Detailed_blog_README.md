@@ -1370,7 +1370,7 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
 3. rsi: which contains the passed arguments.
 4. rdx: length of the passed argument(or string).
 ```
-   In this scenario, we will only need **rdi** and **rsi** register. This is because, we need to know the passed argument (**rsi** register, rather **si** register) and as we will be dealing with files, we will ofcourse be needing the file descriptors (**rdi** register, rather **di** register). (Reason was mentioned [here](http://--link---#### Now the question comes, "Why _`si`_ register, why not _`rsi`_ register?"))
+   In this scenario, we will only need **rdi** and **rsi** register. This is because, we need to know the passed argument (**rsi** register, rather **si** register) and as we will be dealing with files, we will ofcourse be needing the file descriptors (**rdi** register, rather **di** register). (Reason was mentioned earlier in this file)
 
    So, a recap about the Workflow of the machanism:\
     - When we deliver pid of any process via `kill -32 <pid>`, it will at first find out that particular `pid` by surfing through "`/proc/`" directory.
@@ -1396,7 +1396,7 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
 	return NULL;
 }
 ```
-    I wasn't understanding this portion, but yes I was getting an idea that it is looping to get the process ids. So, I tried for loop.
+   I wasn't understanding this portion, but yes I was getting an idea that it is looping to get the process ids. So, I tried for loop.
 ```c
 // reveng_rtkit
 
