@@ -1198,8 +1198,8 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
                     write_cr0_forced(cr0 & ~0x00010000);	// Setting WP flag to 0 => writable
                   }
 ```
-   Here, the type of this function is `asmlinkage int`, actually it doesn't matter in this context, but it might in others./
-                Syscalls are of type `long`, thus, when a user space program such as glibc depends on its return value, it expects a `long int`, if you feed it with `int`, things will go very wrong./
+   Here, the type of this function is `asmlinkage int`, actually it doesn't matter in this context, but it might in others.\
+                Syscalls are of type `long`, thus, when a user space program such as glibc depends on its return value, it expects a `long int`, if you feed it with `int`, things will go very wrong.\
                 Credit: [jm33.me/](https://jm33.me/linux-rootkit-for-fun-and-profit-0x02-lkm-hide-filesprocs.html)
 ```c
                 // filename: Test_rtkit_kill.c
@@ -1285,21 +1285,21 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
 
    ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog13.png?raw=true)
 
-   We can see 3 things:/
-              1. In ***fish shell***, this mechanism of getting root shell is not working, I don't really know why... (<ins>If any viewers seeing this, have any solution to this problem, please don't hesitate to do a PR to my repo but before that please visit, [idea](https://github.com/reveng007/reveng_rtkit#note-1)</ins>)./
-              2. In ***bash shell***, it is working as expected./
+   We can see 3 things:\
+              1. In ***fish shell***, this mechanism of getting root shell is not working, I don't really know why... (<ins>If any viewers seeing this, have any solution to this problem, please don't hesitate to do a PR to my repo but before that please visit, [idea](https://github.com/reveng007/reveng_rtkit#note-1)</ins>).\
+              2. In ***bash shell***, it is working as expected.\
               3. In ***sh shell***, it is working as expected too.
 
-      2. **getdents64** syscall: [elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/syscalls.h#L487)
-	  &nbsp;
+      2. **getdents64** syscall: [elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/syscalls.h#L487)\
+
           I actually wanted to hide ongoing processes and I got that idea for hiding processes from [source1: R3x/linux-rootkits](https://github.com/R3x/linux-rootkits#features-descriptions), but I was unable to understand that portion of code which was linked. I then searched through other [resource links](https://github.com/reveng007/reveng_rtkit#resources-that-helped-me) that I had. I found out this: [source2](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.1.). I will be implementing this mechanism via **kill syscall** (or sys_kill) as I did earlier.
           
-          But here, we are actually intercepting two syscalls simultaneously,
-          1. ***kill syscall***: To hide pid of any process, cmd: _`kill -32 <pid>`_.
-          2. ***getdents64 syscall***: Please go through this [link](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.1.) (it is the same previous link) and check the last 2 paragraphs of it. It will say that, `ps` command only just does an 'ls' on "`/proc/`" directory.
-          &nbsp;
-          Now then, what is the working machanism of `ls`?
-          Visit: [gist-amitsaha](https://gist.github.com/amitsaha/8169242#how-does-ls-do-what-it-does). It says that, after the execution of `ls`, it in turn invokes the `getdents()` system call, which is responsible to read the directory contents.
+          But here, we are actually intercepting two syscalls simultaneously,\
+          1. ***kill syscall***: To hide pid of any process, cmd: _`kill -32 <pid>`_.\
+          2. ***getdents64 syscall***: Please go through this [link](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.1.) (it is the same previous link) and check the last 2 paragraphs of it. It will say that, `ps` command only just does an 'ls' on "`/proc/`" directory.\
+
+          Now then, what is the working machanism of `ls`?\
+          Visit: [gist-amitsaha](https://gist.github.com/amitsaha/8169242#how-does-ls-do-what-it-does). It says that, after the execution of `ls`, it in turn invokes the `getdents()` system call, which is responsible to read the directory contents.\
           Let's check it.
               ```diff
               $ strace ls 1>/dev/null 2>/tmp/ls.strace; cat /tmp/ls.strace | cut -d'(' -f1 | sort -u
@@ -1359,8 +1359,8 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
               set_tid_address
               write
               ```
-              So, we have to intercept getdents64 syscall.
-              Let's visit the [<ins>Linux Syscall Reference</ins>](https://syscalls64.paolostivanin.com/),
+              So, we have to intercept getdents64 syscall.\
+              Let's visit the [<ins>Linux Syscall Reference</ins>](https://syscalls64.paolostivanin.com/),\
               Search: `sys_getdents64`.
 
               Dependent registers:
@@ -1372,12 +1372,12 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
                 ```
               In this scenario, we will only need **rdi** and **rsi** register. This is because, we need to know the passed argument (**rsi** register, rather **si** register) and as we will be dealing with files, we will ofcourse be needing the file descriptors (**rdi** register, rather **di** register). (Reason was mentioned [here](http://--link---#### Now the question comes, "Why _`si`_ register, why not _`rsi`_ register?"))
 
-              So, a recap about the Workflow of the machanism:
-                - When we deliver pid of any process via `kill -32 <pid>`, it will at first find out that particular `pid` by surfing through "`/proc/`" directory.
+              So, a recap about the Workflow of the machanism:\
+                - When we deliver pid of any process via `kill -32 <pid>`, it will at first find out that particular `pid` by surfing through "`/proc/`" directory.\
                 - After getting the `pid`, it will perform syscall hooking to hide that particular pid and then offering a new process list (excluding the mentioned pid), if the user tries to see running processes using ***ps***.
 
-                1. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L99).
-                Finding the process id/ pid:
+                1. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L99).\
+                Finding the process id/ pid:\
                     According to [LKM_HACKING](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.1.):
                     
                     ```c
