@@ -1690,9 +1690,9 @@ enum {
 	PROC_TIME_INIT_INO	= 0xEFFFFFFAU,
     };
 ```
-	That means, if `i_ino` of any inode is same as `PROC_ROOT_INO`, its name will be `/proc`.
-
-	The final part of the getdents64 syscall:
+   That means, if `i_ino` of any inode is same as `PROC_ROOT_INO`, its name will be `/proc`.
+   
+   The final part of the getdents64 syscall:
 ```c
 	// Changes which we will do
 	while (offset < ret)
