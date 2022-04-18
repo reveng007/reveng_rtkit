@@ -1657,14 +1657,14 @@ Now to the next part:
 	      kfree(kdirent);
 	      return ret;
 ```
-    Those kernel space and user space variables will mostly be used in `copy_from_user` and `copy_to_user` functions as we are going to pass arguments from _user space variable_ to _kernel space variable_ and vice-versa. Being in user space we can't read kernel space pointers/variables and vice-versa, that's the reason why `copy_from_user` and `copy_to_user` functions will be used.\
-     In this scenario, `copy_from_user` is used to pass the name of the passed _directory name_ to kernel mode variable, _kdirent_ and then we will hide whatever we want to hide and lastly, we will send the output using `copy_to_user` to the user space variable, _dirent_.
+   Those kernel space and user space variables will mostly be used in `copy_from_user` and `copy_to_user` functions as we are going to pass arguments from _user space variable_ to _kernel space variable_ and vice-versa. Being in user space we can't read kernel space pointers/variables and vice-versa, that's the reason why `copy_from_user` and `copy_to_user` functions will be used.\
+   In this scenario, `copy_from_user` is used to pass the name of the passed _directory name_ to kernel mode variable, _kdirent_ and then we will hide whatever we want to hide and lastly, we will send the output using `copy_to_user` to the user space variable, _dirent_.
 
-     For the case of ***kzalloc***, `GFP_KERNEL` is _GFP flag_ which is used for kernel-internal allocations, [source: elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/gfp.h#L245).
+   For the case of ***kzalloc***, `GFP_KERNEL` is _GFP flag_ which is used for kernel-internal allocations, [source: elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/gfp.h#L245).
 
-     The last thing, which need explanation is the <ins>error part</ins>. If some error occurs, like sending <ins>wrong</ins> `pid` number to kernel space, we will free the allocated memory pointed by the kdirent pointer and would return the error which actually occured.
+   The last thing, which need explanation is the <ins>error part</ins>. If some error occurs, like sending <ins>wrong</ins> `pid` number to kernel space, we will free the allocated memory pointed by the kdirent pointer and would return the error which actually occured.
 
-     Next part:
+   Next part:
 ```c
                    // Storing the inode value of the required directory(or pid) 
                    d_inode = current->files->fdt->fd[fd]->f_path.dentry->d_inode;
