@@ -192,7 +192,7 @@ So, these are not threats! cool!
 &nbsp;
 ![Screenshot from 2022-02-26 09-33-19](https://user-images.githubusercontent.com/61424547/155828253-812b8d7a-7326-4b57-9956-1fcaa92ec319.png)
 
-#### Detailed Blog article on ***reveng_rtkit*** LKM rootkit, is coming soon, where I will be explaining how I created this LKM rootkit step by step.
+#### Detailed Blog article on ***reveng_rtkit*** LKM rootkit, is available [now](https://github.com/reveng007/reveng_rtkit/blob/main/Detailed_blog_README.md), where I have explained how I created this LKM rootkit step by step.
 
 > If you(viewers) have spotted anything erronious or something which should be made correct, haven't documented correctly or haven't credited someone's work properly, please don't hesitate to reach out to me via those social media handles listed at the end of this file.
 
