@@ -1288,9 +1288,9 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
    We can see 3 things:\
               1. In ***fish shell***, this mechanism of getting root shell is not working, I don't really know why... (<ins>If any viewers seeing this, have any solution to this problem, please don't hesitate to do a PR to my repo but before that please visit, [idea](https://github.com/reveng007/reveng_rtkit#note-1)</ins>).\
               2. In ***bash shell***, it is working as expected.\
-              3. In ***sh shell***, it is working as expected too.\
+              3. In ***sh shell***, it is working as expected too.
 
-    2. **getdents64** syscall: [elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/syscalls.h#L487)\
+2. **getdents64** syscall: [elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/syscalls.h#L487)
 
    I actually wanted to hide ongoing processes and I got that idea for hiding processes from [source1: R3x/linux-rootkits](https://github.com/R3x/linux-rootkits#features-descriptions), but I was unable to understand that portion of code which was linked. I then searched through other [resource links](https://github.com/reveng007/reveng_rtkit#resources-that-helped-me) that I had. I found out this: [source2](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.1.). I will be implementing this mechanism via **kill syscall** (or sys_kill) as I did earlier.
           
@@ -1301,7 +1301,7 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
    Now then, what is the working machanism of `ls`?\
    Visit: [gist-amitsaha](https://gist.github.com/amitsaha/8169242#how-does-ls-do-what-it-does). It says that, after the execution of `ls`, it in turn invokes the `getdents()` system call, which is responsible to read the directory contents.\
    Let's check it.
-              ```diff
+```diff
               $ strace ls 1>/dev/null 2>/tmp/ls.strace; cat /tmp/ls.strace | cut -d'(' -f1 | sort -u
 
               access
@@ -1327,9 +1327,9 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
               set_tid_address
               statfs
               write
-              ```
+```
      In that sense, if I perform the same thing with `ps`, we should be also getting the same `getdents()` system call.
-              ```diff
+```diff
               $ strace ps 1>/dev/null 2>/tmp/ps.strace; cat /tmp/ps.strace | cut -d'(' -f1 | sort -u
 
               access
@@ -1358,18 +1358,18 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
               set_robust_list
               set_tid_address
               write
-              ```
-              So, we have to intercept getdents64 syscall.\
-              Let's visit the [<ins>Linux Syscall Reference</ins>](https://syscalls64.paolostivanin.com/),\
-              Search: `sys_getdents64`.
+```
+      So, we have to intercept getdents64 syscall.\
+      Let's visit the [<ins>Linux Syscall Reference</ins>](https://syscalls64.paolostivanin.com/),\
+      Search: `sys_getdents64`.
 
-              Dependent registers:
-                ```
+      Dependent registers:
+```
                 1. rax: contains syscall ids.
                 2. rdi: which contains the file descriptor.
                 3. rsi: which contains the passed arguments.
                 4. rdx: length of the passed argument(or string).
-                ```
+```
       In this scenario, we will only need **rdi** and **rsi** register. This is because, we need to know the passed argument (**rsi** register, rather **si** register) and as we will be dealing with files, we will ofcourse be needing the file descriptors (**rdi** register, rather **di** register). (Reason was mentioned [here](http://--link---#### Now the question comes, "Why _`si`_ register, why not _`rsi`_ register?"))
 
        So, a recap about the Workflow of the machanism:\
