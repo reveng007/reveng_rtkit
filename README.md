@@ -196,6 +196,10 @@ So, these are not threats! cool!
 
 > If you(viewers) have spotted anything erronious or something which should be made correct, haven't documented correctly or haven't credited someone's work properly, please don't hesitate to reach out to me via those social media handles listed at the end of this file.
 
+### Honorable Mentions:
+- [kurogai/100-redteam-project](https://github.com/kurogai/100-redteam-projects#honorable-mentions)
+- [milabs/awesome-linux-rootkits](https://github.com/milabs/awesome-linux-rootkits#speak_no_evil-related-stuff)
+
 ### Resources that helped me:
 1. https://github.com/pentesteracademy/linux-rootkits-red-blue-teams
 2. Rootkit features: https://github.com/R3x/linux-rootkits
