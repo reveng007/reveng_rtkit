@@ -1365,10 +1365,10 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
 
    Dependent registers:
 ```
-                1. rax: contains syscall ids.
-                2. rdi: which contains the file descriptor.
-                3. rsi: which contains the passed arguments.
-                4. rdx: length of the passed argument(or string).
+1. rax: contains syscall ids.
+2. rdi: which contains the file descriptor.
+3. rsi: which contains the passed arguments.
+4. rdx: length of the passed argument(or string).
 ```
       In this scenario, we will only need **rdi** and **rsi** register. This is because, we need to know the passed argument (**rsi** register, rather **si** register) and as we will be dealing with files, we will ofcourse be needing the file descriptors (**rdi** register, rather **di** register). (Reason was mentioned [here](http://--link---#### Now the question comes, "Why _`si`_ register, why not _`rsi`_ register?"))
 
