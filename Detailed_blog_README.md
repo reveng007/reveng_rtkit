@@ -1717,7 +1717,7 @@ enum {
 }
 ```
    The while loop goes through the _array of dirent_ returned by getdents64 (or, in this context orig_getdents64).\
-   It checks whether.\
+   It checks whether.
    1. The directory entry within the _array of dirent_ is in `/proc/` directory
    2. It is invisible
 
