@@ -1674,8 +1674,8 @@ Now to the next part:
                             proc = 1;
                     ...
 ```
-     I paraphrased from [jm33.me](https://jm33.me/linux-rootkit-for-fun-and-profit-0x02-lkm-hide-filesprocs.html):\
-     This piece of code checks if current `fd` points to proc fs, if yes, we say we are `ls`ing a `/proc` dir. `i_ino` is a inode number, representing its index number in linux vfs (virtual filesystem), `PROC_ROOT_INO` is defined as 1: [elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/proc_ns.h#L42).
+  I paraphrased from [jm33.me](https://jm33.me/linux-rootkit-for-fun-and-profit-0x02-lkm-hide-filesprocs.html):\
+  This piece of code checks if current `fd` points to proc fs, if yes, we say we are `ls`ing a `/proc` dir. `i_ino` is a inode number, representing its index number in linux vfs (virtual filesystem), `PROC_ROOT_INO` is defined as 1: [elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/proc_ns.h#L42).
                    ```c
                    /*
                     * We always define these enumerators
