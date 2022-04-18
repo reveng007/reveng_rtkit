@@ -888,32 +888,32 @@ We will use, rather misuse systemcall to communicate between usermode and kernel
 ```
    #### Step3: <ins>Performing the actual hooking</ins>.
 
-   According to this [blog](https://xcellerator.github.io/posts/linux_rootkits_02/#how-the-kernel-handles-syscalls):/
+   According to this [blog](https://xcellerator.github.io/posts/linux_rootkits_02/#how-the-kernel-handles-syscalls):\
       The arguments that we pass from usermode are stored in registers (if you have done some RE, you should have known that, right?), then this values are stored in a special struct called [pt_regs](https://github.com/torvalds/linux/blob/15bc20c6af4ceee97a1f90b43c0e386643c071b4/arch/x86/include/asm/ptrace.h#L12), which is then passed to the syscall, then syscall performs its work and go through the members of the passed stucture in which it is interested in. 
 
    So, => We gonna need pt_regs to do our shit!
 
-   I actually intercepted two syscalls:/
-      1. **kill syscall**: [elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/syscalls.h#L708)/
+   I actually intercepted two syscalls:\
+      1. **kill syscall**: [elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/syscalls.h#L708)
 
    Took this from [xcellerator](https://xcellerator.github.io/posts/linux_rootkits_03/). In this blog, _"the ftrace helper method"_ is implemented, instead of that I will be using _"the syscall table hijacking method"_ to perform the same syscall interception. I just want you guys/gals to go through the aforementioned blog once (from [top](https://xcellerator.github.io/posts/linux_rootkits_03/) till [_Hooking Kill_](https://xcellerator.github.io/posts/linux_rootkits_03/#hooking-kill) portion) before going on with this blog. It will help you as I have took most of the `syscall interception` portion from that blog apart from _"the syscall table hijacking method"_.
 
-   Now, it's time to perform hooking./
-          But, what is hooking exactly?/
-          Hooking, in terms of syscall, is to manipulate with the original syscall with our very own malicious syscall, sort of man-in-the-middle attack scenario./
-          Remember, we made the syscall table [editable](https://link-----step2-link--------) 'cause we want to edit original syscall in `syscall table` with our very own mal. syscall./
+   Now, it's time to perform hooking.\
+          But, what is hooking exactly?\
+          Hooking, in terms of syscall, is to manipulate with the original syscall with our very own malicious syscall, sort of man-in-the-middle attack scenario.\
+          Remember, we made the syscall table [editable](https://github.com/reveng007/reveng_rtkit/blob/main/Detailed_blog_README.md#step2-disabling-the-wpwrite-protection-flag-in-the-control-register) 'cause we want to edit original syscall in `syscall table` with our very own mal. syscall./
           > ***NOTE*** : In programming world, syscall is nothing but a function.
 
    As soon as we made the `sys_call_table` unprotected, we would edit that specific syscall in syscall table that we are interested in. We should make a ***note*** that as we are overwriting original syscall function with our very own mal. syscall function, the nature of the later must be identical to the prior, otherwise this technique ***wouldn't work***.
 
    The name of kill syscall (or sys_kill) in sys_call_table is ***__NR_kill*** (offset designated for sys_kill), [source](https://elixir.bootlin.com/linux/v5.11/source/arch/arm64/include/asm/unistd32.h#L87).
 
-   1. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L42)/
+   1. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L42)\
               So, let's define a custom function type to store original syscall, i.e., ***__NR_kill***.
 ```c
               typedef asmlinkage long (*tt_syscall)(const struct pt_regs *);
 ```
-   As I have told you earlier that struct ***pt_regs*** is the one which has CPU registers as members of it, which will store passed arguements from usermode, which will eventually be read by syscall, right?/
+   As I have told you earlier that struct ***pt_regs*** is the one which has CPU registers as members of it, which will store passed arguements from usermode, which will eventually be read by syscall, right?\
           2. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L45)
               Creating function to store original syscall, i.e., ***__NR_kill***.
 ```c
@@ -923,10 +923,10 @@ We will use, rather misuse systemcall to communicate between usermode and kernel
 ```c
              orig_kill = (tt_syscall)__sys_call_table[__NR_kill];
 ```
-   As, ***__NR_kill*** is the name of kill syscall (or, sys_kill) in **syscall table** and the function type of orig_kill is _`tt_syscall`_./
+   As, ***__NR_kill*** is the name of kill syscall (or, sys_kill) in **syscall table** and the function type of orig_kill is _`tt_syscall`_.\
           4. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/9134a4d04bf6c0d347a22503b203bab9098b8eea/kernel_src/reveng_rtkit.c#L311), ignore those lines with **__NR_getdents64** (line no.: 310 and 315). I will explain **__NR_getdents64** seperately after completing this section.
 
-   Now, we stored the original syscall, rather backuped the original syscall, as this would be used later to revert back to normal syscall workflow while rmmod'ing our LKM aka. rootkit (in this scenario)./
+   Now, we stored the original syscall, rather backuped the original syscall, as this would be used later to revert back to normal syscall workflow while rmmod'ing our LKM aka. rootkit (in this scenario).\
              So lets unprotect the memory and edit the syscall table and then revert back the memory protection as it was.
 ```c
               orig_kill = (tt_syscall)__sys_call_table[__NR_kill];
@@ -937,10 +937,10 @@ We will use, rather misuse systemcall to communicate between usermode and kernel
 
               protect_memory();
 ```
-   You might be thinking, what the heck is hacked_kill?/
-              It is actually the function (mal. syscall) that we created, which I will introduce you in the next step./
-            5. So, now what ?/
-Remember that? **providing rootshell** portion earlier in this blog (if not, please go and [visit](https://----providing-rootshell-link----), it's obvious to forget as this blog is pretty long, don't be harsh on yourself! :hugs:)
+   You might be thinking, what the heck is hacked_kill?\
+              It is actually the function (mal. syscall) that we created, which I will introduce you in the next step.\
+            5. So, now what ?\
+Remember that? **providing rootshell** portion earlier in this blog (if not, please go and [visit](https://github.com/reveng007/reveng_rtkit/blob/main/Detailed_blog_README.md#part6-providing-rootshell-to-the-attacker), it's obvious to forget as this blog is pretty long, don't be harsh on yourself! :hugs:)\
               We will be implementing that _getting rootshell_ mechanism via _kill syscall_.
 ```c
                   static void set_root(void)
