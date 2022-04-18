@@ -662,7 +662,7 @@ We will use, rather misuse systemcall to communicate between usermode and kernel
         
    It is somewhat like this.
         ![](https://docs.microsoft.com/en-us/security/research/project-freta/media/report-kernel-syscalls.png?raw=true)
-    ### NOTE:
+    	### NOTE:
 ```
         This is actually the "syscall table" for windows but the concept is same.
 ```
