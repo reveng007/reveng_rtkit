@@ -687,7 +687,7 @@ We will use, rather misuse systemcall to communicate between usermode and kernel
 
    The trick is basically, we would make our own custom made `kallsyms_lookup_name()` function using ***kprobes***.
 
-   According to this [blog: ish-ar.io/kprobes-in-a-nutshell](https://ish-ar.io/kprobes-in-a-nutshell/):/
+   According to this [blog: ish-ar.io/kprobes-in-a-nutshell](https://ish-ar.io/kprobes-in-a-nutshell/):\
    : **kprobe** can be used to <ins>dynamically break</ins> into _kernel routine_ and collect debugging information, i.e. via **dynamically loaded kernel module symbols**.
 ```c
         // pwd: /lib/modules/5.11.0-49-generic/build/include/linux/kprobes.h
