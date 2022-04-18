@@ -182,6 +182,7 @@ So, these are not threats! cool!
 
 ### To-Do list :man_mechanic::
 - Hiding process files completely. Our hidden process file can be accessed to open/read. If someone does, `ls <filename>`, they can easily open them.
+- Successfully able to hide and reveal our LKM module from `/sys/module/` directory using sycall interception, in order to decieve usermode programs.
 - Adding system() C function alike function in Linux Kernel programming, in order to open a new bash/sh prompt.
 - Adding Linux Kernel Sockets.
 - Unable to hide rootkit LKM from _"/sys/module/"_ directory: [issue #6](https://---link---).
