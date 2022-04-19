@@ -2005,8 +2005,8 @@ Testing the Code:
 
 Let's see how it performs with ***rkhunter*** antirootkit:
                    
-[![asciicast](https://asciinema.org/a/OrYS0EFYh5LvMZ6CMFQtaUioe.svg)](https://asciinema.org/a/OrYS0EFYh5LvMZ6CMFQtaUioe)
-I have already explained about the reason behind those warnings in my github [README.md](https://github.com/reveng007/reveng_rtkit#bypassing-rkhunter-antirootkit).
+[![asciicast](https://asciinema.org/a/488606.svg)](https://asciinema.org/a/488606)
+I have already explained about the reason behind that one warning in my github [README.md](https://github.com/reveng007/reveng_rtkit#bypassing-rkhunter-antirootkit).
 
 With this, I have come to the end of the blog. I will be updating the blog as soon as I make some changes to my `reveng_rtkit`rootkit.
 If you have any query, you can reach me at any of my social media. Till then, see yaa!
