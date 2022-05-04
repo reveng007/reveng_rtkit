@@ -311,7 +311,8 @@ static asmlinkage int hacked_kill(const struct pt_regs *pt_regs)
 static inline void write_cr0_forced(unsigned long val)
 {
 	unsigned long __force_order;
-
+	
+	//Applying inline assembly (extended) to write to cr0 register
 	asm volatile("mov %0, %%cr0" : "+r"(val), "+m"(__force_order));
 }
 
