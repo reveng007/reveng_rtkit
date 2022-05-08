@@ -93,7 +93,7 @@ $ kill -31 <pid>
 ```
 ![Screenshot from 2022-02-25 20-40-46](https://user-images.githubusercontent.com/61424547/155739121-b609d517-0b4f-4afc-a2db-b4ce7f331b17.png)
 
-- To get root shell:
+- To get root shell (_without providing a password_):
 ```
 $ kill -64 <any pid>
 ```
@@ -177,7 +177,7 @@ Here is the log file, that was generated:
 - Only one warning is present:
 1. /usr/bin/lwp-request : [stackexchange](https://unix.stackexchange.com/questions/373718/rkhunter-gives-me-a-warning-for-usr-bin-lwp-request-what-should-i-do-debi)
 
-So, these are not threats! cool!
+So, this is not a threat! cool!
 
 ### To-Do list :man_mechanic::
 - Hiding process files completely. Our hidden process file can be accessed to open/read. If someone does, `ls <filename>`, they can easily open them.
