@@ -192,11 +192,17 @@ So, this is not a threat! cool!
 &nbsp;
 ![Screenshot from 2022-02-26 09-33-19](https://user-images.githubusercontent.com/61424547/155828253-812b8d7a-7326-4b57-9956-1fcaa92ec319.png)
 
+### Limitations:
+- This LKM based rootkit can only be used in those Linux OSs, which don't have these two protections:
+1. Secure Boot
+2. Adding a grub parameter to "`/etc/default/grub`" file
+This [link](https://blog.delouw.ch/2017/04/18/signing-linux-kernel-kodules-and-enforce-to-load-only-signed-modules/) was shared to me, on my linkedin post, by [Victor Sergeev](https://ae.linkedin.com/in/victor-sergeev/).
+
 #### Detailed Blog article on ***reveng_rtkit*** LKM rootkit, is available [now](https://reveng007.github.io/blog/2021/03/08/reveng_rkit_detailed.html), where I have explained how I created this LKM rootkit step by step.
 
 > If you(viewers) have spotted anything erronious or something which should be made correct, haven't documented correctly or haven't credited someone's work properly, please don't hesitate to reach out to me via those social media handles listed at the end of this file.
 
-### Honorable Mentions:
+### Honourable Mentions:
 - [kurogai/100-redteam-project](https://github.com/kurogai/100-redteam-projects#honorable-mentions)
 - [milabs/awesome-linux-rootkits](https://github.com/milabs/awesome-linux-rootkits#speak_no_evil-related-stuff)
 
