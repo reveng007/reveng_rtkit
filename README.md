@@ -206,23 +206,24 @@ So, this is not a threat! cool!
 - [milabs/awesome-linux-rootkits](https://github.com/milabs/awesome-linux-rootkits#speak_no_evil-related-stuff)
 
 ### Resources that helped me:
-1. https://github.com/pentesteracademy/linux-rootkits-red-blue-teams
-2. Rootkit features: https://github.com/R3x/linux-rootkits
-3. Excellent resource for grabbing lkm rootkit concepts: https://jm33.me/tag/lkm.html
-4. Simple LKM rootkit: https://theswissbay.ch/pdf/Whitepaper/Writing%20a%20simple%20rootkit%20for%20Linux%20-%20Ormi.pdf
-5. IOCTL: https://github.com/Embetronicx/Tutorials/tree/master/Linux/Device_Driver/IOCTL
-6. https://infosecwriteups.com/linux-kernel-module-rootkit-syscall-table-hijacking-8f1bc0bd099c
-7. LKM HACKING: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html
-8. Hide Files and Processes:
+1.  This project is heavily inspired by [Heroin](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#A-b) by  Runar Jensen (didn't get any of his social media handle ;( ) and [Diamorphine](https://github.com/m0nad/Diamorphine/) by [@m0nadlabs](https://twitter.com/m0nadlabs) open source LKM rootkit projects. Especially, the `Syscall interception mechanism section` was totally taken from [Diamorphine](https://github.com/m0nad/Diamorphine/) repo by [@m0nadlabs](https://twitter.com/m0nadlabs).
+2. https://github.com/pentesteracademy/linux-rootkits-red-blue-teams
+3. Rootkit features: https://github.com/R3x/linux-rootkits
+4. Excellent resource for grabbing lkm rootkit concepts: https://jm33.me/tag/lkm.html
+5. Simple LKM rootkit: https://theswissbay.ch/pdf/Whitepaper/Writing%20a%20simple%20rootkit%20for%20Linux%20-%20Ormi.pdf
+6. IOCTL: https://github.com/Embetronicx/Tutorials/tree/master/Linux/Device_Driver/IOCTL
+7. https://infosecwriteups.com/linux-kernel-module-rootkit-syscall-table-hijacking-8f1bc0bd099c
+8. LKM HACKING: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html
+9. Hide Files and Processes:
    https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.2.1.
    https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.
    https://jm33.me/linux-rootkit-for-fun-and-profit-0x02-lkm-hide-filesprocs.html
-9. Get Rootshell: https://xcellerator.github.io/posts/linux_rootkits_03/
-10. kobject: https://www.win.tue.nl/~aeb/linux/lk/lk-13.html
-11. https://sysprog21.github.io/lkmpg/
-12. https://ish-ar.io/kprobes-in-a-nutshell/
-13. Editing cr0 register: https://hadfiabdelmoumene.medium.com/change-value-of-wp-bit-in-cr0-when-cr0-is-panned-45a12c7e8411
-14. https://www.researchgate.net/publication/240376985_UNIX_and_Linux_based_Rootkits_Techniques_and_Countermeasures
+10. Get Rootshell: https://xcellerator.github.io/posts/linux_rootkits_03/
+11. kobject: https://www.win.tue.nl/~aeb/linux/lk/lk-13.html
+12. https://sysprog21.github.io/lkmpg/
+13. https://ish-ar.io/kprobes-in-a-nutshell/
+14. Editing cr0 register: https://hadfiabdelmoumene.medium.com/change-value-of-wp-bit-in-cr0-when-cr0-is-panned-45a12c7e8411
+15. https://www.researchgate.net/publication/240376985_UNIX_and_Linux_based_Rootkits_Techniques_and_Countermeasures
 
 ### Author: @reveng007 (Soumyanil Biswas)
 ---
