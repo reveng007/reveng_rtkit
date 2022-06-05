@@ -197,7 +197,7 @@ So, this is not a threat! cool!
 	1. Secure Boot
 	2. Adding a grub parameter to "`/etc/default/grub`" file. This [link](https://blog.delouw.ch/2017/04/18/signing-linux-kernel-kodules-and-enforce-to-load-only-signed-modules/) was shared to me, on my linkedin post, by [Victor Sergeev](https://ae.linkedin.com/in/victor-sergeev/).
 
-#### Detailed Blog article on ***reveng_rtkit*** LKM rootkit, is available [now](https://reveng007.github.io/blog/2021/03/08/reveng_rkit_detailed.html), where I have explained how I created this LKM rootkit step by step.
+#### Detailed Blog article on ***reveng_rtkit*** LKM rootkit, is available [now](https://reveng007.github.io/blog/2022/03/08/reveng_rkit_detailed.html), where I have explained how I created this LKM rootkit step by step.
 
 > If you(viewers) have spotted anything erronious or something which should be made correct, haven't documented correctly or haven't credited someone's work properly, please don't hesitate to reach out to me via those social media handles listed at the end of this file.
 
