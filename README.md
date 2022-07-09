@@ -181,12 +181,11 @@ So, this is not a threat! cool!
 
 ### To-Do list :man_mechanic::
 - Hiding process files completely. Our hidden process file can be accessed to open/read. If someone does, `ls <filename>`, they can easily open them.
-- Successfully able to hide and reveal our LKM module from `/sys/module/` directory using sycall interception, in order to decieve usermode programs.
-- Adding system() C function alike function in Linux Kernel programming, in order to open a new bash/sh prompt.
-- Adding Linux Kernel Sockets.
-- Unable to hide rootkit LKM from _"/sys/module/"_ directory: [issue #6](https://---link---).
-- Surviving system reboot.
-- Bypassing `chkrootkit antirootkit`.
+- Successfully able to hide and reveal our LKM module from `/sys/module/` directory using sycall interception, in order to decieve usermode programs [issue #6](https://github.com/reveng007/reveng_rtkit/issues/6).
+- Adding system() C function alike function in Linux Kernel programming, in order to open a new bash/sh prompt [issue #1](https://github.com/reveng007/reveng_rtkit/issues/1).
+- Adding Linux Kernel Sockets [issue #2](https://github.com/reveng007/reveng_rtkit/issues/2).
+- Surviving system reboot [issue #5](https://github.com/reveng007/reveng_rtkit/issues/5).
+- Bypassing `chkrootkit antirootkit` [issue #4](https://github.com/reveng007/reveng_rtkit/issues/4).
     - Getting detected by `chkrootkit antirootkit` till now, under `chkproc section`: [chkproc.c](https://github.com/Magentron/chkrootkit/blob/master/chkproc.c)
 &nbsp;
 &nbsp;
