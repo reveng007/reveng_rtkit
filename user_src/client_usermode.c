@@ -117,7 +117,7 @@ int main()
 	//ioctl(fd, WR_VALUE, (int32_t*) &number);
 	ioctl(fd, WR_VALUE, (char*) str);
  
-	printf("[*] Reading Value from Character Device file: ");
+	//printf("[*] Reading Value from Character Device file: ");
 	/*
 	ioctl(fd, RD_VALUE, (int32_t*) &value);
 	printf("Value is %d\n", value);
@@ -126,7 +126,7 @@ int main()
 	ioctl(fd, RD_VALUE, (char*) str1);
         printf("Value is %s\n", str1);
 	*/
-	printf("Value present in Character Device file: ");
+	printf("[+] Value present in Character Device file: ");
 
 	yellow();
 	printf("%s\n", str);
