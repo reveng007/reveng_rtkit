@@ -9,7 +9,7 @@
  
 
 #define WR_VALUE _IOW('a','a',int32_t*)
-//#define RD_VALUE _IOR('a','b',int32_t*)
+#define RD_VALUE _IOR('a','b',int32_t*)
 
 // For storing in array
 #define MAX_LIMIT 20
@@ -116,17 +116,15 @@ int main()
         printf("[+] Written Value to Character Device file\n");
 	//ioctl(fd, WR_VALUE, (int32_t*) &number);
 	ioctl(fd, WR_VALUE, (char*) str);
- 
-	//printf("[*] Reading Value from Character Device file: ");
+
 	/*
-	ioctl(fd, RD_VALUE, (int32_t*) &value);
-	printf("Value is %d\n", value);
-	*/
-	/*
-	ioctl(fd, RD_VALUE, (char*) str1);
-        printf("Value is %s\n", str1);
-	*/
-	printf("[+] Value present in Character Device file: ");
+        ioctl(fd, RD_VALUE, (int32_t*) &value);
+        printf("Value is %d\n", value);
+        */
+        ioctl(fd, RD_VALUE, (char*) str1);
+	printf("[*] Reading Value from Character Device file: %s", str1);
+	
+	//printf("[+] Value present in Character Device file: ");
 
 	yellow();
 	printf("%s\n", str);
