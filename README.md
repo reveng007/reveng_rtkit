@@ -176,8 +176,23 @@ Here is the log file, that was generated:
 
 - Only one warning is present:
 1. /usr/bin/lwp-request : [stackexchange](https://unix.stackexchange.com/questions/373718/rkhunter-gives-me-a-warning-for-usr-bin-lwp-request-what-should-i-do-debi)
-
 So, this is not a threat! cool!
+
+### Update:
+Today, I found out this ***Warning***.
+
+![rootkit_warning](https://user-images.githubusercontent.com/61424547/200777350-10af0a77-efcc-4fff-9ba4-0580197045b5.png)
+
+Then searched for other options of ***rkhunter*** to get more informations about this "**warning**", that which exact processes are actually causing this warning (`suspicious (large) shared memory segments`). Found out this:
+
+![rootkit_warning_reasons](https://user-images.githubusercontent.com/61424547/200780076-dca793ac-b047-427c-8e3d-a6f3b55b4e51.png)
+
+We can see it is telling us, `configured size allowed: 1.0MB`, i.e. those processes which takes more than 1MB gets flagged. But main point is our rootkit is not getting flagged :) (More like False-Positive thing).
+
+There are several links related to this:
+1. [serverfault](https://serverfault.com/questions/697865/rkhunter-suspicious-shared-memory-segments)
+2. [linuxquestions](https://www.linuxquestions.org/questions/linux-security-4/rkhunter-gives-warnings-about-large-shared-memory-segments-and-a-few-strange-files-4175649554/)
+
 
 ### To-Do list :man_mechanic::
 - Hiding process files completely. Our hidden process file can be accessed to open/read. If someone does, `ls <filename>`, they can easily open them.
