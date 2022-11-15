@@ -231,9 +231,9 @@ This thing was pointed out to me by [Artem Baranov](https://www.linkedin.com/in/
 7. https://infosecwriteups.com/linux-kernel-module-rootkit-syscall-table-hijacking-8f1bc0bd099c
 8. LKM HACKING: https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html
 9. Hide Files and Processes:\
-	i. https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.2.1.
-	ii. https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.
-	iii. https://jm33.me/linux-rootkit-for-fun-and-profit-0x02-lkm-hide-filesprocs.html
+i. https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.2.1.</br>
+ii. https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#II.5.</br>
+iii. https://jm33.me/linux-rootkit-for-fun-and-profit-0x02-lkm-hide-filesprocs.html
 10. Get Rootshell: https://xcellerator.github.io/posts/linux_rootkits_03/
 11. kobject: https://www.win.tue.nl/~aeb/linux/lk/lk-13.html
 12. https://sysprog21.github.io/lkmpg/
