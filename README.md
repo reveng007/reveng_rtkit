@@ -220,6 +220,7 @@ This thing was pointed out to me by [Artem Baranov](https://www.linkedin.com/in/
 ### Honourable Mentions:
 - [kurogai/100-redteam-project](https://github.com/kurogai/100-redteam-projects#honorable-mentions)
 - [milabs/awesome-linux-rootkits](https://github.com/milabs/awesome-linux-rootkits#speak_no_evil-related-stuff)
+- BlackHat, USA - [twitter-thread](https://twitter.com/reveng007/status/1594670602870173696)
 
 ### Resources that helped me:
 1.  This project is heavily inspired by [Heroin](https://web.archive.org/web/20140701183221/https://www.thc.org/papers/LKM_HACKING.html#A-b) by  Runar Jensen (didn't get any of his social media handle ;( ) and [Diamorphine](https://github.com/m0nad/Diamorphine/) by [@m0nadlabs](https://twitter.com/m0nadlabs) open source LKM rootkit projects. Especially, the `Syscall interception mechanism section` was totally taken from [Diamorphine](https://github.com/m0nad/Diamorphine/) repo by [@m0nadlabs](https://twitter.com/m0nadlabs).
