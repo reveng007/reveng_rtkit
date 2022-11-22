@@ -220,6 +220,7 @@ This thing was pointed out to me by [Artem Baranov](https://www.linkedin.com/in/
 ### Honourable Mentions:
 - [kurogai/100-redteam-project](https://github.com/kurogai/100-redteam-projects#honorable-mentions)
 - [milabs/awesome-linux-rootkits](https://github.com/milabs/awesome-linux-rootkits#speak_no_evil-related-stuff)
+- BSides St Pete, Florida to be presented - [link](https://drive.google.com/file/d/19Jv-Ju-6tVjO2OD1uyKkYC7hxXhWemcY/view).
 - BlackHat, USA - [twitter-thread](https://twitter.com/reveng007/status/1594670602870173696)
 
 ### Resources that helped me:
