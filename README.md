@@ -201,6 +201,7 @@ There are several links related to this:
 - Adding Linux Kernel Sockets [issue #2](https://github.com/reveng007/reveng_rtkit/issues/2).
 - Surviving system reboot [issue #5](https://github.com/reveng007/reveng_rtkit/issues/5).
 - Breaking `kernel_src/reveng_rtkit.c` [issue #8](https://github.com/reveng007/reveng_rtkit/issues/8).
+- Adding Capabilty to `bypass SELinux enabled Linux System` [issue #9](https://github.com/reveng007/reveng_rtkit/issues/9).
 - Bypassing `chkrootkit antirootkit` [issue #4](https://github.com/reveng007/reveng_rtkit/issues/4).
     - Getting detected by `chkrootkit antirootkit` till now, under `chkproc section`: [chkproc.c](https://github.com/Magentron/chkrootkit/blob/master/chkproc.c)
 &nbsp;
