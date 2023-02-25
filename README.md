@@ -222,6 +222,7 @@ This thing was pointed out to me by [Artem Baranov](https://www.linkedin.com/in/
 - [kurogai/100-redteam-project](https://github.com/kurogai/100-redteam-projects#honorable-mentions)
 - [milabs/awesome-linux-rootkits](https://github.com/milabs/awesome-linux-rootkits#speak_no_evil-related-stuff)
 - Selected by BSides St Pete, Florida to be presented - [link](https://drive.google.com/file/d/19Jv-Ju-6tVjO2OD1uyKkYC7hxXhWemcY/view).
+- Selected by BSides Prishtina, Kosovo to be presented - [link](https://drive.google.com/file/d/1Z0bljsYvX8nr4BbOQi6N0XdtfsCIYP_B/view?usp=share_link).
 - BlackHat, USA - [twitter-thread](https://twitter.com/reveng007/status/1594670602870173696)
 
 ### Resources that helped me:
