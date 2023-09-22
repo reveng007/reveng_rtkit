@@ -245,6 +245,10 @@ iii. https://jm33.me/linux-rootkit-for-fun-and-profit-0x02-lkm-hide-filesprocs.h
 14. Editing cr0 register: https://hadfiabdelmoumene.medium.com/change-value-of-wp-bit-in-cr0-when-cr0-is-panned-45a12c7e8411
 15. https://www.researchgate.net/publication/240376985_UNIX_and_Linux_based_Rootkits_Techniques_and_Countermeasures
 
+## Slides from my talk on [BSides Singapore](https://bsidessg.org/)
+1. PPT: [PPT Version](https://github.com/reveng007/reveng_rtkit/blob/main/reveng_rtkit%20-BSides%20Singapore.pptx)
+2. PDF: [pdf Version](https://github.com/reveng007/reveng_rtkit/blob/main/reveng_rtkit%20-BSides%20Singapore.pptx.pdf)
+
 ### Author: @reveng007 (Soumyanil Biswas)
 ---
 [![](https://img.shields.io/badge/Twitter-@reveng007-1DA1F2?style=flat-square&logo=twitter&logoColor=white)](https://twitter.com/reveng007)
